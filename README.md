@@ -13,14 +13,14 @@ from FITS ramp data. The code was originally developed for characterization of t
 
 ## Overview
 
-The analysis is organized around datasets rather than specific detectors. A YAML configuration file specifies:
+The analysis is organized around datasets. A YAML configuration file specifies:
 
 * Data location
 * Detector metadata
 * Analysis region of interest (ROI)
 * Readout modes
-* Illuminated ramps
-* Dark ramps
+* Illuminated ramp filenumbers following the Keck SCALES standard
+* Dark ramp filenumbers following the Keck SCALES standard
 
 The same analysis code can then be applied to multiple detectors or observing runs without modifying the Python source.
 
