@@ -1,0 +1,67 @@
+dataset:
+  name: 260623_IMG_lightleak_DetrendBothFast
+  descr: 'Blank off, 60s'
+  datapath: "/data20/CD5/IMG/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260623'
+  modes: ['fast06', 'fast10', 'slow52']
+
+roi:
+  x_start: 100
+  x_end: 300
+  y_start: 1600
+  y_end: 1800
+
+dark_roi:
+  x_start: 1500
+  x_end: 1700
+  y_start: 1500
+  y_end: 1700
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: 20000
+  illuminated:
+    ramp_range: [4439, 4449]
+    pairing: adjacent
+  dark:
+    ramp_range: [4439, 4449]
+    pairing: adjacent
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: True
+  fixed_xmax: 1500
+  illuminated:
+    ramp_range: [4419, 4429]
+    pairing: adjacent
+  dark:
+    ramp_range: [4419, 4429]
+    pairing: adjacent
+
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: True
+  fixed_xmax: 1500
+  illuminated:
+    ramp_range: [4429, 4439]
+    pairing: adjacent
+  dark:
+    ramp_range: [4429, 4439]    
+    pairing: adjacent
+

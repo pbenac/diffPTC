@@ -1,0 +1,58 @@
+dataset:
+  name: 260618_IFS
+  datapath: "/data20/CD5/IFS/jun18/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260618'
+  modes: ['slow52', 'fast10', 'fast06']
+
+
+roi:
+  x_start: 833
+  x_end: 1020
+  y_start: 1284
+  y_end: 1500
+
+analysis:
+  first_read: 2
+  last_read: 40
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: None
+  illuminated:
+    n1: 19776
+    n2: 19777
+  dark:
+    n1: 19867
+    n2: 19882
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: None
+  illuminated:
+    n1: 19807
+    n2: 19808
+  dark:
+    n1: 19852
+    n2: 19867
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: True
+  fixed_xmax: None
+  illuminated:
+    n1: 19821
+    n2: 19822
+  dark:
+    n1: 19834
+    n2: 19851

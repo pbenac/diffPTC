@@ -1,0 +1,69 @@
+dataset:
+  name: 260623_IFS_detrendBothFast
+  descr: 'diffuser 30s'
+  datapath: "/data20/CD5/IFS/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260623'
+  modes: ['fast06', 'fast10', 'slow52']
+
+
+
+
+roi:
+  x_start: 833
+  x_end: 1020
+  y_start: 1284
+  y_end: 1500
+
+
+dark_roi:
+  x_start: 1500
+  x_end: 1700
+  y_start: 1500
+  y_end: 1700
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: 20000
+  illuminated:
+    ramp_range: [20633, 20643]
+    pairing: adjacent
+
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: True
+  fixed_xmax: 1500
+  illuminated:
+    ramp_range: [20613,20623]
+    pairing: adjacent
+  dark:
+    ramp_range: [20602, 20612]
+    pairing: adjacent
+
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: True
+  fixed_xmax: 1500
+  illuminated:
+    ramp_range: [20623, 20633]
+    pairing: adjacent
+  dark:
+    ramp_range: [20592, 20602]    
+    pairing: adjacent
+

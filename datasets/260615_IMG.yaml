@@ -1,0 +1,52 @@
+dataset:
+  name: 260615_IMG
+  descr: 'Room illumination, 80s'
+  datapath: "/data20/CD5/IMG/jun15/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260615'
+  modes: ['fast06', 'fast10', 'slow52']
+
+
+roi:
+  x_start: 1250
+  x_end: 1700
+  y_start: 1250
+  y_end: 1700
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: 10000
+  illuminated:
+    n1: 3864
+    n2: 3865
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: 1000
+  illuminated:
+    n1: 3869
+    n2: 3870
+
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: 1000
+  illuminated:
+    n1: 3874
+    n2: 3875

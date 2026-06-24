@@ -1,0 +1,67 @@
+dataset:
+  name: 260623_IMG
+  descr: 'Room, Open+ND3, 30s'
+  datapath: "/data20/CD5/IMG/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260623'
+  modes: ['fast06', 'fast10', 'slow52']
+
+roi:
+  x_start: 1500
+  x_end: 1700
+  y_start: 1500
+  y_end: 1700
+
+dark_roi:
+  x_start: 1500
+  x_end: 1700
+  y_start: 1500
+  y_end: 1700
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: 20000
+  gain: 1.52
+  illuminated:
+    n1: 4379
+    n2: 4380
+  dark: 
+    ramp_range: [4439, 4448]
+
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: 1500
+  gain: 38.91
+  illuminated:
+    n1: 4369
+    n2: 4370
+  dark:
+    ramp_range: [4419, 4428]
+
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: 1500
+  gain: 39.2
+  illuminated:
+    n1: 4359
+    n2: 4360
+  dark:
+    ramp_range: [4429, 4438]

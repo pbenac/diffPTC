@@ -1,0 +1,51 @@
+dataset:
+  name: 260622_IMG
+  descr: 'hot plate'
+  datapath: "/data20/CD5/IMG/jun22/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260622'
+  modes: ['fast06', 'fast10', 'slow52']
+
+roi:
+  x_start: 100
+  x_end: 400
+  y_start: 100
+  y_end: 400
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: 10000
+  illuminated:
+    n1: 4342
+    n2: 4343
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: 1000
+  illuminated:
+    n1: 4308
+    n2: 4309
+
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: 1000
+  illuminated:
+    n1: 4274
+    n2: 4275
