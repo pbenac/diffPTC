@@ -9,7 +9,7 @@ This repository implements a set of analyses used to measure:
 * Reset (kTC) noise
 * Dark current
 
-from FITS ramp data. The code was originally developed for characterization of a spectrograph detector and has since been generalized to support additional detectors and datasets through YAML-based configuration files.
+from FITS ramp data. The code was originally developed for characterization of the SCALES spectrograph detector and has since been generalized to support additional detectors and datasets through YAML-based configuration files.
 
 ## Overview
 
