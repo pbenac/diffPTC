@@ -178,25 +178,25 @@ This allows characterization results to be compared across multiple ramp combina
 Gain analysis:
 
 ```bash
-python gain.py configs/spectrograph.yaml
+python gain.py datasets/260618_IFS.yaml
 ```
 
 Read/reset noise:
 
 ```bash
-python dark_noise.py configs/spectrograph.yaml
+python dark_noise.py datasets/260618_IFS.yaml
 ```
 
 Dark current:
 
 ```bash
-python dark_current.py configs/spectrograph.yaml
+python dark_current.py datasets/260618_IFS.yaml
 ```
 
 Diagnostic difference images:
 
 ```bash
-python io.py configs/spectrograph.yaml
+python io.py datasets/260618_IFS.yaml
 ```
 
 ## Validation Philosophy
