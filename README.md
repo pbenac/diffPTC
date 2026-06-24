@@ -226,7 +226,3 @@ Install with:
 ```bash
 pip install numpy scipy matplotlib astropy pyyaml
 ```
-
-## License
-
-Add your preferred license here.
