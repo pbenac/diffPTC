@@ -1,7 +1,7 @@
 dataset:
-  name: 260623_IFS_detrendBothFast
+  name: 260623_IFS
   descr: 'diffuser 30s'
-  datapath: "/data20/CD5/IFS/"
+  datapath: "/data20/CD5/IFS/jun23/"
   outpath: "/home/pbenac/diffPTC/results/"
   head: IFS
   date: '260623'
@@ -43,8 +43,9 @@ fast10:
   name: 'Fast1.0'
   frametime: 1.048576
   master_clockrate: 5MHz
-  detrend: True
+  detrend: False
   fixed_xmax: 1500
+  gain: 41.65
   illuminated:
     ramp_range: [20613,20623]
     pairing: adjacent
@@ -60,6 +61,7 @@ fast06:
   master_clockrate: 9MHz
   detrend: True
   fixed_xmax: 1500
+  gain: 44.64
   illuminated:
     ramp_range: [20623, 20633]
     pairing: adjacent

@@ -1,0 +1,15 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[50:350] y[1350:1650]
+quicklook=False; data directory=/data20/CD5/IMG/
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Fast0.6_Default: illuminated ramps=[6057, 6058, 6059, 6060, 6061, 6062, 6063, 6064, 6065, 6066]; pairs=[(6057, 6058), (6058, 6059), (6059, 6060), (6060, 6061), (6061, 6062), (6062, 6063), (6063, 6064), (6064, 6065), (6065, 6066)]
+Fast0.6_Default   0.5825      9    101      84       53.533  1.753    66.5
+   Fast0.6_II: illuminated ramps=[6067, 6068, 6069, 6070, 6071, 6072, 6073, 6074, 6075, 6076]; pairs=[(6067, 6068), (6068, 6069), (6069, 6070), (6070, 6071), (6071, 6072), (6072, 6073), (6073, 6074), (6074, 6075), (6075, 6076)]
+   [6067/6068: skipped 4 corrupt/zero frames]
+   [6068/6069: skipped 4 corrupt/zero frames]
+Fast0.6_II   0.5825      9    101      92       47.228  0.794    57.0
+   Fast0.6_III: illuminated ramps=[6077, 6078, 6079, 6080, 6081, 6082, 6083, 6084, 6085, 6086]; pairs=[(6077, 6078), (6078, 6079), (6079, 6080), (6080, 6081), (6081, 6082), (6082, 6083), (6083, 6084), (6084, 6085), (6085, 6086)]
+   [6084/6085: skipped 8 corrupt/zero frames]
+   [6085/6086: skipped 8 corrupt/zero frames]
+Fast0.6_III   0.5825      9    101      96       49.307  1.961    64.2

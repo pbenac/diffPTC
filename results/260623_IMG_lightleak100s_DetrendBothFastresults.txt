@@ -1,0 +1,12 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[50:250] y[1600:1800]
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Fast0.6: illuminated ramps=[4549, 4550]; pairs=[(4549, 4550)]
+   [4549/4550: skipped 20 corrupt/zero frames]
+Fast0.6     0.5825      1    170     174       52.668  0.446    57.9   [row-detrended]
+          (without sinusoid removal: gain=54.53±2.18, RN=77 e-  -> detrend tightens error ~5x)
+   Fast1.0: illuminated ramps=[4544, 4545, 4546, 4547, 4548]; pairs=[(4544, 4545), (4544, 4546), (4544, 4547), (4544, 4548), (4545, 4546), (4545, 4547), (4545, 4548), (4546, 4547), (4546, 4548), (4547, 4548)]
+Fast1.0     1.0486     10     94     179       39.197  0.118    29.3   [row-detrended]
+   Slow5.2: illuminated ramps=[4539, 4540, 4541, 4542, 4543]; pairs=[(4539, 4540), (4539, 4541), (4539, 4542), (4539, 4543), (4540, 4541), (4540, 4542), (4540, 4543), (4541, 4542), (4541, 4543), (4542, 4543)]
+Slow5.2     5.2429     10     18    4700        1.489  0.009    32.9

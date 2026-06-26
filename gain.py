@@ -56,16 +56,44 @@ def P(log, *a):
     log.flush()
 
 
-def file_ready(head, date, n, datapath):
-    obsnum_string = f"{int(n):05d}"
 
-    if head == "IFS":
-        pref = "ss"
-    else:
-        pref = "si"
+def as_optional_float(value):
+    """Convert YAML values like null/'None'/'' to None, otherwise float."""
+    if value is None:
+        return None
+    if isinstance(value, str) and value.strip().lower() in ("", "none", "null"):
+        return None
+    return float(value)
 
-    filename = pref + date + "_" + obsnum_string + ".fits"
-    fn = os.path.join(datapath, filename)
+
+def prefix_for_head(head):
+    return "ss" if head == "IFS" else "si"
+
+
+def data_directory(datapath, quicklook=False):
+    """Return the directory containing FITS files for normal or quicklook products."""
+    return os.path.join(datapath, "ql_redux") if quicklook else datapath
+
+
+def obs_filename(head, date, n, quicklook=False):
+    """Build detector FITS filename.
+
+    Normal:
+        ss260625_21740.fits
+
+    Quicklook:
+        ss260625_21740_reads.fits
+    """
+    suffix = "_reads" if quicklook else ""
+    return f"{prefix_for_head(head)}{date}_{int(n):05d}{suffix}.fits"
+
+
+def fits_path(datapath, head, date, n, quicklook=False):
+    return os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook))
+
+
+def file_ready(head, date, n, datapath, quicklook=False):
+    fn = fits_path(datapath, head, date, n, quicklook=quicklook)
     if not os.path.exists(fn):
         return False
     try:
@@ -79,16 +107,8 @@ def file_ready(head, date, n, datapath):
         return False
 
 
-def load_region(head, date, n, datapath, X0, X1, Y0, Y1):
-    obsnum_string = f"{int(n):05d}"
-
-    if head == "IFS":
-        pref = "ss"
-    else:
-        pref = "si"
-
-    filename = pref + date + "_" + obsnum_string + ".fits"
-    fn = os.path.join(datapath, filename)
+def load_region(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False):
+    fn = fits_path(datapath, head, date, n, quicklook=quicklook)
     h = fits.open(fn, memmap=True, do_not_scale_image_data=True)
     bz = h[0].header.get("BZERO", 0)
     reg = np.asarray(h[0].data[:, Y0:Y1, X0:X1]).astype(np.float64) + bz
@@ -171,7 +191,7 @@ def make_pairs(mode_cfg, ramps, section="illuminated"):
     )
 
 
-def fit_gain(S, V):
+def fit_gain(S, V, fixed_xmax=None):
     """Fit Var_single = slope*S + intercept and return gain quantities."""
     S = np.asarray(S)
     V = np.asarray(V)
@@ -179,7 +199,11 @@ def fit_gain(S, V):
     if len(S) == 0:
         raise ValueError("No signal/variance points available for fit.")
 
-    smax = S.max()
+    if fixed_xmax is None:
+        smax = S.max()
+    else:
+        smax = fixed_xmax
+
     good = (S > 0.05 * smax) & (S < 0.90 * smax)
 
     if good.sum() < 2:
@@ -209,9 +233,9 @@ def fit_gain(S, V):
 
 
 def gain_diff(head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
-              detrend=False, fixed_xmax=None, _quiet=False):
-    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1)
-    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1)
+              detrend=False, fixed_xmax=None, quicklook=False, _quiet=False):
+    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
+    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
     nf = min(A.shape[0], B.shape[0])
     A1, B1 = A[1], B[1]
     mA1, mB1 = np.median(A1), np.median(B1)
@@ -235,14 +259,14 @@ def gain_diff(head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
     if nbad and not _quiet:
         P(log, f"   [{n1}/{n2}: skipped {nbad} corrupt/zero frames]")
 
-    r = fit_gain(np.array(S), np.array(V))
+    r = fit_gain(np.array(S), np.array(V), fixed_xmax=fixed_xmax)
     r["nf"] = nf
     r["pair"] = (n1, n2)
     return r
 
 
 def gain_diff_many_pairs(head, date, pairs, datapath, X0, X1, Y0, Y1, log,
-                         detrend=False, fixed_xmax=None):
+                         detrend=False, fixed_xmax=None, quicklook=False):
     """Run gain_diff for each pair and fit once to all pair/read points combined."""
     pair_results = []
     all_S = []
@@ -250,13 +274,13 @@ def gain_diff_many_pairs(head, date, pairs, datapath, X0, X1, Y0, Y1, log,
     nf_values = []
 
     for n1, n2 in pairs:
-        if not (file_ready(head, date, n1, datapath) and file_ready(head, date, n2, datapath)):
+        if not (file_ready(head, date, n1, datapath, quicklook=quicklook) and file_ready(head, date, n2, datapath, quicklook=quicklook)):
             P(log, f"   [{n1}/{n2}: files not ready; skipped]")
             continue
 
         r = gain_diff(
             head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
-            detrend=detrend, fixed_xmax=fixed_xmax,
+            detrend=detrend, fixed_xmax=fixed_xmax, quicklook=quicklook,
         )
         pair_results.append(r)
         all_S.append(r["S"])
@@ -266,7 +290,7 @@ def gain_diff_many_pairs(head, date, pairs, datapath, X0, X1, Y0, Y1, log,
     if not pair_results:
         raise ValueError("No valid illuminated ramp pairs were available.")
 
-    combined = fit_gain(np.concatenate(all_S), np.concatenate(all_V))
+    combined = fit_gain(np.concatenate(all_S), np.concatenate(all_V), fixed_xmax=fixed_xmax)
     combined["nf"] = int(min(nf_values))
     combined["pairs"] = pairs
     combined["pair_results"] = pair_results
@@ -275,9 +299,9 @@ def gain_diff_many_pairs(head, date, pairs, datapath, X0, X1, Y0, Y1, log,
 
 def gain_diff_forceIntercept(head, date, n1, n2, datapath, X0, X1, Y0, Y1,
                              intercept, log, detrend=False, fixed_xmax=None,
-                             _quiet=False):
-    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1)
-    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1)
+                             quicklook=False, _quiet=False):
+    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
+    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
     nf = min(A.shape[0], B.shape[0])
     A1, B1 = A[1], B[1]
     mA1, mB1 = np.median(A1), np.median(B1)
@@ -302,7 +326,7 @@ def gain_diff_forceIntercept(head, date, n1, n2, datapath, X0, X1, Y0, Y1,
 
     S = np.array(S)
     V = np.array(V)
-    smax = S.max()
+    smax = S.max() if fixed_xmax is None else fixed_xmax
     good = (S > 0.05 * smax) & (S < 0.90 * smax)
 
     y_intercept = intercept
@@ -346,25 +370,37 @@ def save_pair_summary(outpath, setname, mode_name, pair_results):
         )
 
 
+def mode_color_map(names):
+    """Assign each plotted mode a stable color from Matplotlib's color cycle.
+
+    This avoids depending on exact mode-name strings like 'Slow5.2'. If the YAML
+    names change, the first mode still gets C0, the second C1, etc.
+    """
+    colors = plt.rcParams["axes.prop_cycle"].by_key().get("color", [])
+    if not colors:
+        colors = [f"C{i}" for i in range(10)]
+    return {name: colors[i % len(colors)] for i, name in enumerate(names)}
+
+
 def plot_results(outpath, setname, results):
     if not results:
         return
 
-    col = {"Slow5.2": "C0", "Fast1.0": "C1", "Fast0.6": "C2"}
     names = list(results.keys())
+    col = mode_color_map(names)
     fig = plt.figure(figsize=(15, 9))
 
     # Row 1: per-mode PTC in DN, own axes.
     for i, name in enumerate(names):
         r = results[name]
-        c = col.get(name, "k")
+        c = col[name]
         ax = fig.add_subplot(2, 3, i + 1)
         ax.plot(r["S"], r["V"], ".", color="0.6", ms=4)
         ax.plot(r["S"][r["good"]], r["V"][r["good"]], "o", color=c, ms=4)
         xx = np.linspace(0, r["smax"], 100)
         ax.plot(xx, r["slope"] * xx + r["inter"], "-", color=c, lw=1.5)
         ax.set_xlabel("signal S [DN]")
-        ax.set_ylabel("variance/image [DN^2]")
+        ax.set_ylabel(r"variance/image [DN$^2$]")
         npairs = len(r.get("pair_results", []))
         pair_text = f", {npairs} pairs" if npairs > 1 else ""
         ax.set_title(
@@ -376,22 +412,22 @@ def plot_results(outpath, setname, results):
     axc = fig.add_subplot(2, 3, 4)
     for name in names:
         r = results[name]
-        c = col.get(name, "k")
+        c = col[name]
         Se = r["S"] * r["gain"]
         Ve = r["V"] * r["gain"]**2
         axc.plot(Se, Ve, ".", color=c, ms=4, label=name)
     lim = max(r["smax"] * results[n]["gain"] for n, r in results.items())
-    axc.plot([0, lim], [0, lim], "k--", lw=1, label="Poisson  var=signal")
+    axc.plot([0, lim], [0, lim], "k--", lw=1, label="Poisson: var=signal")
     axc.set_xlabel("signal [e-]")
-    axc.set_ylabel("variance [e-^2]")
-    axc.set_title("electron-space collapse\n(all modes -> Poisson line)")
+    axc.set_ylabel(r"variance [e-$^2$]")
+    axc.set_title("Photon Transfer Curve after Gain Conversion \n(all modes -> Poisson line)")
     axc.legend()
 
     # Row 2 mid: gain bar chart.
     axb = fig.add_subplot(2, 3, 5)
     g = [results[n]["gain"] for n in names]
     ge = [results[n]["gain_err"] for n in names]
-    axb.bar(names, g, yerr=ge, capsize=5, color=[col.get(n, "k") for n in names])
+    axb.bar(names, g, yerr=ge, capsize=5, color=[col[n] for n in names])
     for i, n in enumerate(names):
         axb.text(i, g[i], f"{g[i]:.2f}", ha="center", va="bottom")
     axb.set_ylabel("gain [e-/DN]")
@@ -400,11 +436,11 @@ def plot_results(outpath, setname, results):
     # Row 2 right: total electrons accumulated.
     axe = fig.add_subplot(2, 3, 6)
     etot = [results[n]["smax"] * results[n]["gain"] for n in names]
-    axe.bar(names, etot, color=[col.get(n, "k") for n in names])
+    axe.bar(names, etot, color=[col[n] for n in names])
     for i, n in enumerate(names):
         axe.text(i, etot[i], f"{etot[i] / 1e3:.0f}k", ha="center", va="bottom")
     axe.set_ylabel("max accumulated [e-]")
-    axe.set_title("total e- per ramp\n(should match: same illumination)")
+    axe.set_title("Total e- per ramp\n(should match: same illumination)")
 
     fig.tight_layout()
     fig.savefig(os.path.join(outpath, f"{setname}gain_compare.png"), dpi=110)
@@ -423,6 +459,7 @@ def main():
     head = config["dataset"]["head"]
     date = config["dataset"]["date"]
     datapath = config["dataset"]["datapath"]
+    quicklook = bool(config["dataset"].get("quicklook", False))
     outpath = config["dataset"]["outpath"]
     setname = config["dataset"]["name"]
     modes = config["dataset"]["modes"]
@@ -440,7 +477,8 @@ def main():
         results = {}
 
         P(log, "=== gain by readout mode (two-image difference method) ===")
-        P(log, f"Region x[{X0}:{X1}] y[{Y0}:{Y1}]\n")
+        P(log, f"Region x[{X0}:{X1}] y[{Y0}:{Y1}]")
+        P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
         P(log, f"{'mode':9s} {'ITIME':>8s} {'pairs':>6s} {'reads':>6s} {'maxDN':>7s} "
                f"{'gain(e-/DN)':>12s} {'err':>6s} {'RN(e-)':>7s}")
 
@@ -449,7 +487,7 @@ def main():
             name = mode_cfg["name"]
             itime = mode_cfg["frametime"]
             detrend = mode_cfg.get("detrend", False)
-            fixed_xmax = mode_cfg.get("fixed_xmax", None)
+            fixed_xmax = as_optional_float(mode_cfg.get("fixed_xmax", None))
 
             ramps = parse_ramps(mode_cfg, section="illuminated")
             pairs = make_pairs(mode_cfg, ramps, section="illuminated")
@@ -466,7 +504,7 @@ def main():
             try:
                 r = gain_diff_many_pairs(
                     head, date, pairs, datapath, X0, X1, Y0, Y1, log,
-                    detrend=detrend, fixed_xmax=fixed_xmax,
+                    detrend=detrend, fixed_xmax=fixed_xmax, quicklook=quicklook,
                 )
             except Exception as exc:
                 P(log, f"{name:9s} -- gain fit failed: {exc}; skipped --")
@@ -483,7 +521,7 @@ def main():
                 n1, n2 = pairs[0]
                 r0 = gain_diff(
                     head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
-                    detrend=False, _quiet=True, fixed_xmax=fixed_xmax,
+                    detrend=False, _quiet=True, fixed_xmax=fixed_xmax, quicklook=quicklook,
                 )
                 P(log, f"          (without sinusoid removal: gain={r0['gain']:.2f}±{r0['gain_err']:.2f}, "
                        f"RN={r0['rn_e']:.0f} e-  -> detrend tightens error ~{r0['gain_err']/r['gain_err']:.0f}x)")

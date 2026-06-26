@@ -1,3 +1,36 @@
+
+"""
+File loading and difference creation. 
+
+This version is YAML-driven and supports either the original two-ramp config
+
+  illuminated:
+    n1: 4433
+    n2: 4434
+
+or the newer ramp-list style
+
+  illuminated:
+    ramps: [4433, 4434, 4435, 4436]
+
+or
+
+  illuminated:
+    ramp_range: [4433, 4437]   # inclusive start, exclusive stop, like range()
+
+When more than two illuminated ramps are supplied, pair selection is controlled by
+
+  illuminated:
+    pairing: all_pairs          # default for 3+ ramps
+
+Supported pairing modes are: all_pairs, adjacent, first_two.  You can also pass
+explicit pairs:
+
+  illuminated:
+    pairs:
+      - [4433, 4434]
+      - [4435, 4436]
+"""
 import os
 import sys
 from itertools import combinations
@@ -17,10 +50,16 @@ def prefix_for_head(head):
     return "ss" if head == "IFS" else "si"
 
 
-def fits_path(datapath, head, date, filenum):
+def data_directory(datapath, quicklook=False):
+    """Return the directory containing FITS files for normal or quicklook products."""
+    return os.path.join(datapath, "ql_redux") if quicklook else datapath
+
+
+def fits_path(datapath, head, date, filenum, quicklook=False):
     obsnum_string = f"{int(filenum):05d}"
-    filename = prefix_for_head(head) + date + "_" + obsnum_string + ".fits"
-    return os.path.join(datapath, filename)
+    suffix = "_reads" if quicklook else ""
+    filename = prefix_for_head(head) + date + "_" + obsnum_string + suffix + ".fits"
+    return os.path.join(data_directory(datapath, quicklook), filename)
 
 
 def parse_ramps(mode_cfg, section="illuminated"):
@@ -92,9 +131,9 @@ def make_pairs(mode_cfg, ramps, section="illuminated"):
     )
 
 
-def make_diff(filenum1, filenum2, outfile_name, datapath, head, date, title=None):
-    file1 = fits_path(datapath, head, date, filenum1)
-    file2 = fits_path(datapath, head, date, filenum2)
+def make_diff(filenum1, filenum2, outfile_name, datapath, head, date, title=None, quicklook=False):
+    file1 = fits_path(datapath, head, date, filenum1, quicklook=quicklook)
+    file2 = fits_path(datapath, head, date, filenum2, quicklook=quicklook)
 
     f1 = fits.getdata(file1).astype(float)
     f2 = fits.getdata(file2).astype(float)
@@ -112,9 +151,9 @@ def make_diff(filenum1, filenum2, outfile_name, datapath, head, date, title=None
     fits.writeto(outfile_name + ".fits", diff, overwrite=True)
 
 
-def make_cropped_diff(filenum1, filenum2, X0, X1, Y0, Y1, outfile_name, datapath, head, date, title=None):
-    file1 = fits_path(datapath, head, date, filenum1)
-    file2 = fits_path(datapath, head, date, filenum2)
+def make_cropped_diff(filenum1, filenum2, X0, X1, Y0, Y1, outfile_name, datapath, head, date, title=None, quicklook=False):
+    file1 = fits_path(datapath, head, date, filenum1, quicklook=quicklook)
+    file2 = fits_path(datapath, head, date, filenum2, quicklook=quicklook)
 
     inds = np.s_[:, Y0:Y1, X0:X1]
 
@@ -146,6 +185,7 @@ def main():
     head = config["dataset"]["head"]
     date = config["dataset"]["date"]
     datapath = config["dataset"]["datapath"]
+    quicklook = bool(config["dataset"].get("quicklook", False))
     outpath = config["dataset"]["outpath"]
     setname = config["dataset"]["name"]
     modes = config["dataset"].get("modes", ["slow52", "fast10", "fast06"])
@@ -168,12 +208,12 @@ def main():
             print(f"{name}: no illuminated ramp pairs configured; skipped")
             continue
 
-        print(f"{name}: illuminated ramps={ramps}; pairs={pairs}")
+        print(f"{name}: illuminated ramps={ramps}; pairs={pairs}; quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}")
         for n1, n2 in pairs:
             base = os.path.join(diff_dir, f"{setname}_{name}_{int(n1):05d}_{int(n2):05d}_difference")
             title = f"{setname} {name}: {int(n2):05d} - {int(n1):05d}"
-            make_diff(n1, n2, base, datapath, head, date, title=title)
-            make_cropped_diff(n1, n2, X0, X1, Y0, Y1, base, datapath, head, date, title=title + " crop")
+            make_diff(n1, n2, base, datapath, head, date, title=title, quicklook=quicklook)
+            make_cropped_diff(n1, n2, X0, X1, Y0, Y1, base, datapath, head, date, title=title + " crop", quicklook=quicklook)
 
 
 if __name__ == "__main__":

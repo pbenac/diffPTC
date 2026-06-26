@@ -1,0 +1,137 @@
+dataset:
+  name: 260625_IFS_QLs_diffWindow
+  descr: 'diffuser 30s'
+  datapath: "/data20/CD5/IFS/jun25/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260625'
+  modes: ['fast06_default', 'fast10_default', 'slow52_default']
+  quicklook: true
+
+
+
+
+roi:
+  x_start: 833
+  x_end: 1020
+  y_start: 1284
+  y_end: 1500
+
+
+dark_roi:
+  x_start: 1500
+  x_end: 1700
+  y_start: 1500
+  y_end: 1700
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52_default:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.57
+  illuminated:
+    ramp_range: [21611, 21621]
+    pairing: adjacent
+
+slow52_II:
+  name: 'Slow5.2_II'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [21621, 21631]
+    pairing: adjacent
+
+
+slow52_III:
+  name: 'Slow5.2_III'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [21631, 21641]
+    pairing: adjacent
+
+fast10_default:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 41.08
+  illuminated:
+    ramp_range: [21581,21591]
+    pairing: adjacent
+  dark:
+    ramp_range: [21731, 21741]
+    pairing: adjacent
+
+fast10_II:
+  name: 'Fast1.0_II'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [21591,21601]
+    pairing: adjacent
+
+fast10_III:
+  name: 'Fast1.0_III'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [21601,21611]
+    pairing: adjacent
+
+fast06_default:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: false
+  fixed_xmax: null
+  gain: 41.38
+  illuminated:
+    ramp_range: [21551, 21561]
+    pairing: adjacent
+  dark:
+    ramp_range: [21701, 21711]    
+    pairing: adjacent
+
+
+fast06_II:
+  name: 'Fast0.6_II'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: True
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [21561, 21571]
+    pairing: adjacent
+  dark:
+    ramp_range: [21711, 21721]    
+    pairing: adjacent
+
+
+fast06_III:
+  name: 'Fast0.6_III'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: True
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [21571, 21581]
+    pairing: adjacent
+  dark:
+    ramp_range: [21721, 21731]    
+    pairing: adjacent

@@ -2,28 +2,6 @@
 """
 Dark current per readout mode from dark ramps.
 
-Refactored to match gain.py style:
-  python dark_current.py config.yaml
-
-Expected YAML additions, per mode:
-
-fast06:
-  gain: 43.944
-  dark:
-    ramps: [4433, 4434, 4435]
-
-or:
-
-fast06:
-  gain: 43.944
-  dark:
-    ramp_range: [4433, 4450]   # inclusive start, exclusive stop, like range()
-
-Optional:
-
-dark_current:
-  primary_mode: slow52
-  histogram_exclude_first: true
 """
 import os
 import sys
@@ -48,13 +26,19 @@ def P(log, *a):
     log.flush()
 
 
-def obs_filename(head, date, n):
+def data_directory(datapath, quicklook=False):
+    """Return the directory containing FITS files for normal or quicklook products."""
+    return os.path.join(datapath, "ql_redux") if quicklook else datapath
+
+
+def obs_filename(head, date, n, quicklook=False):
     pref = "ss" if head == "IFS" else "si"
-    return f"{pref}{date}_{n:05d}.fits"
+    suffix = "_reads" if quicklook else ""
+    return f"{pref}{date}_{int(n):05d}{suffix}.fits"
 
 
-def reg_cube(head, date, n, datapath, X0, X1, Y0, Y1):
-    fn = os.path.join(datapath, obs_filename(head, date, n))
+def reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False):
+    fn = os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook=quicklook))
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
         return np.asarray(h[0].data[:, Y0:Y1, X0:X1]).astype(np.float64) + bz
@@ -91,19 +75,20 @@ def get_gain(mode_cfg):
     return None
 
 
-def analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1):
+def analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1, quicklook=False):
     vals = []
     profiles = []
     nf_last = None
 
     for n in ramps:
-        c = reg_cube(head, date, n, datapath, X0, X1, Y0, Y1)
+        c = reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
         nf = c.shape[0]
         nf_last = nf
         dmap = pix_slope(c) * gain / itime
         vals.append(sigma_clipped_stats(dmap, sigma=3, maxiters=5)[1])
         med = np.median(c.reshape(nf, -1), axis=1)
-        profiles.append(med - med[1])
+        med = (med- med[1])*gain
+        profiles.append(med)
 
     vals = np.array(vals)
     dark = np.median(vals)
@@ -116,7 +101,7 @@ def analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1):
     return dict(dark=dark, err=err, g=gain, it=itime, nramp=len(ramps), ttot=(nf_last - 1) * itime, profile=profile)
 
 
-def make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1):
+def make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, quicklook=False):
     if not summary:
         return
 
@@ -139,9 +124,9 @@ def make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, 
             a = np.polyfit(t[1:], p[1:], 1)
             ax[0].plot(t, a[0] * t + a[1], "--", lw=1)
 
-    ax[0].set_xlabel("time since reset [s]")
-    ax[0].set_ylabel("region median signal [DN]")
-    ax[0].set_title("mean dark ramp (rel. read 1)")
+    ax[0].set_xlabel("Time since reset [s]")
+    ax[0].set_ylabel("Region median signal [e-]")
+    ax[0].set_title("Mean accumulated charge")
     ax[0].legend()
 
     d = [summary[n]["dark"] for n in names]
@@ -160,7 +145,7 @@ def make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, 
         itime = float(mode_cfg["frametime"])
         exclude_first = bool(dark_current_cfg.get("histogram_exclude_first", True))
         hist_ramps = ramps[1:] if exclude_first and len(ramps) > 1 else ramps
-        maps = [pix_slope(reg_cube(head, date, n, datapath, X0, X1, Y0, Y1)) * gain / itime for n in hist_ramps]
+        maps = [pix_slope(reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=quicklook)) * gain / itime for n in hist_ramps]
         dmap = np.median(maps, axis=0)
         m, _, s = sigma_clipped_stats(dmap, sigma=3)
         ax[2].hist(dmap.ravel(), bins=120, range=(m - 5 * s, m + 5 * s))
@@ -190,6 +175,7 @@ def main():
     head = dataset["head"]
     date = dataset["date"]
     datapath = dataset["datapath"]
+    quicklook = bool(dataset.get("quicklook", False))
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]
@@ -205,7 +191,8 @@ def main():
     summary = {}
 
     with open(os.path.join(outpath, logname), "w") as log:
-        P(log, f"=== Dark current by readout mode (region x[{X0}:{X1}] y[{Y0}:{Y1}]) ===\n")
+        P(log, f"=== Dark current by readout mode (region x[{X0}:{X1}] y[{Y0}:{Y1}]) ===")
+        P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
         P(log, f"{'mode':9s} {'ITIME':>7s} {'ramps':>6s} {'t_tot(s)':>8s} {'dark(e-/s)':>12s} {'+/-':>7s}")
 
         for mode in modes:
@@ -222,7 +209,7 @@ def main():
                 P(log, f"{name:9s} -- no gain configured; skipped --")
                 continue
 
-            r = analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1)
+            r = analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1, quicklook=quicklook)
             summary[name] = r
             P(log, f"{name:9s} {itime:7.3f} {len(ramps):6d} {r['ttot']:8.1f} {r['dark']:12.2f} {r['err']:7.2f}")
 
@@ -237,7 +224,7 @@ def main():
                 P(log, "\nNotes:")
                 P(log, f"  Primary dark current ({primary_name}): {sl['dark']:.2f} +/- {sl['err']:.2f} e-/s")
 
-    make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1)
+    make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, quicklook=quicklook)
     print("DONE")
 
 

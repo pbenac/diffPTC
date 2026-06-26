@@ -1,7 +1,7 @@
 dataset:
   name: 260623_IMG
   descr: 'Room, Open+ND3, 30s'
-  datapath: "/data20/CD5/IMG/"
+  datapath: "/data20/CD5/IMG/jun23/"
   outpath: "/home/pbenac/diffPTC/results/"
   head: IMG
   date: '260623'
