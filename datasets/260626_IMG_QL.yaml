@@ -1,12 +1,12 @@
 dataset:
-  name: 260625_IMG_Defaults
+  name: 260626_IMG_QL_Defaults
   descr: 'Dark/LightLeak, 60s'
-  datapath: "/data20/CD5/IMG/jun25/"
+  datapath: "/data20/CD5/IMG/jun26/"
   outpath: "/home/pbenac/diffPTC/results/"
   head: IMG
-  date: '260625'
+  date: '260626'
   modes: ['fast06_default', 'fast10_default', 'slow52_default']
-  quicklook: false
+  quicklook: true
 
 roi:
   x_start: 50
@@ -24,26 +24,18 @@ analysis:
   first_read: 2
   last_read: 10
 
-well_depth:
-  reference_read_index: 0      # zero-indexed frame subtracted from all reads
-  slope_start_frame: 2         # one-indexed plotted frame number
-  slope_stop_frame: 20          # one-indexed plotted frame number
-  deviation_threshold: 0.50    # fractional deviation from initial linear fit
-  slope_cutoff: 0.05           # local slope < this*initial_slope -> well depth
-  interpolation_points: 1000
-  statistic: mean            # median or mean across ROI
-  errorbar: sem                # sem, std, or none
-  ylim_max_multiplier: 1.08
-
-    
 slow52_default:
-  name: 'Slow5.2_Default'
+  name: 'Slow5.2'
   frametime: 5.24288
   master_clockrate: 20MHz
   detrend: False
   fixed_xmax: null
+  gain: 1.48
   illuminated:
-    ramp_range: [6027, 6037]
+    ramp_range: [6163, 6173]
+    pairing: adjacent
+  dark:
+    ramp_range: [6163, 6173]
     pairing: adjacent
 
 slow52_II:
@@ -53,9 +45,11 @@ slow52_II:
   detrend: False
   fixed_xmax: null
   illuminated:
-    ramp_range: [6037, 6047]
+    ramp_range: [6173, 6183]
     pairing: adjacent
-
+  dark:
+    ramp_range: [6173, 6183]
+    pairing: adjacent
 
 slow52_III:
   name: 'Slow5.2_III'
@@ -64,17 +58,24 @@ slow52_III:
   detrend: False
   fixed_xmax: null
   illuminated:
-    ramp_range: [6047, 6057]
+    ramp_range: [6183, 6193]
+    pairing: adjacent
+  dark:
+    ramp_range: [6183, 6193]
     pairing: adjacent
 
 fast10_default:
-  name: 'Fast1.0_Default'
+  name: 'Fast1.0 '
   frametime: 1.048576
   master_clockrate: 5MHz
   detrend: False
   fixed_xmax: null
+  gain: 37.96
   illuminated:
-    ramps: [6087,6088,6089,6090,6091,6093,6094,6095,6096]
+    ramp_range: [6223, 6233]
+    pairing: adjacent
+  dark:
+    ramp_range: [6223, 6233]
     pairing: adjacent
 
 fast10_II:
@@ -84,7 +85,10 @@ fast10_II:
   detrend: False
   fixed_xmax: null
   illuminated:
-    ramp_range: [6097,6107]
+    ramp_range: [6233, 6243]
+    pairing: adjacent
+  dark:
+    ramp_range: [6233, 6243]
     pairing: adjacent
 
 fast10_III:
@@ -94,20 +98,24 @@ fast10_III:
   detrend: False
   fixed_xmax: null
   illuminated:
-    ramp_range: [6107,6117]
+    ramp_range: [6243, 6253]
+    pairing: adjacent
+  dark:
+    ramp_range: [6243, 6253]
     pairing: adjacent
 
 fast06_default:
-  name: 'Fast0.6_Default'
+  name: 'Fast0.6 '
   frametime: 0.582542
   master_clockrate: 9MHz
   detrend: false
   fixed_xmax: null
+  gain: 53.21
   illuminated:
-    ramp_range: [6057, 6067]
+    ramp_range: [6193, 6203]
     pairing: adjacent
-
-
+  dark:
+    ramp_range: [6193, 6203]
 
 fast06_II:
   name: 'Fast0.6_II'
@@ -116,10 +124,11 @@ fast06_II:
   detrend: false
   fixed_xmax: null
   illuminated:
-    ramp_range: [6067, 6077]
+    ramp_range: [6203, 6213]
     pairing: adjacent
-
-
+  dark:
+    ramp_range: [6203, 6213]
+    pairing: adjacent
 
 fast06_III:
   name: 'Fast0.6_III'
@@ -128,5 +137,8 @@ fast06_III:
   detrend: false
   fixed_xmax: null
   illuminated:
-    ramp_range: [6077, 6087]
+    ramp_range: [6213, 6223]
+    pairing: adjacent
+  dark:
+    ramp_range: [6213, 6223]
     pairing: adjacent

@@ -1,0 +1,4 @@
+mode,n_ramps,n_reads,frame_time_s,initial_slope_DN_per_frame,initial_slope_DN_per_s,deviation_threshold,well_depth_deviation_DN,well_depth_deviation_e,frame_deviation,time_deviation_s,slope_cutoff_fraction,well_depth_slope_cutoff_DN,well_depth_slope_cutoff_e,frame_slope_cutoff,time_slope_cutoff_s
+Fast0.6_Default,10,103,0.5825422222222222,0.7726317901234567,1.3263103697035048,0.5,nan,nan,nan,nan,0.05,30.18012055388723,nan,36.12312312312312,21.043244417751083
+Fast1.0_Default,9,58,1.048576,1.3804598765432086,1.3165091290886008,0.5,nan,nan,nan,nan,0.05,40.23085385385388,nan,29.07207207207207,30.484277045045044
+Slow5.2_Default,10,12,5.24288,190.14415555555553,36.267119513617615,0.5,nan,nan,nan,nan,0.05,nan,nan,nan,nan
