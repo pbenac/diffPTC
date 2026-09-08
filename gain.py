@@ -30,6 +30,23 @@ explicit pairs:
     pairs:
       - [4433, 4434]
       - [4435, 4436]
+
+Optional PTC read selection can be set globally:
+
+  analysis:
+    first_read: 2
+    last_read: 8
+
+or overridden for an individual mode:
+
+  fast06:
+    first_read: 2
+    last_read: 6
+
+Read numbers here are zero-based FITS-cube indices, matching the existing code.
+The reference image remains read index 1.  first_read/last_read only control
+which later reads become PTC points; last_read is inclusive.  If omitted, the
+current default behavior is preserved: use reads 2 through the end of the ramp.
 """
 import os
 import sys
@@ -47,6 +64,7 @@ from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 import yaml
 import scipy
+import gui_io
 
 
 def P(log, *a):
@@ -64,6 +82,42 @@ def as_optional_float(value):
     if isinstance(value, str) and value.strip().lower() in ("", "none", "null"):
         return None
     return float(value)
+
+
+def as_optional_int(value):
+    """Convert YAML values like null/'None'/'' to None, otherwise int."""
+    if value is None:
+        return None
+    if isinstance(value, str) and value.strip().lower() in ("", "none", "null"):
+        return None
+    return int(value)
+
+
+def selected_read_bounds(nf, first_read=None, last_read=None):
+    """Return inclusive PTC read bounds, preserving the historical defaults.
+
+    The reference read is always array index 1, so PTC points cannot start
+    before index 2.  last_read is inclusive.
+    """
+    first = 2 if first_read is None else int(first_read)
+    last = nf - 1 if last_read is None else int(last_read)
+
+    if first < 2:
+        raise ValueError(
+            f"first_read={first} is invalid: the PTC reference is read index 1, "
+            "so first_read must be >= 2."
+        )
+    if last < first:
+        raise ValueError(
+            f"last_read={last} must be >= first_read={first}."
+        )
+    if first >= nf:
+        raise ValueError(
+            f"first_read={first} is outside a ramp with {nf} reads."
+        )
+
+    last = min(last, nf - 1)
+    return first, last
 
 
 def prefix_for_head(head):
@@ -92,7 +146,10 @@ def fits_path(datapath, head, date, n, quicklook=False):
     return os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook))
 
 
-def file_ready(head, date, n, datapath, quicklook=False):
+def file_ready(head, date, n, datapath, quicklook=False, gui=False):
+    if gui:
+        return gui_io.gui_acquisition_ready(n, min_reads=3)
+
     fn = fits_path(datapath, head, date, n, quicklook=quicklook)
     if not os.path.exists(fn):
         return False
@@ -107,7 +164,11 @@ def file_ready(head, date, n, datapath, quicklook=False):
         return False
 
 
-def load_region(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False):
+def load_region(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False, gui=False):
+    if gui:
+        cube, _header, _source = gui_io.load_gui_cube(n, roi=(X0, X1, Y0, Y1))
+        return cube
+
     fn = fits_path(datapath, head, date, n, quicklook=quicklook)
     h = fits.open(fn, memmap=True, do_not_scale_image_data=True)
     bz = h[0].header.get("BZERO", 0)
@@ -121,7 +182,7 @@ def row_detrend(img):
     return img - np.median(img, axis=1, keepdims=True)
 
 
-def parse_ramps(mode_cfg, section="illuminated"):
+def parse_ramps(mode_cfg, section="illuminated", gui=False):
     """Return a list of ramp numbers from a mode config.
 
     Preferred syntax:
@@ -137,6 +198,9 @@ def parse_ramps(mode_cfg, section="illuminated"):
           n1: 4433
           n2: 4434
     """
+    if gui:
+        return gui_io.gui_identifiers(mode_cfg, section=section)
+
     ramp_cfg = mode_cfg.get(section, {})
 
     if "ramps" in ramp_cfg:
@@ -160,11 +224,13 @@ def parse_ramps(mode_cfg, section="illuminated"):
     return []
 
 
-def make_pairs(mode_cfg, ramps, section="illuminated"):
+def make_pairs(mode_cfg, ramps, section="illuminated", gui=False):
     """Return ramp-number pairs according to the mode config."""
     ramp_cfg = mode_cfg.get(section, {})
 
     if "pairs" in ramp_cfg:
+        if gui:
+            return [(str(a), str(b)) for a, b in ramp_cfg["pairs"]]
         return [(int(a), int(b)) for a, b in ramp_cfg["pairs"]]
 
     if len(ramps) < 2:
@@ -233,16 +299,20 @@ def fit_gain(S, V, fixed_xmax=None):
 
 
 def gain_diff(head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
-              detrend=False, fixed_xmax=None, quicklook=False, _quiet=False):
-    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
-    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
+              detrend=False, fixed_xmax=None, quicklook=False, gui=False,
+              first_read=None, last_read=None, _quiet=False):
+    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
+    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
     nf = min(A.shape[0], B.shape[0])
     A1, B1 = A[1], B[1]
     mA1, mB1 = np.median(A1), np.median(B1)
 
+    read_first, read_last = selected_read_bounds(nf, first_read, last_read)
+
     S, V = [], []
+    read_indices = []
     nbad = 0
-    for j in range(2, nf):
+    for j in range(read_first, read_last + 1):
         # Guard against corrupt/truncated frames.
         if np.median(A[j]) < 0.5 * mA1 or np.median(B[j]) < 0.5 * mB1:
             nbad += 1
@@ -255,6 +325,7 @@ def gain_diff(head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
         _, _, sd = sigma_clipped_stats(d, sigma=3.0, maxiters=5)
         S.append(0.5 * (np.median(da) + np.median(db)))
         V.append(sd**2 / 2.0)
+        read_indices.append(j)
 
     if nbad and not _quiet:
         P(log, f"   [{n1}/{n2}: skipped {nbad} corrupt/zero frames]")
@@ -262,11 +333,16 @@ def gain_diff(head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
     r = fit_gain(np.array(S), np.array(V), fixed_xmax=fixed_xmax)
     r["nf"] = nf
     r["pair"] = (n1, n2)
+    r["read_indices"] = np.asarray(read_indices, dtype=int)
+    r["first_read"] = read_first
+    r["last_read"] = read_last
+    r["nreads_used"] = len(read_indices)
     return r
 
 
 def gain_diff_many_pairs(head, date, pairs, datapath, X0, X1, Y0, Y1, log,
-                         detrend=False, fixed_xmax=None, quicklook=False):
+                         detrend=False, fixed_xmax=None, quicklook=False, gui=False,
+                         first_read=None, last_read=None):
     """Run gain_diff for each pair and fit once to all pair/read points combined."""
     pair_results = []
     all_S = []
@@ -274,13 +350,14 @@ def gain_diff_many_pairs(head, date, pairs, datapath, X0, X1, Y0, Y1, log,
     nf_values = []
 
     for n1, n2 in pairs:
-        if not (file_ready(head, date, n1, datapath, quicklook=quicklook) and file_ready(head, date, n2, datapath, quicklook=quicklook)):
+        if not (file_ready(head, date, n1, datapath, quicklook=quicklook, gui=gui) and file_ready(head, date, n2, datapath, quicklook=quicklook, gui=gui)):
             P(log, f"   [{n1}/{n2}: files not ready; skipped]")
             continue
 
         r = gain_diff(
             head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
-            detrend=detrend, fixed_xmax=fixed_xmax, quicklook=quicklook,
+            detrend=detrend, fixed_xmax=fixed_xmax, quicklook=quicklook, gui=gui,
+            first_read=first_read, last_read=last_read,
         )
         pair_results.append(r)
         all_S.append(r["S"])
@@ -294,21 +371,28 @@ def gain_diff_many_pairs(head, date, pairs, datapath, X0, X1, Y0, Y1, log,
     combined["nf"] = int(min(nf_values))
     combined["pairs"] = pairs
     combined["pair_results"] = pair_results
+    combined["first_read"] = min(r["first_read"] for r in pair_results)
+    combined["last_read"] = min(r["last_read"] for r in pair_results)
+    combined["nreads_used"] = int(sum(r["nreads_used"] for r in pair_results))
     return combined
 
 
 def gain_diff_forceIntercept(head, date, n1, n2, datapath, X0, X1, Y0, Y1,
                              intercept, log, detrend=False, fixed_xmax=None,
-                             quicklook=False, _quiet=False):
-    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
-    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
+                             quicklook=False, gui=False, first_read=None,
+                             last_read=None, _quiet=False):
+    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
+    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
     nf = min(A.shape[0], B.shape[0])
     A1, B1 = A[1], B[1]
     mA1, mB1 = np.median(A1), np.median(B1)
 
+    read_first, read_last = selected_read_bounds(nf, first_read, last_read)
+
     S, V = [], []
+    read_indices = []
     nbad = 0
-    for j in range(2, nf):
+    for j in range(read_first, read_last + 1):
         if np.median(A[j]) < 0.5 * mA1 or np.median(B[j]) < 0.5 * mB1:
             nbad += 1
             continue
@@ -320,6 +404,7 @@ def gain_diff_forceIntercept(head, date, n1, n2, datapath, X0, X1, Y0, Y1,
         _, _, sd = sigma_clipped_stats(d, sigma=3.0, maxiters=5)
         S.append(0.5 * (np.median(da) + np.median(db)))
         V.append(sd**2 / 2.0)
+        read_indices.append(j)
 
     if nbad and not _quiet:
         P(log, f"   [{n1}/{n2}: skipped {nbad} corrupt/zero frames]")
@@ -343,31 +428,23 @@ def gain_diff_forceIntercept(head, date, n1, n2, datapath, X0, X1, Y0, Y1,
     rn_e = rn_dn * gain
     return dict(S=S, V=V, good=good, slope=slope, inter=inter,
                 gain=gain, gain_err=gerr, rn_dn=rn_dn, rn_e=rn_e,
-                nf=nf, smax=smax, pair=(n1, n2))
+                nf=nf, smax=smax, pair=(n1, n2),
+                read_indices=np.asarray(read_indices, dtype=int),
+                first_read=read_first, last_read=read_last,
+                nreads_used=len(read_indices))
 
 
 def save_pair_summary(outpath, setname, mode_name, pair_results):
-    rows = []
-    for r in pair_results:
-        n1, n2 = r["pair"]
-        rows.append([
-            n1,
-            n2,
-            r["gain"],
-            r["gain_err"],
-            r["rn_e"],
-            r["smax"],
-            r["nf"],
-        ])
-
-    if rows:
-        np.savetxt(
-            os.path.join(outpath, f"{setname}_pair_gains_{mode_name}.csv"),
-            np.asarray(rows),
-            header="n1,n2,gain_e_per_DN,gain_err,RN_e,max_signal_DN,nframes",
-            delimiter=",",
-            comments="",
-        )
+    """Write per-pair gain results; identifiers may be ramp numbers or GUI timestamps."""
+    fn = os.path.join(outpath, f"{setname}_pair_gains_{mode_name}.csv")
+    with open(fn, "w") as f:
+        f.write("n1,n2,gain_e_per_DN,gain_err,RN_e,max_signal_DN,nframes\n")
+        for r in pair_results:
+            n1, n2 = r["pair"]
+            f.write(
+                f"{n1},{n2},{r['gain']},{r['gain_err']},{r['rn_e']},"
+                f"{r['smax']},{r['nf']}\n"
+            )
 
 
 def mode_color_map(names):
@@ -456,13 +533,15 @@ def main():
     with open(yamlfile) as f:
         config = yaml.safe_load(f)
 
-    head = config["dataset"]["head"]
-    date = config["dataset"]["date"]
-    datapath = config["dataset"]["datapath"]
-    quicklook = bool(config["dataset"].get("quicklook", False))
+    gui = gui_io.is_gui_mode(config)
+    head = config["dataset"].get("head", "GUI")
+    date = config["dataset"].get("date", "")
+    datapath = config["dataset"].get("datapath", "")
+    quicklook = False if gui else bool(config["dataset"].get("quicklook", False))
     outpath = config["dataset"]["outpath"]
     setname = config["dataset"]["name"]
     modes = config["dataset"]["modes"]
+    analysis_cfg = config.get("analysis", {})
 
     os.makedirs(outpath, exist_ok=True)
 
@@ -478,7 +557,10 @@ def main():
 
         P(log, "=== gain by readout mode (two-image difference method) ===")
         P(log, f"Region x[{X0}:{X1}] y[{Y0}:{Y1}]")
-        P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
+        if gui:
+            P(log, f"GUI Live Mode=True; data root={gui_io.GUI_BASE_PATH}\n")
+        else:
+            P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
         P(log, f"{'mode':9s} {'ITIME':>8s} {'pairs':>6s} {'reads':>6s} {'maxDN':>7s} "
                f"{'gain(e-/DN)':>12s} {'err':>6s} {'RN(e-)':>7s}")
 
@@ -489,8 +571,16 @@ def main():
             detrend = mode_cfg.get("detrend", False)
             fixed_xmax = as_optional_float(mode_cfg.get("fixed_xmax", None))
 
-            ramps = parse_ramps(mode_cfg, section="illuminated")
-            pairs = make_pairs(mode_cfg, ramps, section="illuminated")
+            # Per-mode read limits override the global analysis defaults.
+            first_read = as_optional_int(
+                mode_cfg.get("first_read", analysis_cfg.get("first_read", None))
+            )
+            last_read = as_optional_int(
+                mode_cfg.get("last_read", analysis_cfg.get("last_read", None))
+            )
+
+            ramps = parse_ramps(mode_cfg, section="illuminated", gui=gui)
+            pairs = make_pairs(mode_cfg, ramps, section="illuminated", gui=gui)
 
             if not ramps:
                 P(log, f"{name:9s} -- no illuminated ramps configured; skipped --")
@@ -499,12 +589,17 @@ def main():
                 P(log, f"{name:9s} -- need at least 2 illuminated ramps; skipped --")
                 continue
 
-            P(log, f"   {name}: illuminated ramps={ramps}; pairs={pairs}")
+            read_text = (
+                f"reads={first_read if first_read is not None else 2}:"
+                f"{last_read if last_read is not None else 'end'} (inclusive)"
+            )
+            P(log, f"   {name}: illuminated ramps={ramps}; pairs={pairs}; {read_text}")
 
             try:
                 r = gain_diff_many_pairs(
                     head, date, pairs, datapath, X0, X1, Y0, Y1, log,
-                    detrend=detrend, fixed_xmax=fixed_xmax, quicklook=quicklook,
+                    detrend=detrend, fixed_xmax=fixed_xmax, quicklook=quicklook, gui=gui,
+                    first_read=first_read, last_read=last_read,
                 )
             except Exception as exc:
                 P(log, f"{name:9s} -- gain fit failed: {exc}; skipped --")
@@ -513,7 +608,8 @@ def main():
             r["itime"] = itime
             results[name] = r
 
-            P(log, f"{name:9s} {itime:8.4f} {len(r['pair_results']):6d} {r['nf']-2:6d} {r['smax']:7.0f} "
+            display_nreads = min(pr["nreads_used"] for pr in r["pair_results"])
+            P(log, f"{name:9s} {itime:8.4f} {len(r['pair_results']):6d} {display_nreads:6d} {r['smax']:7.0f} "
                    f"{r['gain']:12.3f} {r['gain_err']:6.3f} {r['rn_e']:7.1f}"
                    + ("   [row-detrended]" if detrend else ""))
 
@@ -521,7 +617,8 @@ def main():
                 n1, n2 = pairs[0]
                 r0 = gain_diff(
                     head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
-                    detrend=False, _quiet=True, fixed_xmax=fixed_xmax, quicklook=quicklook,
+                    detrend=False, _quiet=True, fixed_xmax=fixed_xmax, quicklook=quicklook, gui=gui,
+                    first_read=first_read, last_read=last_read,
                 )
                 P(log, f"          (without sinusoid removal: gain={r0['gain']:.2f}±{r0['gain_err']:.2f}, "
                        f"RN={r0['rn_e']:.0f} e-  -> detrend tightens error ~{r0['gain_err']/r['gain_err']:.0f}x)")

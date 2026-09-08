@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 import yaml
+import gui_io
 
 
 def P(log, *a):
@@ -37,7 +38,11 @@ def obs_filename(head, date, n, quicklook=False):
     return f"{pref}{date}_{int(n):05d}{suffix}.fits"
 
 
-def frame(head, date, n, datapath, j, quicklook=False):
+def frame(head, date, n, datapath, j, quicklook=False, gui=False):
+    if gui:
+        image, _header, _fn = gui_io.load_gui_frame(n, j, roi=None)
+        return image
+
     fn = os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook=quicklook))
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
@@ -63,7 +68,13 @@ def rms(d, X0, X1, Y0, Y1):
     return reg, full
 
 
-def parse_ramps(mode_cfg):
+def parse_ramps(mode_cfg, gui=False):
+    if gui:
+        ramps = gui_io.gui_identifiers(mode_cfg, section="dark")
+        if not ramps:
+            ramps = gui_io.gui_identifiers(mode_cfg, section="darks")
+        return ramps
+
     dark_cfg = mode_cfg.get("dark", mode_cfg.get("darks", {}))
     if "ramps" in dark_cfg:
         return list(dark_cfg["ramps"])
@@ -85,13 +96,13 @@ def get_gain(mode_cfg):
     return None
 
 
-def read_noise_for_mode(head, date, datapath, ramps, gain, X0, X1, Y0, Y1, channel_width, quicklook=False):
+def read_noise_for_mode(head, date, datapath, ramps, gain, X0, X1, Y0, Y1, channel_width, quicklook=False, gui=False):
     raw_reg = []
     cor_reg = []
     cor_full = []
 
     for n in ramps:
-        d = frame(head, date, n, datapath, 2, quicklook=quicklook) - frame(head, date, n, datapath, 1, quicklook=quicklook)
+        d = frame(head, date, n, datapath, 2, quicklook=quicklook, gui=gui) - frame(head, date, n, datapath, 1, quicklook=quicklook, gui=gui)
         raw_reg.append(rms(d, X0, X1, Y0, Y1)[0])
         dc = correct(d, channel_width=channel_width)
         r, f = rms(dc, X0, X1, Y0, Y1)
@@ -112,7 +123,7 @@ def read_noise_for_mode(head, date, datapath, ramps, gain, X0, X1, Y0, Y1, chann
 
     rstvar = []
     for a, b in zip(ramps[::2], ramps[1::2]):
-        d = frame(head, date, a, datapath, 1, quicklook=quicklook) - frame(head, date, b, datapath, 1, quicklook=quicklook)
+        d = frame(head, date, a, datapath, 1, quicklook=quicklook, gui=gui) - frame(head, date, b, datapath, 1, quicklook=quicklook, gui=gui)
         dc = correct(d, channel_width=channel_width)
         rstvar.append(rms(dc, X0, X1, Y0, Y1)[0] ** 2)
 
@@ -134,7 +145,7 @@ def read_noise_for_mode(head, date, datapath, ramps, gain, X0, X1, Y0, Y1, chann
     )
 
 
-def make_diagnostic_plot(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, channel_width, quicklook=False):
+def make_diagnostic_plot(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, channel_width, quicklook=False, gui=False):
     if not summary:
         return
 
@@ -142,12 +153,12 @@ def make_diagnostic_plot(summary, config, head, date, datapath, outpath, setname
     diagnostic_mode = dark_analysis.get("diagnostic_mode", next(iter(summary)))
     if diagnostic_mode not in config:
         return
-    ramps = parse_ramps(config[diagnostic_mode])
+    ramps = parse_ramps(config[diagnostic_mode], gui=gui)
     if not ramps:
         return
 
     n = ramps[0]
-    d = frame(head, date, n, datapath, 2, quicklook=quicklook) - frame(head, date, n, datapath, 1, quicklook=quicklook)
+    d = frame(head, date, n, datapath, 2, quicklook=quicklook, gui=gui) - frame(head, date, n, datapath, 1, quicklook=quicklook, gui=gui)
     dc = correct(d, channel_width=channel_width)
 
     fig, ax = plt.subplots(1, 3, figsize=(16, 4.8))
@@ -213,10 +224,11 @@ def main():
         config = yaml.safe_load(f)
 
     dataset = config["dataset"]
-    head = dataset["head"]
-    date = dataset["date"]
-    datapath = dataset["datapath"]
-    quicklook = bool(dataset.get("quicklook", False))
+    gui = gui_io.is_gui_mode(config)
+    head = dataset.get("head", "GUI")
+    date = dataset.get("date", "")
+    datapath = dataset.get("datapath", "")
+    quicklook = False if gui else bool(dataset.get("quicklook", False))
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]
@@ -235,7 +247,10 @@ def main():
     with open(os.path.join(outpath, logname), "w") as log:
         P(log, "=== Read noise & reset noise from darks ===")
         P(log, f"region x[{X0}:{X1}] y[{Y0}:{Y1}]; channels = {channel_width}-col vertical stripes")
-        P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
+        if gui:
+            P(log, f"GUI Live Mode=True; data root={gui_io.GUI_BASE_PATH}\n")
+        else:
+            P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
         P(log, "read noise = std(F2-F1)/sqrt2 (within-ramp CDS), channel+row corrected, Sheppard quantization-corrected.")
         P(log, "reset noise = sqrt( Var(A1-B1)/2 - read^2 ) across independent ramps.\n")
         P(log, f"{'mode':9s} {'gain':>7s} {'ramps':>6s} | {'READ NOISE (e-)':>22s} | {'RESET NOISE (e-)':>16s}")
@@ -245,7 +260,7 @@ def main():
         for mode in modes:
             mode_cfg = config[mode]
             name = mode_cfg["name"]
-            ramps = parse_ramps(mode_cfg)
+            ramps = parse_ramps(mode_cfg, gui=gui)
             gain = get_gain(mode_cfg)
 
             if not ramps:
@@ -258,7 +273,7 @@ def main():
                 P(log, f"{name:9s} -- need at least 2 dark ramps; skipped --")
                 continue
 
-            s = read_noise_for_mode(head, date, datapath, ramps, gain, X0, X1, Y0, Y1, channel_width, quicklook=quicklook)
+            s = read_noise_for_mode(head, date, datapath, ramps, gain, X0, X1, Y0, Y1, channel_width, quicklook=quicklook, gui=gui)
             summary[name] = s
             P(log, f"{name:9s} {gain:7.3f} {len(ramps):6d} | {s['sr_raw']:7.1f} {s['sr_creg']:9.1f} {s['sr_cful']:10.1f} | {s['reset_e']:10.1f}")
 
@@ -268,7 +283,7 @@ def main():
                     else "reset noise consistent with ~0 (Var/2 below read-noise floor)")
             P(log, f"  {name}: read noise {s['sr_creg']:.1f} e- (= {s['sread_dn']:.2f} DN); raw(uncorrected) {s['sr_raw']:.1f} e-; {note}")
 
-    make_diagnostic_plot(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, channel_width, quicklook=quicklook)
+    make_diagnostic_plot(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, channel_width, quicklook=quicklook, gui=gui)
     make_summary_plot(summary, outpath, setname)
     print("DONE")
 

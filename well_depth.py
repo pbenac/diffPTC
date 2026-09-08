@@ -50,6 +50,7 @@ import matplotlib.pyplot as plt
 
 from astropy.io import fits
 import yaml
+import gui_io
 
 
 def P(log, *args):
@@ -84,7 +85,10 @@ def fits_path(datapath, head, date, filenum, quicklook=False):
     return os.path.join(effective_datapath(datapath, quicklook), obs_filename(head, date, filenum, quicklook))
 
 
-def parse_ramps(mode_cfg, section="illuminated"):
+def parse_ramps(mode_cfg, section="illuminated", gui=False):
+    if gui:
+        return gui_io.gui_identifiers(mode_cfg, section=section)
+
     ramp_cfg = mode_cfg.get(section, {})
 
     if "ramps" in ramp_cfg:
@@ -127,7 +131,11 @@ def get_roi(config):
     )
 
 
-def load_region_and_header(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False):
+def load_region_and_header(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False, gui=False):
+    if gui:
+        cube, header, source = gui_io.load_gui_cube(n, roi=(X0, X1, Y0, Y1))
+        return cube, header, source
+
     fn = fits_path(datapath, head, date, n, quicklook=quicklook)
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
@@ -177,156 +185,1080 @@ def local_slopes_per_frame(x, y):
     return np.gradient(y, x)
 
 def analyze_mode(config, mode_key, X0, X1, Y0, Y1, log):
+    """
+    Analyze all illuminated ramps for one detector mode.
+
+    If well_depth.find_bright_pixels is False or omitted:
+        Each read is reduced using the configured statistic over the entire ROI.
+
+    If well_depth.find_bright_pixels is True:
+        For each ramp, identify strongly illuminated pixels from the difference
+        between the reference read and the late-ramp signal, then calculate the
+        ramp profile using only those pixels.
+
+    All ramps are then combined into a representative median ramp.
+    """
+
     dataset = config["dataset"]
     mode_cfg = config[mode_key]
     wd_cfg = config.get("well_depth", {})
+    gui = gui_io.is_gui_mode(config)
 
-    head = dataset["head"]
-    date = str(dataset["date"])
-    datapath = dataset["datapath"]
-    quicklook = truthy(dataset.get("quicklook", False))
+    head = dataset.get("head", "GUI")
+    date = str(dataset.get("date", ""))
+    datapath = dataset.get("datapath", "")
+    quicklook = False if gui else truthy(dataset.get("quicklook", False))
 
     name = mode_cfg["name"]
-    ramps = parse_ramps(mode_cfg, section="illuminated")
+
+    ramps = parse_ramps(
+        mode_cfg,
+        section="illuminated",
+        gui=gui,
+    )
+
     if not ramps:
-        raise ValueError(f"{name}: no illuminated ramps configured")
+        raise ValueError(
+            f"{name}: no illuminated ramps configured"
+        )
 
-    reference_read_index = int(wd_cfg.get("reference_read_index", 1))
-    slope_start_frame = int(wd_cfg.get("slope_start_frame", 2))
-    slope_stop_frame = int(wd_cfg.get("slope_stop_frame", 4))
-    deviation_threshold = float(wd_cfg.get("deviation_threshold", 0.10))
-    slope_cutoff = float(wd_cfg.get("slope_cutoff", wd_cfg.get("wd_cutoff", 0.05)))
-    min_signal_fraction = float(wd_cfg.get("min_signal_fraction", 0.25))
-    consecutive_points = int(wd_cfg.get("consecutive_points", wd_cfg.get("sustained_points", 5)))
-    interpolation_points = int(wd_cfg.get("interpolation_points", 2000))
-    statistic = wd_cfg.get("statistic", "median")
-    errorbar = str(wd_cfg.get("errorbar", "sem")).lower()
+    # ============================================================
+    # Configuration
+    # ============================================================
 
+    reference_read_index = int(
+        wd_cfg.get("reference_read_index", 1)
+    )
+
+    slope_start_frame = int(
+        wd_cfg.get("slope_start_frame", 3)
+    )
+
+    slope_stop_frame = int(
+        wd_cfg.get("slope_stop_frame", 6)
+    )
+
+    deviation_threshold = float(
+        wd_cfg.get("deviation_threshold", 0.05)
+    )
+
+    slope_cutoff = float(
+        wd_cfg.get(
+            "slope_cutoff",
+            wd_cfg.get("wd_cutoff", 0.05)
+        )
+    )
+
+    min_signal_fraction = float(
+        wd_cfg.get("min_signal_fraction", 0.25)
+    )
+
+    consecutive_points = int(
+        wd_cfg.get(
+            "consecutive_points",
+            wd_cfg.get("sustained_points", 2)
+        )
+    )
+
+    interpolation_points = int(
+        wd_cfg.get("interpolation_points", 2000)
+    )
+
+    statistic = str(
+        wd_cfg.get("statistic", "median")
+    ).lower()
+
+    errorbar = str(
+        wd_cfg.get("errorbar", "sem")
+    ).lower()
+
+    # ------------------------------------------------------------
+    # Bright-pixel selection
+    # ------------------------------------------------------------
+
+    find_bright_pixels = truthy(
+        wd_cfg.get("find_bright_pixels", False)
+    )
+
+    # A pixel must show at least this fraction of the characteristic
+    # large-signal change in order to be included.
+    bright_pixel_fraction = float(
+        wd_cfg.get("bright_pixel_fraction", 0.20)
+    )
+
+    bright_pixel_min_pixels = int(
+        wd_cfg.get("bright_pixel_min_pixels", 10)
+    )
+
+    # Number of final reads to combine when constructing the
+    # bright-pixel detection image.
+    bright_pixel_late_reads = int(
+        wd_cfg.get("bright_pixel_late_reads", 3)
+    )
+
+    # ------------------------------------------------------------
+    # ADC limit
+    # ------------------------------------------------------------
+
+    if mode_cfg.get("adc_max") is not None:
+        adc_max = float(mode_cfg["adc_max"])
+
+    elif wd_cfg.get("adc_max") is not None:
+        adc_max = float(wd_cfg["adc_max"])
+
+    elif "fast" in name.lower():
+        adc_max = 4092.0
+
+    elif "slow" in name.lower():
+        adc_max = 65535.0
+
+    else:
+        adc_max = None
+
+    # ============================================================
+    # Load ramps
+    # ============================================================
+
+    raw_ramp_profiles = []
     ramp_profiles = []
+
+    bias_levels = []
+    bright_pixel_counts = []
+
     headers = []
     loaded_files = []
 
     for n in ramps:
-        cube, header, fn = load_region_and_header(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
+
+        cube, header, fn = load_region_and_header(
+            head,
+            date,
+            n,
+            datapath,
+            X0,
+            X1,
+            Y0,
+            Y1,
+            quicklook=quicklook,
+            gui=gui,
+        )
+
         if reference_read_index >= cube.shape[0]:
             raise ValueError(
-                f"{name}: reference_read_index={reference_read_index} is outside ramp length {cube.shape[0]}"
+                f"{name}: reference_read_index="
+                f"{reference_read_index} is outside ramp "
+                f"length {cube.shape[0]}"
             )
-        prof = region_stat(cube, statistic=statistic)
-        prof = prof - prof[reference_read_index]
-        ramp_profiles.append(prof)
-        headers.append(header)
-        loaded_files.append(fn)
 
-    min_len = min(len(p) for p in ramp_profiles)
-    profiles = np.asarray([p[:min_len] for p in ramp_profiles])
-    frame_numbers = np.arange(1, min_len + 1, dtype=float)
+        # ========================================================
+        # Option 1:
+        # find illuminated pixels first
+        # ========================================================
 
-    signal = np.median(profiles, axis=0)
-    scatter = np.std(profiles, axis=0, ddof=1) if len(profiles) > 1 else np.zeros_like(signal)
-    if errorbar == "sem" and len(profiles) > 1:
-        yerr = scatter / np.sqrt(len(profiles))
-    elif errorbar == "std":
-        yerr = scatter
+        if find_bright_pixels:
+
+            reference_image = np.asarray(
+                cube[reference_read_index],
+                dtype=float
+            )
+
+            # Average/median several late reads so the mask is not
+            # determined by noise in one individual read.
+            nlate = max(
+                1,
+                min(bright_pixel_late_reads, cube.shape[0])
+            )
+
+            late_image = np.nanmedian(
+                cube[-nlate:],
+                axis=0
+            )
+
+            # Positive accumulated signal between the reference
+            # read and late ramp.
+            delta_image = (
+                late_image - reference_image
+            )
+
+            finite_delta = delta_image[
+                np.isfinite(delta_image)
+            ]
+
+            if finite_delta.size == 0:
+                raise ValueError(
+                    f"{name} ramp {n}: no finite pixels "
+                    f"available for bright-pixel selection"
+                )
+
+            # Don't use the literal maximum, since one hot/bad
+            # pixel could set a ridiculous threshold.
+            #
+            # The 99th percentile gives us a representative
+            # high-signal level.
+            characteristic_delta = float(
+                np.nanpercentile(
+                    finite_delta,
+                    99.0
+                )
+            )
+            # Existing delta-based selection
+            characteristic_delta = float(
+                np.nanpercentile(finite_delta, 99.0)
+            )
+
+            bright_threshold = (
+                bright_pixel_fraction
+                * characteristic_delta
+            )
+
+            bright_mask = (
+                np.isfinite(delta_image)
+                & (delta_image >= bright_threshold)
+            )
+
+            # NEW: when ADC maximum is known, retain only pixels that
+            # actually approach the upper part of the ADC range.
+            if adc_max is not None:
+
+                bright_adc_fraction = float(
+                    wd_cfg.get(
+                        "bright_pixel_adc_fraction",
+                        0.80
+                    )
+                )
+
+                bright_mask &= (
+                    late_image
+                    >= bright_adc_fraction * adc_max
+                )
+
+            nbright = int(
+                np.sum(bright_mask)
+            )
+
+            if nbright < bright_pixel_min_pixels:
+                raise ValueError(
+                    f"{name} ramp {n}: only {nbright} bright "
+                    f"pixels found; minimum required is "
+                    f"{bright_pixel_min_pixels}. "
+                    f"Threshold={bright_threshold:.2f} DN"
+                )
+
+            # Build one value per detector read, using ONLY the
+            # selected illuminated pixels.
+            if statistic == "mean":
+
+                raw_prof = np.asarray([
+                    np.nanmean(
+                        frame[bright_mask]
+                    )
+                    for frame in cube
+                ])
+
+            else:
+
+                raw_prof = np.asarray([
+                    np.nanmedian(
+                        frame[bright_mask]
+                    )
+                    for frame in cube
+                ])
+
+            bright_pixel_counts.append(
+                nbright
+            )
+
+            """ P(
+                log,
+                f"   {name} ramp {n}: "
+                f"{nbright} bright pixels selected "
+                f"({100.0*nbright/bright_mask.size:.2f}% of ROI), "
+                f"threshold={bright_threshold:.1f} DN"
+            ) """
+
+        # ========================================================
+        # Option 2:
+        # original whole-ROI behavior
+        # ========================================================
+
+        else:
+
+            raw_prof = region_stat(
+                cube,
+                statistic=statistic
+            )
+
+            bright_pixel_counts.append(
+                cube.shape[1] * cube.shape[2]
+            )
+
+        # --------------------------------------------------------
+        # Save raw bias and form accumulated-signal ramp
+        # --------------------------------------------------------
+
+        bias = float(
+            raw_prof[reference_read_index]
+        )
+
+        prof = (
+            raw_prof - bias
+        )
+
+        raw_ramp_profiles.append(
+            raw_prof
+        )
+
+        ramp_profiles.append(
+            prof
+        )
+
+        bias_levels.append(
+            bias
+        )
+
+        headers.append(
+            header
+        )
+
+        loaded_files.append(
+            fn
+        )
+
+    # ============================================================
+    # Trim all ramps to common length
+    # ============================================================
+
+    min_len = min(
+        len(p)
+        for p in ramp_profiles
+    )
+
+    profiles = np.asarray([
+        p[:min_len]
+        for p in ramp_profiles
+    ])
+
+    raw_profiles = np.asarray([
+        p[:min_len]
+        for p in raw_ramp_profiles
+    ])
+
+    frame_numbers = np.arange(
+        1,
+        min_len + 1,
+        dtype=float
+    )
+
+    # ============================================================
+    # Representative ramp
+    # ============================================================
+
+    signal = np.median(
+        profiles,
+        axis=0
+    )
+
+    raw_signal = np.median(
+        raw_profiles,
+        axis=0
+    )
+
+    median_bias = float(
+        np.median(bias_levels)
+    )
+
+    if len(profiles) > 1:
+
+        scatter = np.std(
+            profiles,
+            axis=0,
+            ddof=1
+        )
+
     else:
+
+        scatter = np.zeros_like(
+            signal
+        )
+
+    if (
+        errorbar == "sem"
+        and len(profiles) > 1
+    ):
+
+        yerr = (
+            scatter
+            / np.sqrt(len(profiles))
+        )
+
+    elif errorbar == "std":
+
+        yerr = scatter
+
+    else:
+
         yerr = None
 
-    itime = frame_time_from_header_or_config(headers[0], mode_cfg)
-    time_sec = frame_numbers * itime
+    itime = frame_time_from_header_or_config(
+        headers[0],
+        mode_cfg
+    )
 
-    # Fit a simple early linear response using one-indexed frame numbers.
-    i0 = max(0, slope_start_frame - 1)
-    i1 = min(min_len - 1, slope_stop_frame - 1)
+    time_sec = (
+        frame_numbers * itime
+    )
+
+    # ============================================================
+    # Basic sanity checks
+    # ============================================================
+
+    if not np.all(
+        np.isfinite(signal)
+    ):
+
+        raise ValueError(
+            f"{name}: representative ramp contains "
+            f"non-finite values"
+        )
+
+    max_signal = float(
+        np.nanmax(signal)
+    )
+
+    if max_signal <= 0:
+
+        raise ValueError(
+            f"{name}: no positive accumulated "
+            f"signal was measured"
+        )
+
+    # ADC headroom measured from the selected-pixel bias.
+    if adc_max is not None:
+
+        adc_available_dn = (
+            adc_max
+            - median_bias
+        )
+
+    else:
+
+        adc_available_dn = np.nan
+
+    if find_bright_pixels:
+
+        median_nbright = int(
+            np.median(
+                bright_pixel_counts
+            )
+        )
+
+        P(
+            log,
+            f"   {name}: "
+            f"median bright pixels={median_nbright}, "
+            f"median bias={median_bias:.1f} DN, "
+            f"max accumulated={max_signal:.1f} DN"
+            + (
+                f", ADC max={adc_max:.0f} DN, "
+                f"available headroom="
+                f"{adc_available_dn:.1f} DN"
+                if adc_max is not None
+                else ""
+            )
+        )
+
+    else:
+
+        P(
+            log,
+            f"   {name}: "
+            f"median bias={median_bias:.1f} DN, "
+            f"max accumulated={max_signal:.1f} DN"
+            + (
+                f", ADC max={adc_max:.0f} DN, "
+                f"available headroom="
+                f"{adc_available_dn:.1f} DN"
+                if adc_max is not None
+                else ""
+            )
+        )
+
+    # ============================================================
+    # Initial linear fit
+    # ============================================================
+
+    i0 = max(
+        0,
+        slope_start_frame - 1
+    )
+
+    i1 = min(
+        min_len - 1,
+        slope_stop_frame - 1
+    )
+
     if i1 <= i0:
-        raise ValueError(f"{name}: slope_stop_frame must be after slope_start_frame")
 
-    slope_frame = (signal[i1] - signal[i0]) / (frame_numbers[i1] - frame_numbers[i0])
-    slope_dn_s = slope_frame / itime
-    intercept = signal[i0] - slope_frame * frame_numbers[i0]
-    line = slope_frame * frame_numbers + intercept
+        raise ValueError(
+            f"{name}: slope_stop_frame must be "
+            f"after slope_start_frame"
+        )
 
-    # Directional nonlinearity / rolloff relative to the early linear model.
-    # For well-depth purposes, only signal falling BELOW the linear extrapolation
-    # should count. Signal above the line is not saturation-like rolloff.
-    denom = np.where(np.abs(line) > 1e-12, line, np.nan)
-    fractional_rolloff = 1.0 - signal / denom
-    deviation = fractional_rolloff  # kept under this legacy name for CSV compatibility
+    if (
+        i0
+        <= reference_read_index
+        <= i1
+    ):
 
-    x_interp = np.linspace(frame_numbers[0], frame_numbers[-1], interpolation_points)
-    signal_interp = np.interp(x_interp, frame_numbers, signal)
-    line_interp = slope_frame * x_interp + intercept
-    denom_interp = np.where(np.abs(line_interp) > 1e-12, line_interp, np.nan)
-    rolloff_interp = 1.0 - signal_interp / denom_interp
+        raise ValueError(
+            f"{name}: linear-fit frames "
+            f"{slope_start_frame}-"
+            f"{slope_stop_frame} include the "
+            f"reference read "
+            f"(index {reference_read_index})"
+        )
 
-    # Ignore very low-signal parts of the ramp. Otherwise small point-to-point
-    # noise near zero can falsely look like nonlinearity or local flattening.
-    max_signal = float(np.nanmax(signal_interp)) if len(signal_interp) else np.nan
-    above_min_signal = signal_interp >= min_signal_fraction * max_signal
-    after_fit = x_interp >= frame_numbers[i1]
+    fit_indices = np.arange(
+        i0,
+        i1 + 1
+    )
 
-    # Deviation threshold: require sustained positive rolloff below the initial
-    # linear model, not a single noisy point and not absolute deviation.
+    xfit = frame_numbers[
+        fit_indices
+    ]
+
+    yfit = signal[
+        fit_indices
+    ]
+
+    valid_fit = (
+        np.isfinite(xfit)
+        & np.isfinite(yfit)
+    )
+
+    if np.sum(valid_fit) < 2:
+
+        raise ValueError(
+            f"{name}: insufficient valid points "
+            f"for initial linear fit"
+        )
+
+    slope_frame, intercept = np.polyfit(
+        xfit[valid_fit],
+        yfit[valid_fit],
+        1
+    )
+
+    include_pre_read_signal = truthy(
+        wd_cfg.get("include_pre_read_signal", False)
+    )
+
+    pre_read_frames = float(
+        wd_cfg.get("pre_read_frames", 1.0)
+    )
+
+    if include_pre_read_signal:
+        pre_read_dn = (
+            slope_frame * pre_read_frames
+        )
+    else:
+        pre_read_dn = 0.0
+
+    P(
+        log,
+        f"   {name}: estimated pre-read signal="
+        f"{pre_read_dn:.1f} DN "
+        f"({pre_read_frames:.2f} frame intervals)"
+    )
+
+    if slope_frame <= 0:
+
+        raise ValueError(
+            f"{name}: initial slope is "
+            f"non-positive "
+            f"({slope_frame:.3f} DN/frame)"
+        )
+
+    slope_dn_s = (
+        slope_frame / itime
+    )
+
+    line = (
+        slope_frame
+        * frame_numbers
+        + intercept
+    )
+
+    signal_total = (
+        signal + pre_read_dn
+    )
+
+    line_total = (
+        line + pre_read_dn
+    )
+    # ============================================================
+    # Fractional rolloff
+    # ============================================================
+
+    if include_pre_read_signal:
+        denom = np.where(
+            line_total > 0,
+            line_total,
+            np.nan
+        )
+
+        deviation = (
+            1.0
+            - signal_total / denom
+        )
+    else:
+        denom = np.where(
+            line > 0,
+            line,
+            np.nan
+        )
+
+        deviation = (
+            1.0
+            - signal / denom
+        )
+
+    # ============================================================
+    # Define well-depth search region
+    # ============================================================
+
+    observed_floor = (
+        min_signal_fraction
+        * max_signal
+    )
+
+    if (
+        adc_max is not None
+        and np.isfinite(adc_available_dn)
+        and adc_available_dn > 0
+    ):
+
+        search_floor = (
+            min_signal_fraction
+            * max_signal
+        )
+
+    else:
+
+        search_floor = (
+            observed_floor
+        )
+
+    after_fit = (
+        frame_numbers
+        > frame_numbers[i1]
+    )
+
+    above_min_signal = (
+        signal
+        >= search_floor
+    )
+
+    # ============================================================
+    # Criterion 1:
+    # sustained fractional rolloff
+    # ============================================================
+
     deviation_mask = (
         after_fit
         & above_min_signal
-        & np.isfinite(rolloff_interp)
-        & (rolloff_interp > deviation_threshold)
+        & np.isfinite(deviation)
+        & (
+            deviation
+            >= deviation_threshold
+        )
     )
-    k = first_sustained_hit(deviation_mask, consecutive_points)
-    if k is not None:
-        dev_frame = float(x_interp[k])
-        dev_time = dev_frame * itime
-        dev_dn = float(signal_interp[k])
-    else:
-        dev_frame = dev_time = dev_dn = np.nan
+    k_dev = first_sustained_hit(
+        deviation_mask,
+        consecutive_points
+    )
 
-    # Slope cutoff: require sustained flattening. This prevents one noisy
-    # derivative estimate from producing a bogus very-low well-depth value.
-    local_slope = local_slopes_per_frame(x_interp, signal_interp)
-    if slope_frame >= 0:
-        slope_mask = after_fit & above_min_signal & (local_slope < slope_cutoff * slope_frame)
-    else:
-        slope_mask = after_fit & above_min_signal & (local_slope > slope_cutoff * slope_frame)
-    k = first_sustained_hit(slope_mask, consecutive_points)
-    if k is not None:
-        cutoff_frame = float(x_interp[k])
-        cutoff_time = cutoff_frame * itime
-        cutoff_dn = float(signal_interp[k])
-    else:
-        cutoff_frame = cutoff_time = cutoff_dn = np.nan
+    if k_dev is not None:
 
-    gain = get_gain(mode_cfg)
+        # --------------------------------------------------------
+        # Interpolate between the previous native read and the
+        # first read past the deviation threshold.
+        # --------------------------------------------------------
+
+        if k_dev > 0:
+
+            k0 = k_dev - 1
+            k1 = k_dev
+
+            d0 = deviation[k0]
+            d1 = deviation[k1]
+
+            # Linear interpolation fraction where deviation reaches
+            # exactly deviation_threshold.
+            if (
+                np.isfinite(d0)
+                and np.isfinite(d1)
+                and d1 != d0
+            ):
+
+                frac = (
+                    deviation_threshold - d0
+                ) / (
+                    d1 - d0
+                )
+
+                # Clamp to the actual interval in case of numerical
+                # weirdness.
+                frac = np.clip(
+                    frac,
+                    0.0,
+                    1.0
+                )
+
+                dev_frame = (
+                    frame_numbers[k0]
+                    + frac
+                    * (
+                        frame_numbers[k1]
+                        - frame_numbers[k0]
+                    )
+                )
+
+                dev_time = (
+                    time_sec[k0]
+                    + frac
+                    * (
+                        time_sec[k1]
+                        - time_sec[k0]
+                    )
+                )
+                if include_pre_read_signal:
+                    signal = signal_total
+                dev_dn = (
+                    signal[k0]
+                    + frac
+                    * (
+                        signal[k1]
+                        - signal[k0]
+                    )
+                )
+
+            else:
+
+                # Fall back to native point.
+                dev_frame = float(
+                    frame_numbers[k_dev]
+                )
+
+                dev_time = float(
+                    time_sec[k_dev]
+                )
+
+                dev_dn = float(
+                    signal[k_dev]
+                )
+
+        else:
+
+            dev_frame = float(
+                frame_numbers[k_dev]
+            )
+
+            dev_time = float(
+                time_sec[k_dev]
+        )
+
+        dev_dn = float(
+            signal[k_dev]
+        )
+
+    else:
+
+        dev_frame = np.nan
+        dev_time = np.nan
+        dev_dn = np.nan
+
+    # ============================================================
+    # Criterion 2:
+    # sustained slope reduction
+    # ============================================================
+
+    local_slope = np.gradient(
+        signal,
+        frame_numbers
+    )
+
+    slope_threshold = (
+        slope_cutoff
+        * slope_frame
+    )
+
+    slope_mask = (
+        after_fit
+        & above_min_signal
+        & np.isfinite(local_slope)
+        & (
+            local_slope
+            <= slope_threshold
+        )
+    )
+
+    k_slope = first_sustained_hit(
+        slope_mask,
+        consecutive_points
+    )
+
+    if k_slope is not None:
+
+        if k_slope > 0:
+
+            k0 = k_slope - 1
+            k1 = k_slope
+
+            s0 = local_slope[k0]
+            s1 = local_slope[k1]
+
+            if (
+                np.isfinite(s0)
+                and np.isfinite(s1)
+                and s1 != s0
+            ):
+
+                frac = (
+                    slope_threshold - s0
+                ) / (
+                    s1 - s0
+                )
+
+                frac = np.clip(
+                    frac,
+                    0.0,
+                    1.0
+                )
+
+                cutoff_frame = (
+                    frame_numbers[k0]
+                    + frac
+                    * (
+                        frame_numbers[k1]
+                        - frame_numbers[k0]
+                    )
+                )
+
+                cutoff_time = (
+                    time_sec[k0]
+                    + frac
+                    * (
+                        time_sec[k1]
+                        - time_sec[k0]
+                    )
+                )
+                if include_pre_read_signal:
+                    signal = signal_total 
+
+                cutoff_dn = (
+                    signal[k0]
+                    + frac
+                    * (
+                        signal[k1]
+                        - signal[k0]
+                    )
+                )
+
+            else:
+
+                cutoff_frame = float(
+                    frame_numbers[k_slope]
+                )
+
+                cutoff_time = float(
+                    time_sec[k_slope]
+                )
+
+                cutoff_dn = float(
+                    signal[k_slope]
+                )
+
+        else:
+
+            cutoff_frame = float(
+                frame_numbers[k_slope]
+            )
+
+            cutoff_time = float(
+                time_sec[k_slope]
+            )
+
+            cutoff_dn = float(
+                signal[k_slope]
+            )
+
+    else:
+
+        cutoff_frame = np.nan
+        cutoff_time = np.nan
+        cutoff_dn = np.nan
+
+    # ============================================================
+    # ADC saturation
+    #
+    # adc_max is RAW DN, so compare against raw_signal.
+    # ============================================================
+
+    if adc_max is not None:
+
+        adc_fraction = float(
+            wd_cfg.get(
+                "adc_saturation_fraction",
+                0.99
+            )
+        )
+
+        adc_mask = (
+            raw_signal
+            >= adc_fraction * adc_max
+        )
+
+        k_adc = first_sustained_hit(
+            adc_mask,
+            consecutive_points
+        )
+
+        if k_adc is not None:
+
+            adc_frame = float(
+                frame_numbers[k_adc]
+            )
+
+            adc_time = float(
+                time_sec[k_adc]
+            )
+
+            if include_pre_read_signal:
+                signal = signal_total
+
+            adc_dn = float(
+                signal[k_adc]
+            )
+
+            adc_raw_dn = float(
+                raw_signal[k_adc]
+            )
+
+        else:
+
+            adc_frame = np.nan
+            adc_time = np.nan
+            adc_dn = np.nan
+            adc_raw_dn = np.nan
+
+    else:
+
+        adc_frame = np.nan
+        adc_time = np.nan
+        adc_dn = np.nan
+        adc_raw_dn = np.nan
+
+    # ============================================================
+    # Interpolation retained for plotting only
+    # ============================================================
+
+    x_interp = np.linspace(
+        frame_numbers[0],
+        frame_numbers[-1],
+        interpolation_points
+    )
+
+    signal_interp = np.interp(
+        x_interp,
+        frame_numbers,
+        signal
+    )
+
+    line_interp = (
+        slope_frame
+        * x_interp
+        + intercept
+    )
+
+    gain = get_gain(
+        mode_cfg
+    )
+
+    # ============================================================
+    # Return
+    # ============================================================
 
     return {
         "mode_key": mode_key,
         "name": name,
+
         "ramps": ramps,
         "files": loaded_files,
+
         "profiles": profiles,
+        "raw_profiles": raw_profiles,
+
         "frame_numbers": frame_numbers,
         "time_sec": time_sec,
-        "signal_dn": signal,
+
+        "signal_dn": signal_total,
+        "raw_signal_dn": raw_signal,
+        
+        "include_pre_read_signal": include_pre_read_signal,
+        "signal_since_read1_dn": signal,
+        "pre_read_signal_dn": pre_read_dn,
+
         "scatter_dn": scatter,
         "yerr_dn": yerr,
+
         "line_dn": line,
         "deviation": deviation,
+
         "itime": itime,
         "gain": gain,
+
+        "median_bias_dn": median_bias,
+        "bias_levels_dn": bias_levels,
+
+        "find_bright_pixels": find_bright_pixels,
+        "bright_pixel_counts": bright_pixel_counts,
+        "bright_pixel_fraction": bright_pixel_fraction,
+
+        "adc_max": adc_max,
+        "adc_available_dn": adc_available_dn,
+
         "slope_frame_dn": slope_frame,
         "slope_dn_s": slope_dn_s,
+
         "deviation_threshold": deviation_threshold,
+
         "well_depth_deviation_dn": dev_dn,
         "time_deviation_s": dev_time,
         "frame_deviation": dev_frame,
+
         "slope_cutoff": slope_cutoff,
-        "min_signal_fraction": min_signal_fraction,
-        "consecutive_points": consecutive_points,
+
         "well_depth_cutoff_dn": cutoff_dn,
         "time_cutoff_s": cutoff_time,
         "frame_cutoff": cutoff_frame,
+
+        "adc_saturation_dn": adc_dn,
+        "adc_saturation_raw_dn": adc_raw_dn,
+        "adc_saturation_time_s": adc_time,
+        "adc_saturation_frame": adc_frame,
+
+        "min_signal_fraction": min_signal_fraction,
+        "search_floor_dn": search_floor,
+        "consecutive_points": consecutive_points,
+
         "reference_read_index": reference_read_index,
         "slope_start_frame": slope_start_frame,
         "slope_stop_frame": slope_stop_frame,
+
+        "interp_frame_numbers": x_interp,
+        "interp_signal_dn": signal_interp,
+        "interp_line_dn": line_interp,
     }
 
 
@@ -468,7 +1400,8 @@ def main():
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]
-    quicklook = truthy(dataset.get("quicklook", False))
+    gui = gui_io.is_gui_mode(config)
+    quicklook = False if gui else truthy(dataset.get("quicklook", False))
 
     os.makedirs(outpath, exist_ok=True)
     X0, X1, Y0, Y1 = get_roi(config)
@@ -483,7 +1416,11 @@ def main():
     with open(os.path.join(outpath, logname), "w") as log:
         P(log, "=== Well depth / ramp profile analysis ===")
         P(log, f"Dataset: {setname}")
-        P(log, f"Quicklook: {quicklook}")
+        P(log, f"GUI Live Mode: {gui}")
+        if gui:
+            P(log, f"GUI data root: {gui_io.GUI_BASE_PATH}")
+        else:
+            P(log, f"Quicklook: {quicklook}")
         P(log, f"ROI: x[{X0}:{X1}] y[{Y0}:{Y1}]")
         P(log, "Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.\n")
         P(log, f"{'mode':20s} {'ramps':>5s} {'reads':>5s} {'slope(DN/s)':>12s} {'WD rolloff(DN)':>14s} {'WD cutoff(DN)':>14s}")

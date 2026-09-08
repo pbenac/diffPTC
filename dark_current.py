@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 import yaml
+import gui_io
 
 
 def P(log, *a):
@@ -37,7 +38,11 @@ def obs_filename(head, date, n, quicklook=False):
     return f"{pref}{date}_{int(n):05d}{suffix}.fits"
 
 
-def reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False):
+def reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False, gui=False):
+    if gui:
+        cube, _header, _source = gui_io.load_gui_cube(n, roi=(X0, X1, Y0, Y1))
+        return cube
+
     fn = os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook=quicklook))
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
@@ -53,7 +58,13 @@ def pix_slope(cube):
     return (xc * (y - y.mean(0))).sum(0) / (xc * xc).sum()
 
 
-def parse_ramps(mode_cfg):
+def parse_ramps(mode_cfg, gui=False):
+    if gui:
+        ramps = gui_io.gui_identifiers(mode_cfg, section="dark")
+        if not ramps:
+            ramps = gui_io.gui_identifiers(mode_cfg, section="darks")
+        return ramps
+
     dark_cfg = mode_cfg.get("dark", mode_cfg.get("darks", {}))
     if "ramps" in dark_cfg:
         return list(dark_cfg["ramps"])
@@ -75,13 +86,13 @@ def get_gain(mode_cfg):
     return None
 
 
-def analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1, quicklook=False):
+def analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1, quicklook=False, gui=False):
     vals = []
     profiles = []
     nf_last = None
 
     for n in ramps:
-        c = reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=quicklook)
+        c = reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
         nf = c.shape[0]
         nf_last = nf
         dmap = pix_slope(c) * gain / itime
@@ -101,7 +112,7 @@ def analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1, quick
     return dict(dark=dark, err=err, g=gain, it=itime, nramp=len(ramps), ttot=(nf_last - 1) * itime, profile=profile)
 
 
-def make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, quicklook=False):
+def make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, quicklook=False, gui=False):
     if not summary:
         return
 
@@ -140,12 +151,12 @@ def make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, 
 
     if primary_mode_key:
         mode_cfg = config[primary_mode_key]
-        ramps = parse_ramps(mode_cfg)
+        ramps = parse_ramps(mode_cfg, gui=gui)
         gain = get_gain(mode_cfg)
         itime = float(mode_cfg["frametime"])
         exclude_first = bool(dark_current_cfg.get("histogram_exclude_first", True))
         hist_ramps = ramps[1:] if exclude_first and len(ramps) > 1 else ramps
-        maps = [pix_slope(reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=quicklook)) * gain / itime for n in hist_ramps]
+        maps = [pix_slope(reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)) * gain / itime for n in hist_ramps]
         dmap = np.median(maps, axis=0)
         m, _, s = sigma_clipped_stats(dmap, sigma=3)
         ax[2].hist(dmap.ravel(), bins=120, range=(m - 5 * s, m + 5 * s))
@@ -172,10 +183,11 @@ def main():
         config = yaml.safe_load(f)
 
     dataset = config["dataset"]
-    head = dataset["head"]
-    date = dataset["date"]
-    datapath = dataset["datapath"]
-    quicklook = bool(dataset.get("quicklook", False))
+    gui = gui_io.is_gui_mode(config)
+    head = dataset.get("head", "GUI")
+    date = dataset.get("date", "")
+    datapath = dataset.get("datapath", "")
+    quicklook = False if gui else bool(dataset.get("quicklook", False))
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]
@@ -192,14 +204,17 @@ def main():
 
     with open(os.path.join(outpath, logname), "w") as log:
         P(log, f"=== Dark current by readout mode (region x[{X0}:{X1}] y[{Y0}:{Y1}]) ===")
-        P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
+        if gui:
+            P(log, f"GUI Live Mode=True; data root={gui_io.GUI_BASE_PATH}\n")
+        else:
+            P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
         P(log, f"{'mode':9s} {'ITIME':>7s} {'ramps':>6s} {'t_tot(s)':>8s} {'dark(e-/s)':>12s} {'+/-':>7s}")
 
         for mode in modes:
             mode_cfg = config[mode]
             name = mode_cfg["name"]
             itime = float(mode_cfg["frametime"])
-            ramps = parse_ramps(mode_cfg)
+            ramps = parse_ramps(mode_cfg, gui=gui)
             gain = get_gain(mode_cfg)
 
             if not ramps:
@@ -209,7 +224,7 @@ def main():
                 P(log, f"{name:9s} -- no gain configured; skipped --")
                 continue
 
-            r = analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1, quicklook=quicklook)
+            r = analyze_mode(head, date, datapath, ramps, gain, itime, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
             summary[name] = r
             P(log, f"{name:9s} {itime:7.3f} {len(ramps):6d} {r['ttot']:8.1f} {r['dark']:12.2f} {r['err']:7.2f}")
 
@@ -224,7 +239,7 @@ def main():
                 P(log, "\nNotes:")
                 P(log, f"  Primary dark current ({primary_name}): {sl['dark']:.2f} +/- {sl['err']:.2f} e-/s")
 
-    make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, quicklook=quicklook)
+    make_plots(summary, config, head, date, datapath, outpath, setname, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
     print("DONE")
 
 
