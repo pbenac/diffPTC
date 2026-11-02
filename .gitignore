@@ -1,3 +1,4 @@
 diffs/
 results/diffs/
 __pycache__/
+*.prof
