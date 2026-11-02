@@ -1,0 +1,138 @@
+basic:
+  gui: false
+dataset:
+  name: 20260831_IFS_MBlank_SlowOnly
+  descr: Generated from 20260831_IFS_MBlank_SlowOnly_log.txt
+  datapath: /data20/CD6/IFS/sep01/
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260901'
+  modes:
+    - default_slow
+    - lpf_196_slow
+    - lpf_273_slow
+    - lpf_392_slow
+    - lpf_632_slow
+
+roi:
+  x_start: 100
+  x_end: 700
+  y_start: 100
+  y_end: 700
+
+
+dark_roi:
+  x_start: 1500
+  x_end: 1900
+  y_start: 1500
+  y_end: 1900
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+well_depth:
+  find_bright_pixels: False
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 10
+
+  deviation_threshold: 0.10
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+  roi:
+    x_start: 100
+    x_end: 700
+    y_start: 100
+    y_end: 700
+
+default_slow:
+  name: Default Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.68
+  illuminated:
+    ramp_range:
+      - 2662
+      - 2672
+  dark:
+    ramp_range:
+      - 2662
+      - 2672
+lpf_196_slow:
+  name: LPF 196, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 2.077
+  illuminated:
+    ramp_range:
+      - 2672
+      - 2682
+  dark:
+    ramp_range:
+      - 2672
+      - 2682
+lpf_273_slow:
+  name: LPF 273, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.89
+  illuminated:
+    ramp_range:
+      - 2682
+      - 2692
+  dark:
+    ramp_range:
+      - 2682
+      - 2692
+lpf_392_slow:
+  name: LPF 392, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.705
+  illuminated:
+    ramp_range:
+      - 2692
+      - 2702
+  dark:
+    ramp_range:
+      - 2692
+      - 2702  
+lpf_632_slow:
+  name: LPF 632, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.582
+  illuminated:
+    ramp_range:
+      - 2702
+      - 2712
+  dark:
+    ramp_range:
+      - 2702
+      - 2712

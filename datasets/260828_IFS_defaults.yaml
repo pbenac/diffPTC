@@ -1,0 +1,74 @@
+dataset:
+  name: 260828_IFS_dark
+  descr: 'dark 30s'
+  datapath: "/data20/CD6/IFS/aug28/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260828'
+  modes: ['fast06', 'fast10', 'slow52']
+
+
+
+
+roi:
+  x_start: 100
+  x_end: 400
+  y_start: 300
+  y_end: 600
+
+
+dark_roi:
+  x_start: 1550
+  x_end: 1700
+  y_start: 550
+  y_end: 700
+
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.595
+  illuminated:
+    ramp_range: [1409, 1419]
+    pairing: adjacent
+  dark:
+    ramp_range: [1409, 1419]
+    pairing: adjacent
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.386
+  illuminated:
+    ramp_range: [1279, 1289]
+    pairing: adjacent
+  dark:
+    ramp_range: [1279, 1289]
+    pairing: adjacent
+
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 41.058
+  dark:
+    ramp_range: [1249, 1259]    
+    pairing: adjacent
+  illuminated:
+    ramp_range: [1249, 1259]    
+    pairing: adjacent

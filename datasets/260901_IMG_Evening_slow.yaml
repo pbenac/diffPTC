@@ -1,0 +1,221 @@
+basic:
+  gui: false
+dataset:
+  name: 20260901_IMG_Illuminated_EveningTests
+  descr: Generated from 20260901_IMG_Illuminated_EveningTests_log.txt
+  datapath: /data20/CD6/IMG/sep01/
+  outpath: /home/pbenac/diffPTC/results/
+  head: IMG
+  date: '260901'
+  modes:
+    - default_slow
+    - lpf_392_slow
+    - lpf_632_slow
+    - default_slow_2
+    - setting_ii_slow
+    
+roi:
+  x_start: 900
+  x_end: 1200
+  y_start: 900
+  y_end: 1200
+dark_roi:
+  x_start: 1600
+  x_end: 1900
+  y_start: 300
+  y_end: 600
+
+well_depth:
+  find_bright_pixels: True
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 8
+
+  deviation_threshold: 0.10
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+analysis:
+  first_read: 2
+  last_read: 8
+
+pixel_linearity:
+  section: illuminated
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 6
+  # Require the threshold to remain exceeded for this many
+  # consecutive native reads.
+  consecutive_points: 2
+  # Avoid triggering on noisy near-zero signal.
+  min_signal_fraction: 0.10
+  # Number of individual pixel traces in diagnostic plot.
+  diagnostic_pixels: 10
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+  hist_bins: 40
+
+default_fast1_0:
+  name: Default Fast1.0
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2877
+      - 2887
+    pairing: adjacent
+fast1_0_lpf265392:
+  name: Fast1.0, LPF265392
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2887
+      - 2897
+    pairing: adjacent
+
+fast1_0_lpf15165:
+  name: Fast1.0, LPF15165
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2897
+      - 2907
+    pairing: adjacent
+
+fast1_0_lpf7582:
+  name: Fast1.0, LPF7582
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2907
+      - 2917
+    pairing: adjacent
+
+fast1_0_lpf5055:
+  name: Fast1.0, LPF5055
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2917
+      - 2927
+    pairing: adjacent
+
+fast1_0_lpf3791:
+  name: Fast1.0, LPF3791
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2927
+      - 2937
+    pairing: adjacent
+
+default_slow:
+  name: Default Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2937
+      - 2947
+    pairing: adjacent
+
+lpf_392_slow:
+  name: LPF 392, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2947
+      - 2957
+    pairing: adjacent
+
+lpf_632_slow:
+  name: LPF 632, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2957
+      - 2967
+    pairing: adjacent
+
+default_slow_2:
+  name: Default, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2967
+      - 2977
+    pairing: adjacent
+
+setting_ii_slow:
+  name: Setting II Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2977
+      - 2987
+    pairing: adjacent
+
+setting_iii_slow:
+  name: Setting III Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2987
+      - 2997
+    pairing: adjacent
+

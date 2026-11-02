@@ -1,0 +1,76 @@
+dataset:
+  name: 260826_IMG_Slow_Fast06LPFmod
+  descr: '826 data'
+  datapath: "/data20/CD6/IMG/aug25/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260826'
+  modes: [ 'fast06_default', 'fast06_LPF15165', 'fast06_LPF7582', 'fast06_LPF5055', 'fast06_LPF3791']
+  quicklook: false
+
+
+
+
+roi:
+  x_start: 50
+  x_end: 350
+  y_start: 1350
+  y_end: 1650
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+
+
+
+fast06_default:
+  name: 'fast06_default'
+  frametime: 0.58
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [822, 832]
+    pairing: adjacent
+
+
+fast06_LPF15165:
+  name: 'fast06_LPF15165'
+  frametime: 0.58
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [832, 842]
+    pairing: adjacent
+
+fast06_LPF7582:
+  name: 'fast06_LPF7582'
+  frametime: 0.58
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [842, 852]
+    pairing: adjacent
+
+fast06_LPF5055:
+  name: 'fast06_LPF5055'
+  frametime: 0.58
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [852, 862]
+    pairing: adjacent
+
+fast06_LPF3791:
+  name: 'fast06_LPF3791'
+  frametime: 0.58
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [862, 872]
+    pairing: adjacent

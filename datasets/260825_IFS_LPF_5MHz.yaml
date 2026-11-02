@@ -1,0 +1,82 @@
+dataset:
+  name: 260825_IFS_LPF_Fast10
+  descr: 'Blank'
+  datapath: "/data20/CD6/IFS/aug25"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260826'
+  modes: ['fast10_default', 'fast10_LPF15165', 'fast10_LPF7582', 'fast10_LPF5055', 'fast10_LPF3791']
+  quicklook: false
+
+
+
+
+roi:
+  x_start: 100
+  x_end: 400
+  y_start: 300
+  y_end: 600
+
+
+dark_roi:
+  x_start: 1550
+  x_end: 1700
+  y_start: 550
+  y_end: 700
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+fast10_default:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 41.08
+  illuminated:
+    ramp_range: [969,978]
+    pairing: adjacent
+
+
+fast10_LPF15165:
+  name: 'Fast1.0_LPF15165'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [979, 988]
+    pairing: adjacent
+
+
+fast10_LPF7582:
+  name: 'Fast1.0_LPF7582'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [989, 998]
+    pairing: adjacent
+
+fast10_LPF5055:
+  name: 'Fast1.0_LPF5055'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [999, 1008]
+    pairing: adjacent
+
+fast10_LPF3791:
+  name: 'Fast1.0_LPF3791'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1009, 1018]
+    pairing: adjacent

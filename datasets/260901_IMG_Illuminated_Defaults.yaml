@@ -1,0 +1,111 @@
+basic:
+  gui: false
+dataset:
+  name: 20260901_IMG_Illuminated_defaults
+  descr: Generated from 20260901_IMG_Illuminated_AllTests_log.txt
+  datapath: "/data20/CD6/IMG/sep01/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260901'
+  modes:
+    - default_fast0_6
+    - default_fast1_0
+    - default_slow
+
+roi:
+  x_start: 900
+  x_end: 1200
+  y_start: 900
+  y_end: 1200
+dark_roi:
+  x_start: 1600
+  x_end: 1900
+  y_start: 300
+  y_end: 600
+
+
+
+
+well_depth:
+  find_bright_pixels: False
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 10
+
+  deviation_threshold: 0.05
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+default_fast0_6:
+  name: Fast0.6
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 32.395
+  analysis:
+    first_read: 2
+    last_read: 40
+  illuminated:
+    ramp_range:
+      - 2807
+      - 2817
+    pairing: adjacent
+  dark:
+    ramp_range:
+      - 2807
+      - 2817
+    pairing: adjacent
+
+default_fast1_0:
+  name: Fast1.0
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  analysis:
+    first_read: 2
+    last_read: 20
+  illuminated:
+    ramp_range:
+      - 2877
+      - 2887
+    pairing: adjacent
+  dark:
+    ramp_range:
+      - 2877
+      - 2887
+    pairing: adjacent
+
+default_slow:
+  name: Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.86
+  analysis:
+    first_read: 2
+    last_read: 6
+  illuminated:
+    ramp_range:
+      - 2862
+      - 2867
+    pairing: adjacent
+  dark:
+    ramp_range:
+      - 2862
+      - 2867
+    pairing: adjacent

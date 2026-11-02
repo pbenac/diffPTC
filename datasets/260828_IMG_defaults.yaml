@@ -1,0 +1,81 @@
+dataset:
+  name: 260828_IMG_analyze0908_timematch2
+  descr: 'dark'
+  datapath: "/data20/CD6/IMG/aug28/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: Im
+  date: '260828'
+  modes: ['fast06', 'fast10', 'slow52']
+
+
+
+
+
+roi:
+  x_start: 50
+  x_end: 350
+  y_start: 1350
+  y_end: 1650
+
+
+dark_roi:
+  x_start: 1500
+  x_end: 1700
+  y_start: 1500
+  y_end: 1700
+
+
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.858
+#  analysis:
+#    first_read: 2
+#    last_read: 10
+  illuminated:
+    ramp_range: [1537, 1547]
+    pairing: adjacent
+  dark:
+    ramp_range: [1537, 1547]
+    pairing: adjacent
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.79
+#  analysis:
+#    first_read: 2
+#    last_read: 50
+  illuminated:
+    ramp_range: [1407, 1417]
+    pairing: adjacent
+  dark:
+    ramp_range: [1407, 1417]
+    pairing: adjacent
+
+
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.212
+#  analysis:
+#    first_read: 2
+#    last_read: 86
+  illuminated:
+    ramp_range: [1377, 1387]    
+    pairing: adjacent
+  dark:
+    ramp_range: [1377, 1387]    
+    pairing: adjacent
+

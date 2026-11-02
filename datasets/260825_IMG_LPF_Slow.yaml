@@ -1,0 +1,97 @@
+dataset:
+  name: 260825_IMG_Slow_Fast06LPFmod
+  descr: 'Blank 120s'
+  datapath: "/data20/CD6/IMG/aug25/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260825'
+  modes: ['slow52_default', 'fast06_default', 'fast06_LPF15165']
+  quicklook: false
+
+
+
+
+roi:
+  x_start: 50
+  x_end: 350
+  y_start: 1350
+  y_end: 1650
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52_default:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.57
+  illuminated:
+    ramp_range: [495, 504]
+    pairing: adjacent
+
+slow52_LPF196:
+  name: 'Slow5.2_LPF196'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [505, 514]
+    pairing: adjacent
+
+
+slow52_LPF273:
+  name: 'Slow5.2_LPF273'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [515, 524]
+    pairing: adjacent
+
+slow52_LPF392:
+  name: 'Slow5.2_LPF392'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [525, 534]
+    pairing: adjacent
+
+slow52_LPF632:
+  name: 'Slow5.2_LPF632'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [535, 544]
+    pairing: adjacent
+
+
+
+fast06_default:
+  name: 'fast06_default'
+  frametime: 0.58
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [545, 554]
+    pairing: adjacent
+
+
+fast06_LPF15165:
+  name: 'fast06_LPF15165'
+  frametime: 0.58
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [555, 562]
+    pairing: adjacent

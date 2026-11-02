@@ -1,0 +1,180 @@
+dataset:
+  name: 260828_IMG_Voltages
+  descr: 'LpGlobar, Voltage modified'
+  datapath: "/data20/CD6/IMG/aug28/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: Im
+  date: '260828'
+  modes: ['fast06', 'fast06_II', 'fast06_III', 'fast10', 'fast10_II', 'fast10_III', 'slow52', 'slow52_II', 'slow52_III']
+
+
+plot_pix_trace:
+  section: illuminated
+  pixel_stride: 3
+  alpha: 0.03
+  use_roi: roi
+  subtract_reference_read: false
+  reference_read_index: 1
+  dpi: 150
+
+roi:
+  x_start: 800
+  x_end: 1250
+  y_start: 900
+  y_end: 1350
+
+dark_roi:
+  x_start: 1500
+  x_end: 1700
+  y_start: 300
+  y_end: 500
+
+
+well_depth:
+  find_bright_pixels: True
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 4
+
+  deviation_threshold: 0.10
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 41.058
+  illuminated:
+    ramp_range: [1619, 1629]    
+    pairing: adjacent
+  dark: 
+    ramp_range: [1377, 1387]
+    pairing: adjacent
+
+
+fast06_II:
+  name: 'Fast0.6, SettingII'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1629, 1639]    
+    pairing: adjacent
+  dark: 
+    ramp_range: [1387, 1397]
+    pairing: adjacent
+
+fast06_III:
+  name: 'Fast0.6, SettingIII'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1639, 1649]    
+    pairing: adjacent
+  dark: 
+    ramp_range: [1397, 1407]
+    pairing: adjacent
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.386
+  illuminated:
+    ramp_range: [1649, 1659]
+    pairing: adjacent
+  dark: 
+    ramp_range: [1407, 1417]
+    pairing: adjacent
+
+fast10_II:
+  name: 'Fast1.0, SettingII'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.386
+  illuminated:
+    ramp_range: [1659, 1669]
+    pairing: adjacent
+  dark: 
+    ramp_range: [1417, 1427]
+    pairing: adjacent
+
+fast10_III:
+  name: 'Fast1.0, SettingIII'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.386
+  illuminated:
+    ramp_range: [1669, 1679]
+    pairing: adjacent
+  dark: 
+    ramp_range: [1427, 1437]
+    pairing: adjacent
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.595
+  illuminated:
+    ramp_range: [1829, 1839]
+    pairing: adjacent
+  dark: 
+    ramp_range: [1861, 1871]
+    pairing: adjacent
+
+
+slow52_II:
+  name: 'Slow5.2_II'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1839, 1849]
+    pairing: adjacent
+  dark: 
+    ramp_range: [1871, 1881]
+    pairing: adjacent
+
+slow52_III:
+  name: 'Slow5.2_III'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1849, 1859]
+    pairing: adjacent
+  dark: 
+    ramp_range: [1881, 1891]
+    pairing: adjacent
+

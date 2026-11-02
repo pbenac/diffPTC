@@ -1,0 +1,124 @@
+basic:
+  gui: false
+dataset:
+  name: 20260901_IMG_Illuminated_SlowOnly
+  descr: Generated from 20260901_IMG_Illuminated_SlowOnly_log.txt
+  datapath: "/data20/CD6/IMG/sep01/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260901'
+  modes:
+    - default_slow
+#    - lpf_196_slow
+#    - lpf_273_slow
+#    - lpf_392_slow
+#    - lpf_632_slow
+
+roi:
+  x_start: 900
+  x_end: 1200
+  y_start: 900
+  y_end: 1200
+dark_roi:
+  x_start: 1600
+  x_end: 1900
+  y_start: 300
+  y_end: 600
+well_depth:
+  deviation_threshold: 0.05
+analysis:
+  first_read: 2
+  last_read: 8
+default_slow:
+  name: Default Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.86
+  illuminated:
+    ramp_range:
+      - 2837
+      - 2842
+  dark:
+    ramp_range:
+      - 2837
+      - 2842
+lpf_196_slow:
+  name: LPF 196, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2842
+      - 2847
+lpf_273_slow:
+  name: LPF 273, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2847
+      - 2852
+lpf_392_slow:
+  name: LPF 392, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2852
+      - 2857
+lpf_632_slow:
+  name: LPF 632, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2857
+      - 2862
+default_slow_2:
+  name: Default, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2862
+      - 2867
+setting_ii_slow:
+  name: Setting II Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2867
+      - 2872
+setting_iii_slow:
+  name: Setting III Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2872
+      - 2877

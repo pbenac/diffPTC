@@ -1,0 +1,121 @@
+dataset:
+  name: 260824_Img_Defaults
+  descr: 'Cover+MedResLBand 60s'
+  datapath: "/data20/CD6/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260824'
+  modes: ['fast06_default', 'fast10_default', 'slow52_default']
+  quicklook: false
+
+
+
+
+roi:
+  x_start: 50
+  x_end: 350
+  y_start: 1350
+  y_end: 1650
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52_default:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.57
+  illuminated:
+    ramp_range: [12, 21]
+    pairing: adjacent
+
+slow52_II:
+  name: 'Slow5.2_II'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [22, 31]
+    pairing: adjacent
+
+
+slow52_III:
+  name: 'Slow5.2_III'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [32, 41]
+    pairing: adjacent
+
+fast10_default:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 41.08
+  illuminated:
+    ramp_range: [72,81]
+    pairing: adjacent
+
+
+fast10_II:
+  name: 'Fast1.0_II'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [82,91]
+    pairing: adjacent
+
+fast10_III:
+  name: 'Fast1.0_III'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [92,101]
+    pairing: adjacent
+
+fast06_default:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: true
+  fixed_xmax: null
+  gain: 41.38
+  illuminated:
+    ramp_range: [42, 51]
+    pairing: adjacent
+
+
+
+fast06_II:
+  name: 'Fast0.6_II'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: True
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [52, 61]
+    pairing: adjacent
+
+
+
+fast06_III:
+  name: 'Fast0.6_III'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: True
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [62, 71]
+    pairing: adjacent

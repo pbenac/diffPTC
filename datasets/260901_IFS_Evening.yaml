@@ -1,0 +1,269 @@
+basic:
+  gui: false
+dataset:
+  name: 20260901_IFS_MBlank
+  descr: Generated from 20260901_IFS_MBlank_log.txt
+  datapath: /data20/CD6/IFS/sep01/
+  outpath: /home/pbenac/diffPTC/results/
+  head: IFS
+  date: '260901'
+  modes:
+    - default_fast0_6
+    - fast0_6_lpf265392
+    - fast0_6_lpf15165
+    - fast0_6_lpf7582
+    - fast0_6_lpf5055
+    - fast0_6_lpf3791
+    - default_fast1_0
+    - fast1_0_lpf265392
+    - fast1_0_lpf15165
+    - fast1_0_lpf7582
+    - fast1_0_lpf5055
+    - fast1_0_lpf3791
+    - default_slow
+    - lpf_196_slow
+    - lpf_273_slow
+    - lpf_392_slow
+    - lpf_632_slow
+
+roi:
+  x_start: 100
+  x_end: 700
+  y_start: 100
+  y_end: 700
+
+
+dark_roi:
+  x_start: 1500
+  x_end: 1900
+  y_start: 1500
+  y_end: 1900
+
+well_depth:
+  find_bright_pixels: False
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 100
+
+  deviation_threshold: 0.10
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+  roi:
+    x_start: 100
+    x_end: 700
+    y_start: 100
+    y_end: 700
+
+pixel_linearity:
+  section: illuminated
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 6
+  # Require the threshold to remain exceeded for this many
+  # consecutive native reads.
+  consecutive_points: 2
+  # Avoid triggering on noisy near-zero signal.
+  min_signal_fraction: 0.10
+  # Number of individual pixel traces in diagnostic plot.
+  diagnostic_pixels: 10
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+  hist_bins: 40
+
+default_fast0_6:
+  name: Default Fast0.6
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2712
+      - 2722
+fast0_6_lpf265392:
+  name: Fast0.6, LPF265392
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2722
+      - 2732
+fast0_6_lpf15165:
+  name: Fast0.6, LPF15165
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2732
+      - 2742
+fast0_6_lpf7582:
+  name: Fast0.6, LPF7582
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2742
+      - 2752
+fast0_6_lpf5055:
+  name: Fast0.6, LPF5055
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2752
+      - 2762
+fast0_6_lpf3791:
+  name: Fast0.6, LPF3791
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2762
+      - 2772
+default_fast1_0:
+  name: Default Fast1.0
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2772
+      - 2782
+fast1_0_lpf265392:
+  name: Fast1.0, LPF265392
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2782
+      - 2792
+fast1_0_lpf15165:
+  name: Fast1.0, LPF15165
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2792
+      - 2802
+fast1_0_lpf7582:
+  name: Fast1.0, LPF7582
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2802
+      - 2812
+fast1_0_lpf5055:
+  name: Fast1.0, LPF5055
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2812
+      - 2822
+fast1_0_lpf3791:
+  name: Fast1.0, LPF3791
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2822
+      - 2832
+default_slow:
+  name: Default Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2832
+      - 2842
+lpf_196_slow:
+  name: LPF 196, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2842
+      - 2852
+lpf_273_slow:
+  name: LPF 273, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2852
+      - 2862
+lpf_392_slow:
+  name: LPF 392, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2862
+      - 2872
+lpf_632_slow:
+  name: LPF 632, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 2872
+      - 2882

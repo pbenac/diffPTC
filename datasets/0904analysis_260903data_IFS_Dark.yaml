@@ -1,0 +1,241 @@
+basic:
+  gui: false
+dataset:
+  name: 20260903_IFS_Blank
+  descr: Generated from 20260903_IFS_Blank_log.txt
+  datapath: /data20/CD6/IFS/sep03/
+  outpath: /home/pbenac/diffPTC/results/
+  head: IFS
+  date: '260903'
+  modes:
+    - default_fast0_6
+    - fast0_6_lpf265392
+    - fast0_6_lpf15165
+    - fast0_6_lpf7582
+    - fast0_6_lpf5055
+    - fast0_6_lpf3791
+    - default_fast1_0
+    - fast1_0_lpf265392
+    - fast1_0_lpf15165
+    - fast1_0_lpf7582
+    - fast1_0_lpf5055
+    - fast1_0_lpf3791
+    - default_slow
+    - lpf_196_slow
+    - lpf_273_slow
+    - lpf_392_slow
+    - lpf_632_slow
+roi:
+  x_start: 0
+  x_end: 2048
+  y_start: 0
+  y_end: 2048
+dark_roi:
+  x_start: 0
+  x_end: 2048
+  y_start: 0
+  y_end: 2048
+default_fast0_6:
+  name: Default Fast0.6
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 42.74
+  dark:
+    ramp_range:
+      - 2904
+      - 2909
+fast0_6_lpf265392:
+  name: Fast0.6, LPF265392
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 42.74
+  dark:
+    ramp_range:
+      - 2909
+      - 2910
+fast0_6_lpf15165:
+  name: Fast0.6, LPF15165
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  gain: 42.74
+  fixed_xmax: null
+  dark:
+    ramp_range:
+      - 2911
+      - 2916
+fast0_6_lpf7582:
+  name: Fast0.6, LPF7582
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 42.74
+  dark:
+    ramp_range:
+      - 2916
+      - 2921
+fast0_6_lpf5055:
+  name: Fast0.6, LPF5055
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 42.74
+  dark:
+    ramp_range:
+      - 2921
+      - 2926
+fast0_6_lpf3791:
+  name: Fast0.6, LPF3791
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 42.74
+  dark:
+    ramp_range:
+      - 2926
+      - 2931
+default_fast1_0:
+  name: Default Fast1.0
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 41.46
+  dark:
+    ramp_range:
+      - 2931
+      - 2936
+fast1_0_lpf265392:
+  name: Fast1.0, LPF265392
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  gain: 41.46
+  fixed_xmax: null
+  dark:
+    ramp_range:
+      - 2936
+      - 2941
+fast1_0_lpf15165:
+  name: Fast1.0, LPF15165
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 41.46
+  dark:
+    ramp_range:
+      - 2941
+      - 2946
+fast1_0_lpf7582:
+  name: Fast1.0, LPF7582
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 41.46
+  dark:
+    ramp_range:
+      - 2946
+      - 2951
+fast1_0_lpf5055:
+  name: Fast1.0, LPF5055
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 41.46
+  dark:
+    ramp_range:
+      - 2951
+      - 2956
+fast1_0_lpf3791:
+  name: Fast1.0, LPF3791
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 41.46
+  dark:
+    ramp_range:
+      - 2956
+      - 2961
+default_slow:
+  name: Default Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.73
+  dark:
+    ramp_range:
+      - 2961
+      - 2966
+lpf_196_slow:
+  name: LPF 196, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.73
+  dark:
+    ramp_range:
+      - 2966
+      - 2971
+lpf_273_slow:
+  name: LPF 273, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.73
+  dark:
+    ramp_range:
+      - 2971
+      - 2976
+lpf_392_slow:
+  name: LPF 392, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.73
+  dark:
+    ramp_range:
+      - 2976
+      - 2981
+lpf_632_slow:
+  name: LPF 632, Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  gain: 1.73
+  dark:
+    ramp_range:
+      - 2981
+      - 2986

@@ -1,0 +1,336 @@
+dataset:
+  name: 260831_IFS_Darks_LPFMod_fast06300s
+  descr: 'Blank, M band, 60s'
+  datapath: "/data20/CD6/IFS/aug31/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260831'
+  modes: ['default_fast06_longer', 'longer_fast06_rep2', 'fast06', 'fast06_rep2', 'fast06_test2', 'fast06_test3', 'fast06_test4', 'fast06_test5']
+
+fit:
+  n_reads: 5
+  threshold_percent: 10
+  pixel_stride: 200
+
+roi:
+  x_start: 100
+  x_end: 700
+  y_start: 100
+  y_end: 700
+
+
+dark_roi:
+  x_start: 1500
+  x_end: 1900
+  y_start: 1500
+  y_end: 1900
+
+analysis:
+  first_read: 2
+  last_read: 30
+
+well_depth:
+  find_bright_pixels: False
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 100
+
+  deviation_threshold: 0.10
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+  roi:
+    x_start: 100
+    x_end: 700
+    y_start: 100
+    y_end: 700
+
+pixel_linearity:
+  section: illuminated
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 6
+  # Require the threshold to remain exceeded for this many
+  # consecutive native reads.
+  consecutive_points: 2
+  # Avoid triggering on noisy near-zero signal.
+  min_signal_fraction: 0.10
+  # Number of individual pixel traces in diagnostic plot.
+  diagnostic_pixels: 10
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+  hist_bins: 40
+default_fast06_longer:
+  name: 'Fast0.6_300s'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 48.25
+  adc_max: 4092
+  illuminated:
+    ramp_range: [2577, 2582]    
+    pairing: adjacent
+  dark:
+    ramp_range: [2577, 2582]    
+    pairing: adjacent
+
+longer_fast06_rep2:
+  name: 'Fast0.6_300s'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 48.25
+  adc_max: 4092
+  illuminated:
+    ramp_range: [2582, 2587]    
+    pairing: adjacent
+  dark:
+    ramp_range: [2582, 2587]    
+    pairing: adjacent
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  adc_max: 65535
+  gain: 1.674
+  illuminated:
+    ramp_range: [2565, 2570]
+    pairing: adjacent
+  dark:
+      ramp_range: [2565, 2570]
+      pairing: adjacent
+
+slow52_test2:
+  name: 'Slow5.2, LPF 196'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  adc_max: 65535
+  gain: 2.085
+  illuminated:
+    ramp_range: [2570, 2575]
+    pairing: adjacent
+  dark:
+    ramp_range: [2570, 2575]
+    pairing: adjacent
+
+slow52_test3:
+  name: 'Slow5.2, LPF 273'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.595
+  illuminated:
+    ramp_range: [2575, 2576]
+    pairing: adjacent
+  dark: 
+    ramp_range: [2575, 2576]
+    pairing: adjacent
+
+slow52_test4:
+  name: 'Slow5.2, LPF 392'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.595
+  illuminated:
+    ramp_range: [1439, 1449]
+    pairing: adjacent
+
+slow52_test5:
+  name: 'Slow5.2, LPF 632'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 1.595
+  illuminated:
+    ramp_range: [1449, 1459]
+    pairing: adjacent
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 42.055
+  illuminated:
+    ramp_range: [2535, 2540]
+    pairing: adjacent
+  dark:
+    ramp_range: [2535, 2540]
+    pairing: adjacent
+
+fast10_rep2:
+  name: 'Fast1.0, LPF265392'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 42.322
+  illuminated:
+    ramp_range: [2540, 2545]
+    pairing: adjacent
+  dark:
+    ramp_range: [2540, 2545]
+    pairing: adjacent
+
+fast10_test2:
+  name: 'Fast1.0, LPF 15165'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 42.356
+  illuminated:
+    ramp_range: [2545, 2550]
+    pairing: adjacent
+  dark:
+    ramp_range: [2545, 2550]
+    pairing: adjacent
+
+fast10_test3:
+  name: 'Fast1.0, LPF 7582'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 42.319
+  illuminated:
+    ramp_range: [2555, 2560]
+    pairing: adjacent
+  dark:
+    ramp_range: [2555, 2560]
+    pairing: adjacent
+
+fast10_test4:
+  name: 'Fast1.0, LPF 5055'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 42.472
+  illuminated:
+    ramp_range: [2560, 2565]
+    pairing: adjacent
+dark:
+    ramp_range: [2560, 2565]
+    pairing: adjacent
+  
+fast10_test5:
+  name: 'Fast1.0, LPF 3791'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.98
+  illuminated:
+    ramp_range: [2565, 2570]
+    pairing: adjacent
+  dark:
+    ramp_range: [2565, 2570]
+    pairing: adjacent
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 47.43
+  adc_max: 4092
+  illuminated:
+    ramp_range: [2505, 2510]    
+    pairing: adjacent
+  dark:
+    ramp_range: [2505, 2510]    
+    pairing: adjacent
+
+fast06_rep2:
+  name: 'Fast0.6, LPF265392'
+  frametime: 0.582542
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 48.252
+  illuminated:
+    ramp_range: [2510, 2515]
+    pairing: adjacent
+  dark:
+    ramp_range: [2510, 2515]
+    pairing: adjacent
+
+fast06_test2:
+  name: 'Fast0.6, LPF 15165'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 47.853
+  illuminated:
+    ramp_range: [2515, 2520]    
+    pairing: adjacent
+  dark:
+    ramp_range: [2515, 2520]    
+    pairing: adjacent
+
+fast06_test3:
+  name: 'Fast0.6, LPF 7582'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 47.524
+  illuminated:
+    ramp_range: [2520, 2525]    
+    pairing: adjacent
+  dark:
+    ramp_range: [2520, 2525]    
+    pairing: adjacent
+
+fast06_test4:
+  name: 'Fast0.6, LPF 5055'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 48.018
+  illuminated:
+    ramp_range: [2525, 2530]    
+    pairing: adjacent
+  dark:
+    ramp_range: [2525, 2530]    
+    pairing: adjacent
+
+fast06_test5:
+  name: 'Fast0.6, LPF 3791'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 47.54
+  illuminated:
+    ramp_range: [2530, 2535]    
+    pairing: adjacent
+  dark:
+    ramp_range: [2530, 2535]    
+    pairing: adjacent

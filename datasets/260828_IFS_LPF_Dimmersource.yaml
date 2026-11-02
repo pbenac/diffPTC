@@ -1,0 +1,218 @@
+dataset:
+  name: 260828_IFS_LPFMod_Dimmersource
+  descr: 'L Lenslet spots, LPF mod'
+  datapath: "/data20/CD6/IFS/aug28/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IFS
+  date: '260828'
+  modes: ['fast06', 'fast06_test2', 'fast06_test3', 'fast06_test4', 'fast06_test5', 'fast10', 'fast10_test2', 'fast10_test3', 'fast10_test4', 'fast10_test5']
+
+
+fit:
+  n_reads: 5
+  threshold_percent: 10
+  pixel_stride: 200
+
+roi:
+  x_start: 500
+  x_end: 1500
+  y_start: 100
+  y_end: 700
+
+
+dark_roi:
+  x_start: 1550
+  x_end: 1700
+  y_start: 550
+  y_end: 700
+
+
+
+well_depth:
+  find_bright_pixels: true
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 4
+
+  deviation_threshold: 0.10
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+  roi:
+    x_start: 500
+    x_end: 1500
+    y_start: 100
+    y_end: 700
+
+analysis:
+  first_read: 2
+  last_read: 10
+
+slow52:
+  name: 'Slow5.2'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  adc_max: 65535
+  gain: 1.595
+  illuminated:
+    ramp_range: [1976, 1986]
+    pairing: adjacent
+
+
+slow52_test2:
+  name: 'Slow5.2, LPF 196'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  adc_max: 65535
+  illuminated:
+    ramp_range: [1986, 1996]
+    pairing: adjacent
+
+slow52_test3:
+  name: 'Slow5.2, LPF 273'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1996, 2006]
+    pairing: adjacent
+
+slow52_test4:
+  name: 'Slow5.2, LPF 392'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [2006, 2016]
+    pairing: adjacent
+
+slow52_test5:
+  name: 'Slow5.2, LPF 632'
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [2016, 2026]
+    pairing: adjacent
+
+
+fast10:
+  name: 'Fast1.0'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 38.386
+  illuminated:
+    ramp_range: [1926, 1936]
+    pairing: adjacent
+
+fast10_test2:
+  name: 'Fast1.0, LPF 15165'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1936, 1946]
+    pairing: adjacent
+
+fast10_test3:
+  name: 'Fast1.0, LPF 7582'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1946, 1956]
+    pairing: adjacent
+
+fast10_test4:
+  name: 'Fast1.0, LPF 5055'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1956, 1966]
+    pairing: adjacent
+
+  
+fast10_test5:
+  name: 'Fast1.0, LPF 3791'
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1966, 1976]
+    pairing: adjacent
+
+fast06:
+  name: 'Fast0.6'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  gain: 41.058
+  adc_max: 4092
+  illuminated:
+    ramp_range: [1876, 1886]    
+    pairing: adjacent
+
+fast06_test2:
+  name: 'Fast0.6, LPF 15165'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1886, 1896]    
+    pairing: adjacent
+
+fast06_test3:
+  name: 'Fast0.6, LPF 7582'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1896, 1906]    
+    pairing: adjacent
+
+fast06_test4:
+  name: 'Fast0.6, LPF 5055'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1906, 1916]    
+    pairing: adjacent
+
+
+fast06_test5:
+  name: 'Fast0.6, LPF 5055'
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  detrend: False
+  fixed_xmax: null
+  illuminated:
+    ramp_range: [1916, 1926]    
+    pairing: adjacent

@@ -1,0 +1,98 @@
+basic:
+  gui: false
+dataset:
+  name: 20260901_IMG_Illuminated_fast06
+  descr: Generated from 20260901_IMG_Illuminated_AllTests_log.txt
+  datapath: "/data20/CD6/IMG/sep01/"
+  outpath: "/home/pbenac/diffPTC/results/"
+  head: IMG
+  date: '260901'
+  modes:
+    - default_fast0_6
+#    - fast0_6_lpf265392
+#    - fast0_6_lpf15165
+roi:
+  x_start: 900
+  x_end: 1200
+  y_start: 900
+  y_end: 1200
+dark_roi:
+  x_start: 1600
+  x_end: 1900
+  y_start: 300
+  y_end: 600
+
+
+analysis:
+  first_read: 2
+  last_read: 30
+
+well_depth:
+  find_bright_pixels: False
+  bright_pixel_fraction: 0.20
+  bright_pixel_adc_fraction: 0.75
+  bright_pixel_min_pixels: 10
+  bright_pixel_late_reads: 3
+
+  reference_read_index: 1
+  slope_start_frame: 3
+  slope_stop_frame: 100
+
+  deviation_threshold: 0.05
+  slope_cutoff: 0.05
+  min_signal_fraction: 0.25
+  consecutive_points: 2
+
+  include_pre_read_signal: true
+  pre_read_frames: 1.0
+
+default_fast0_6:
+  name: Default Fast0.6
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 32.395
+  illuminated:
+    ramp_range:
+      - 2807
+      - 2817
+  dark:
+    ramp_range:
+      - 2807
+      - 2817
+
+fast0_6_lpf265392:
+  name: Fast0.6, LPF265392
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 44.87
+  illuminated:
+    ramp_range:
+      - 2817
+      - 2827
+  dark:
+    ramp_range:
+      - 2817
+      - 2827
+
+fast0_6_lpf15165:
+  name: Fast0.6, LPF15165
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  gain: 44.584
+  illuminated:
+    ramp_range:
+      - 2827
+      - 2835
+  dark:
+    ramp_range:
+      - 2827
+      - 2835
