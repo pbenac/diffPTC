@@ -571,12 +571,13 @@ def main():
             detrend = mode_cfg.get("detrend", False)
             fixed_xmax = as_optional_float(mode_cfg.get("fixed_xmax", None))
 
-            # Per-mode read limits override the global analysis defaults.
+            # Per-mode analysis.read limits override the global analysis defaults.
+            mode_analysis = mode_cfg.get("analysis", {})
             first_read = as_optional_int(
-                mode_cfg.get("first_read", analysis_cfg.get("first_read", None))
+                mode_analysis.get("first_read", analysis_cfg.get("first_read", None))
             )
             last_read = as_optional_int(
-                mode_cfg.get("last_read", analysis_cfg.get("last_read", None))
+                mode_analysis.get("last_read", analysis_cfg.get("last_read", None))
             )
 
             ramps = parse_ramps(mode_cfg, section="illuminated", gui=gui)
