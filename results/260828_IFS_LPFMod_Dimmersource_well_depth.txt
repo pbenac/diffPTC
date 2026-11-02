@@ -1,0 +1,38 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260828_IFS_LPFMod_Dimmersource
+GUI Live Mode: False
+Quicklook: False
+ROI: x[500:1500] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Fast0.6: median bright pixels=1280, median bias=882.0 DN, max accumulated=3200.0 DN, ADC max=4092 DN, available headroom=3210.0 DN
+   Fast0.6: estimated pre-read signal=389.7 DN (1.00 frame intervals)
+Fast0.6                 10    18      669.050       3492.2         3538.0
+   Fast0.6, LPF 15165: median bright pixels=1282, median bias=881.8 DN, max accumulated=3202.2 DN, ADC max=4092 DN, available headroom=3210.2 DN
+   Fast0.6, LPF 15165: estimated pre-read signal=389.0 DN (1.00 frame intervals)
+Fast0.6, LPF 15165      10    18      667.763       3493.5         3541.7
+   Fast0.6, LPF 7582: median bright pixels=1279, median bias=881.5 DN, max accumulated=3204.0 DN, ADC max=4092 DN, available headroom=3210.5 DN
+   Fast0.6, LPF 7582: estimated pre-read signal=393.5 DN (1.00 frame intervals)
+Fast0.6, LPF 7582       10    18      675.488       3429.2         3549.1
+   Fast0.6, LPF 5055: median bright pixels=1276, median bias=883.8 DN, max accumulated=3200.0 DN, ADC max=4092 DN, available headroom=3208.2 DN
+   Fast0.6, LPF 5055: estimated pre-read signal=400.2 DN (1.00 frame intervals)
+Fast0.6, LPF 5055       10    18      687.075       3437.5         3552.7
+   Fast0.6, LPF 5055: median bright pixels=1279, median bias=883.5 DN, max accumulated=3201.8 DN, ADC max=4092 DN, available headroom=3208.5 DN
+   Fast0.6, LPF 5055: estimated pre-read signal=390.2 DN (1.00 frame intervals)
+Fast0.6, LPF 5055       10    18      669.909       3491.5         3541.3
+   Fast1.0: median bright pixels=1322, median bias=1420.8 DN, max accumulated=2671.2 DN, ADC max=4092 DN, available headroom=2671.2 DN
+   Fast1.0: estimated pre-read signal=765.5 DN (1.00 frame intervals)
+Fast1.0                 10    10      730.038       2576.2         3434.6
+   Fast1.0, LPF 15165: median bright pixels=1324, median bias=1419.0 DN, max accumulated=2673.0 DN, ADC max=4092 DN, available headroom=2673.0 DN
+   Fast1.0, LPF 15165: estimated pre-read signal=773.0 DN (1.00 frame intervals)
+Fast1.0, LPF 15165      10    10      737.190       2585.5         3443.9
+   Fast1.0, LPF 7582: median bright pixels=1322, median bias=1419.5 DN, max accumulated=2672.5 DN, ADC max=4092 DN, available headroom=2672.5 DN
+   Fast1.0, LPF 7582: estimated pre-read signal=755.5 DN (1.00 frame intervals)
+Fast1.0, LPF 7582       10    10      720.501       2573.7         3427.3
+   Fast1.0, LPF 5055: median bright pixels=1322, median bias=1422.2 DN, max accumulated=2669.8 DN, ADC max=4092 DN, available headroom=2669.8 DN
+   Fast1.0, LPF 5055: estimated pre-read signal=736.5 DN (1.00 frame intervals)
+Fast1.0, LPF 5055       10    10      702.381       2955.5         3405.3
+   Fast1.0, LPF 3791: median bright pixels=1323, median bias=1420.0 DN, max accumulated=2672.0 DN, ADC max=4092 DN, available headroom=2672.0 DN
+   Fast1.0, LPF 3791: estimated pre-read signal=748.0 DN (1.00 frame intervals)
+Fast1.0, LPF 3791       10    10      713.348       2570.8         3419.2

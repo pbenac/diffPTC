@@ -1,0 +1,21 @@
+=== Read noise & reset noise from darks ===
+region x[1500:1900] y[1500:1900]; channels = 512-col vertical stripes
+quicklook=False; data directory=/data20/CD6/IFS/sep01/
+
+read noise = std(F2-F1)/sqrt2 (within-ramp CDS), channel+row corrected, Sheppard quantization-corrected.
+reset noise = sqrt( Var(A1-B1)/2 - read^2 ) across independent ramps.
+
+mode         gain  ramps |        READ NOISE (e-) | RESET NOISE (e-)
+            e-/DN        |  rawCDS corr(reg) corr(full) |  corr(reg)
+Default Slow   1.680     10 |   243.5      68.4      250.0 |        nan
+LPF 196, Slow   2.077     10 |   249.0      90.5      257.8 |        nan
+LPF 273, Slow   1.890     10 |   242.5      78.3      254.7 |        nan
+LPF 392, Slow   1.705     10 |   246.4      71.6      252.9 |        nan
+LPF 632, Slow   1.582     10 |   233.2      66.9      249.4 |        nan
+
+Details (corrected, region):
+  Default Slow: read noise 68.4 e- (= 40.69 DN); raw(uncorrected) 243.5 e-; reset noise consistent with ~0 (Var/2 below read-noise floor)
+  LPF 196, Slow: read noise 90.5 e- (= 43.56 DN); raw(uncorrected) 249.0 e-; reset noise consistent with ~0 (Var/2 below read-noise floor)
+  LPF 273, Slow: read noise 78.3 e- (= 41.45 DN); raw(uncorrected) 242.5 e-; reset noise consistent with ~0 (Var/2 below read-noise floor)
+  LPF 392, Slow: read noise 71.6 e- (= 41.97 DN); raw(uncorrected) 246.4 e-; reset noise consistent with ~0 (Var/2 below read-noise floor)
+  LPF 632, Slow: read noise 66.9 e- (= 42.28 DN); raw(uncorrected) 233.2 e-; reset noise consistent with ~0 (Var/2 below read-noise floor)

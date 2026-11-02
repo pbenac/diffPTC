@@ -1,0 +1,11 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[50:350] y[1350:1650]
+quicklook=False; data directory=/data20/CD6/IMG/aug25/
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Slow5.2: illuminated ramps=[495, 496, 497, 498, 499, 500, 501, 502, 503]; pairs=[(495, 496), (496, 497), (497, 498), (498, 499), (499, 500), (500, 501), (501, 502), (502, 503)]
+Slow5.2     5.2429      8     21    3046        1.410  0.021    30.0
+   fast06_default: illuminated ramps=[545, 546, 547, 548, 549, 550, 551, 552, 553]; pairs=[(545, 546), (546, 547), (547, 548), (548, 549), (549, 550), (550, 551), (551, 552), (552, 553)]
+fast06_default   0.5800      8    204     122       48.981  1.204    47.1   [row-detrended]
+   fast06_LPF15165: illuminated ramps=[555, 556, 557, 558, 559, 560, 561]; pairs=[(555, 556), (556, 557), (557, 558), (558, 559), (559, 560), (560, 561)]
+fast06_LPF15165   0.5800      6    204     123       52.757  0.227    48.5   [row-detrended]

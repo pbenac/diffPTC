@@ -1,0 +1,30 @@
+=== Bias / starting-level estimate ===
+Dataset: 260828_IFS_Darks_LPFMod
+Quicklook: False
+Data path: /data20/CD6/IFS/aug28/
+Ramp section: illuminated
+Read index: 1
+ROI: roi x[500:1500] y[100:700]
+Trim: keep pixels between 1 and 99 percentiles
+
+mode                     N          median bias       mean bias          std                    range
+Fast1.0                 10 ramps  median=    676.00 DN  mean=    677.50 DN  std=    4.14 DN  range=[675.00, 689.00] DN
+Fast1.0, LPF265392      10 ramps  median=    666.00 DN  mean=    667.30 DN  std=    4.19 DN  range=[665.00, 679.00] DN
+Fast1.0, LPF 15165      10 ramps  median=    665.50 DN  mean=    666.50 DN  std=    4.12 DN  range=[664.00, 678.00] DN
+Fast1.0, LPF 7582       10 ramps  median=    666.00 DN  mean=    667.40 DN  std=    4.12 DN  range=[665.00, 679.00] DN
+Fast1.0, LPF 5055       10 ramps  median=    664.00 DN  mean=    665.10 DN  std=    3.90 DN  range=[663.00, 676.00] DN
+Fast1.0, LPF 3791       10 ramps  median=    663.00 DN  mean=    664.20 DN  std=    4.59 DN  range=[661.00, 677.00] DN
+Fast0.6                 10 ramps  median=    407.00 DN  mean=    408.30 DN  std=    5.96 DN  range=[404.00, 425.00] DN
+Fast0.6, LPF265392      10 ramps  median=    392.00 DN  mean=    393.10 DN  std=    5.04 DN  range=[390.00, 407.00] DN
+Fast0.6, LPF 15165      10 ramps  median=    390.00 DN  mean=    391.80 DN  std=    5.79 DN  range=[388.00, 408.00] DN
+Fast0.6, LPF 7582       10 ramps  median=    388.00 DN  mean=    390.00 DN  std=    6.38 DN  range=[387.00, 408.00] DN
+Fast0.6, LPF 5055       10 ramps  median=    388.50 DN  mean=    390.10 DN  std=    5.30 DN  range=[387.00, 405.00] DN
+Fast0.6, LPF 3791       10 ramps  median=    386.50 DN  mean=    388.50 DN  std=    5.68 DN  range=[385.00, 404.00] DN
+Slow5.2                 10 ramps  median=  20240.00 DN  mean=  20201.50 DN  std=  145.86 DN  range=[19926.00, 20386.00] DN
+Slow5.2, LPF 196        10 ramps  median=  17112.00 DN  mean=  17117.60 DN  std=   31.20 DN  range=[17073.00, 17176.00] DN
+Slow5.2, LPF 273        10 ramps  median=  15172.50 DN  mean=  15171.40 DN  std=   45.57 DN  range=[15114.00, 15251.00] DN
+Slow5.2, LPF 392        10 ramps  median=  13598.50 DN  mean=  13591.60 DN  std=   31.61 DN  range=[13538.00, 13626.00] DN
+Slow5.2, LPF 632        10 ramps  median=  12302.50 DN  mean=  12308.90 DN  std=   50.99 DN  range=[12223.00, 12384.00] DN
+
+Wrote per-ramp CSV: /home/pbenac/diffPTC/results/260828_IFS_Darks_LPFMod_bias_level_by_ramp.csv
+Wrote summary CSV:  /home/pbenac/diffPTC/results/260828_IFS_Darks_LPFMod_bias_level_summary.csv

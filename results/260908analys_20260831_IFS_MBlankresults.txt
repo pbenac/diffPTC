@@ -1,0 +1,11 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[100:700] y[100:700]
+quicklook=False; data directory=/data20/CD6/IFS/aug31
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Default Fast0.6: illuminated ramps=[2505, 2506, 2507, 2508, 2509]; pairs=[(2505, 2506), (2505, 2507), (2505, 2508), (2505, 2509), (2506, 2507), (2506, 2508), (2506, 2509), (2507, 2508), (2507, 2509), (2508, 2509)]; reads=2:67 (inclusive)
+Default Fast0.6   0.5825     10     66     631       44.248  0.266    55.4
+   Default Fast1.0: illuminated ramps=[2535, 2536, 2537, 2538, 2539]; pairs=[(2535, 2536), (2535, 2537), (2535, 2538), (2535, 2539), (2536, 2537), (2536, 2538), (2536, 2539), (2537, 2538), (2537, 2539), (2538, 2539)]; reads=2:40 (inclusive)
+Default Fast1.0   1.0486     10     39     664       40.182  0.263    49.7
+   Default Slow: illuminated ramps=[2565, 2566, 2567, 2568, 2569]; pairs=[(2565, 2566), (2565, 2567), (2565, 2568), (2565, 2569), (2566, 2567), (2566, 2568), (2566, 2569), (2567, 2568), (2567, 2569), (2568, 2569)]; reads=2:8 (inclusive)
+Default Slow   5.2429     10      7   14966        1.548  0.027    56.0

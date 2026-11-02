@@ -1,0 +1,17 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 20260901_IMG_Illuminated_EveningTests
+GUI Live Mode: False
+Quicklook: False
+ROI: x[900:1200] y[900:1200]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Default Fast1.0: median bright pixels=87026, median bias=524.0 DN, max accumulated=3483.0 DN, ADC max=4092 DN, available headroom=3568.0 DN
+   Default Fast1.0: estimated pre-read signal=34.6 DN (1.00 frame intervals)
+Default Fast1.0         10   191       32.989       3354.6         3490.0
+   Default Slow: median bright pixels=86762, median bias=21967.0 DN, max accumulated=43568.0 DN, ADC max=65535 DN, available headroom=43568.0 DN
+   Default Slow: estimated pre-read signal=658.1 DN (1.00 frame intervals)
+Default Slow            10    39      125.522          nan            nan
+   Default, Slow: median bright pixels=86748, median bias=24102.0 DN, max accumulated=41433.0 DN, ADC max=65535 DN, available headroom=41433.0 DN
+   Default, Slow: estimated pre-read signal=594.2 DN (1.00 frame intervals)
+Default, Slow           10    39      113.335          nan            nan

@@ -1,0 +1,18 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260828_IFS_slow52_LPFMod_Dimmersource
+GUI Live Mode: False
+Quicklook: False
+ROI: x[500:1500] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Slow5.2: median bright pixels=127, median bias=63298.0 DN, max accumulated=1512.0 DN, ADC max=65535 DN, available headroom=2237.0 DN
+slow52               -- failed: Slow5.2: slope_stop_frame must be after slope_start_frame
+   Slow5.2, LPF 196: median bright pixels=1121, median bias=63533.2 DN, max accumulated=42.0 DN, ADC max=65535 DN, available headroom=2001.8 DN
+slow52_test2         -- failed: Slow5.2, LPF 196: slope_stop_frame must be after slope_start_frame
+   Slow5.2, LPF 273: median bright pixels=628, median bias=65239.5 DN, max accumulated=27.0 DN, ADC max=65535 DN, available headroom=295.5 DN
+slow52_test3         -- failed: Slow5.2, LPF 273: slope_stop_frame must be after slope_start_frame
+   Slow5.2, LPF 392: median bright pixels=235, median bias=59669.5 DN, max accumulated=1522.0 DN, ADC max=65535 DN, available headroom=5865.5 DN
+slow52_test4         -- failed: Slow5.2, LPF 392: slope_stop_frame must be after slope_start_frame
+   Slow5.2, LPF 632: median bright pixels=235, median bias=61341.5 DN, max accumulated=1560.8 DN, ADC max=65535 DN, available headroom=4193.5 DN
+slow52_test5         -- failed: Slow5.2, LPF 632: slope_stop_frame must be after slope_start_frame

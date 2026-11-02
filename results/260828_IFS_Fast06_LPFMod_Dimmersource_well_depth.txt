@@ -1,0 +1,22 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260828_IFS_Fast06_LPFMod_Dimmersource
+Quicklook: False
+ROI: x[500:1500] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Fast0.6: median bright pixels=1280, median bias=882.0 DN, max accumulated=3200.0 DN, ADC max=4092 DN, available headroom=3210.0 DN
+   Fast0.6: estimated pre-read signal=389.7 DN (1.00 frame intervals)
+Fast0.6                 10    18      669.050       3492.2         3538.0
+   Fast0.6, LPF 15165: median bright pixels=1282, median bias=881.8 DN, max accumulated=3202.2 DN, ADC max=4092 DN, available headroom=3210.2 DN
+   Fast0.6, LPF 15165: estimated pre-read signal=389.0 DN (1.00 frame intervals)
+Fast0.6, LPF 15165      10    18      667.763       3493.5         3541.7
+   Fast0.6, LPF 7582: median bright pixels=1279, median bias=881.5 DN, max accumulated=3204.0 DN, ADC max=4092 DN, available headroom=3210.5 DN
+   Fast0.6, LPF 7582: estimated pre-read signal=393.5 DN (1.00 frame intervals)
+Fast0.6, LPF 7582       10    18      675.488       3429.2         3549.1
+   Fast0.6, LPF 5055: median bright pixels=1276, median bias=883.8 DN, max accumulated=3200.0 DN, ADC max=4092 DN, available headroom=3208.2 DN
+   Fast0.6, LPF 5055: estimated pre-read signal=400.2 DN (1.00 frame intervals)
+Fast0.6, LPF 5055       10    18      687.075       3437.5         3552.7
+   Fast0.6, LPF 5055: median bright pixels=1279, median bias=883.5 DN, max accumulated=3201.8 DN, ADC max=4092 DN, available headroom=3208.5 DN
+   Fast0.6, LPF 5055: estimated pre-read signal=390.2 DN (1.00 frame intervals)
+Fast0.6, LPF 5055       10    18      669.909       3491.5         3541.3

@@ -1,0 +1,17 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260828_IFS_Fast06_LPFMod
+Quicklook: False
+ROI: x[500:1500] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Fast0.6: median bright pixels=6214, median bias=863.0 DN, max accumulated=3194.5 DN, ADC max=4092 DN, available headroom=3229.0 DN
+Fast0.6                 10    18      692.267       2975.0         3160.0
+   Fast0.6, LPF 15165: median bright pixels=6211, median bias=859.8 DN, max accumulated=3195.5 DN, ADC max=4092 DN, available headroom=3232.2 DN
+Fast0.6, LPF 15165      10    18      693.469       2978.0         3161.8
+   Fast0.6, LPF 7582: median bright pixels=6213, median bias=859.5 DN, max accumulated=3196.5 DN, ADC max=4092 DN, available headroom=3232.5 DN
+Fast0.6, LPF 7582       10    18      690.293       2981.0         3162.0
+   Fast0.6, LPF 5055: median bright pixels=6216, median bias=862.5 DN, max accumulated=3196.0 DN, ADC max=4092 DN, available headroom=3229.5 DN
+Fast0.6, LPF 5055       10    18      692.096       2980.0         3161.0
+   Fast0.6, LPF 5055: median bright pixels=6216, median bias=858.0 DN, max accumulated=3198.5 DN, ADC max=4092 DN, available headroom=3234.0 DN
+Fast0.6, LPF 5055       10    18      688.319       2982.2         3162.5

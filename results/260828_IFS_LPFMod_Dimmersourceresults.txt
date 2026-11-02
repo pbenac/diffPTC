@@ -1,0 +1,14 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[500:1500] y[100:700]
+quicklook=False; data directory=/data20/CD6/IFS/aug28/
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Fast0.6: illuminated ramps=[1876, 1877, 1878, 1879, 1880, 1881, 1882, 1883, 1884, 1885]; pairs=[(1876, 1877), (1877, 1878), (1878, 1879), (1879, 1880), (1880, 1881), (1881, 1882), (1882, 1883), (1883, 1884), (1884, 1885)]
+Fast0.6   -- gain fit failed: Need at least 2 good PTC points for linear fit; got 0.; skipped --
+   Fast0.6, LPF 15165: illuminated ramps=[1886, 1887, 1888, 1889, 1890, 1891, 1892, 1893, 1894, 1895]; pairs=[(1886, 1887), (1887, 1888), (1888, 1889), (1889, 1890), (1890, 1891), (1891, 1892), (1892, 1893), (1893, 1894), (1894, 1895)]
+Fast0.6, LPF 15165 -- gain fit failed: Singular matrix; skipped --
+   Fast0.6, LPF 7582: illuminated ramps=[1896, 1897, 1898, 1899, 1900, 1901, 1902, 1903, 1904, 1905]; pairs=[(1896, 1897), (1897, 1898), (1898, 1899), (1899, 1900), (1900, 1901), (1901, 1902), (1902, 1903), (1903, 1904), (1904, 1905)]
+Fast0.6, LPF 7582   0.5825      9     16       8       12.965  3.735    13.7
+   Fast0.6, LPF 5055: illuminated ramps=[1906, 1907, 1908, 1909, 1910, 1911, 1912, 1913, 1914, 1915]; pairs=[(1906, 1907), (1907, 1908), (1908, 1909), (1909, 1910), (1910, 1911), (1911, 1912), (1912, 1913), (1913, 1914), (1914, 1915)]
+Fast0.6, LPF 5055 -- gain fit failed: the number of data points must exceed order to scale the covariance matrix; skipped --
+   Fast0.6, LPF 5055: illuminated ramps=[1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925]; pairs=[(1916, 1917), (1917, 1918), (1918, 1919), (1919, 1920), (1920, 1921), (1921, 1922), (1922, 1923), (1923, 1924), (1924, 1925)]

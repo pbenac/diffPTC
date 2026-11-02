@@ -1,0 +1,11 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[50:350] y[1350:1650]
+quicklook=False; data directory=/data20/CD6/IMG/aug28/
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Fast0.6: illuminated ramps=[1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385, 1386]; pairs=[(1377, 1378), (1378, 1379), (1379, 1380), (1380, 1381), (1381, 1382), (1382, 1383), (1383, 1384), (1384, 1385), (1385, 1386)]; reads=2:10 (inclusive)
+Fast0.6   -- gain fit failed: Need at least 2 good PTC points for linear fit; got 0.; skipped --
+   Fast1.0: illuminated ramps=[1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416]; pairs=[(1407, 1408), (1408, 1409), (1409, 1410), (1410, 1411), (1411, 1412), (1412, 1413), (1413, 1414), (1414, 1415), (1415, 1416)]; reads=2:10 (inclusive)
+Fast1.0     1.0486      9      9      10       31.980  6.520    29.8
+   Slow5.2: illuminated ramps=[1537, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546]; pairs=[(1537, 1538), (1538, 1539), (1539, 1540), (1540, 1541), (1541, 1542), (1542, 1543), (1543, 1544), (1544, 1545), (1545, 1546)]; reads=2:10 (inclusive)
+Slow5.2     5.2429      9      4     586        1.858  0.422    43.7

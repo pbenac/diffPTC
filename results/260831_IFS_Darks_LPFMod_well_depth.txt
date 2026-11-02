@@ -1,0 +1,23 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260831_IFS_Darks_LPFMod
+GUI Live Mode: False
+Quicklook: False
+ROI: x[100:700] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Fast0.6, LPF265392: median bias=462.0 DN, max accumulated=968.0 DN, ADC max=4092 DN, available headroom=3630.0 DN
+   Fast0.6, LPF265392: estimated pre-read signal=9.8 DN (1.00 frame intervals)
+Fast0.6, LPF265392       5   103       16.896          nan            nan
+   Fast0.6, LPF 15165: median bias=462.0 DN, max accumulated=969.0 DN, ADC max=4092 DN, available headroom=3630.0 DN
+   Fast0.6, LPF 15165: estimated pre-read signal=9.9 DN (1.00 frame intervals)
+Fast0.6, LPF 15165       5   103       16.945          nan            nan
+   Fast0.6, LPF 7582: median bias=461.0 DN, max accumulated=969.0 DN, ADC max=4092 DN, available headroom=3631.0 DN
+   Fast0.6, LPF 7582: estimated pre-read signal=9.9 DN (1.00 frame intervals)
+Fast0.6, LPF 7582        5   103       16.969          nan            nan
+   Fast0.6, LPF 5055: median bias=458.0 DN, max accumulated=970.0 DN, ADC max=4092 DN, available headroom=3634.0 DN
+   Fast0.6, LPF 5055: estimated pre-read signal=9.9 DN (1.00 frame intervals)
+Fast0.6, LPF 5055        5   103       16.957          nan            nan
+   Fast0.6, LPF 3791: median bias=455.0 DN, max accumulated=971.0 DN, ADC max=4092 DN, available headroom=3637.0 DN
+   Fast0.6, LPF 3791: estimated pre-read signal=9.9 DN (1.00 frame intervals)
+Fast0.6, LPF 3791        5   103       16.947          nan            nan

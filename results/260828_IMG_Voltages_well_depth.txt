@@ -1,0 +1,29 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260828_IMG_Voltages
+GUI Live Mode: False
+Quicklook: False
+ROI: x[800:1250] y[900:1350]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Fast0.6: median bright pixels=2438, median bias=1664.2 DN, max accumulated=2380.2 DN, ADC max=4092 DN, available headroom=2427.8 DN
+   Fast0.6: estimated pre-read signal=587.2 DN (1.00 frame intervals)
+Fast0.6                 10    18     1008.081       2843.0         2906.7
+   Fast0.6, SettingII: median bright pixels=2646, median bias=1688.5 DN, max accumulated=2403.5 DN, ADC max=4092 DN, available headroom=2403.5 DN
+   Fast0.6, SettingII: estimated pre-read signal=606.0 DN (1.00 frame intervals)
+Fast0.6, SettingII      10    18     1040.268       3009.5         3009.3
+   Fast0.6, SettingIII: median bright pixels=2724, median bias=1685.2 DN, max accumulated=2406.8 DN, ADC max=4092 DN, available headroom=2406.8 DN
+   Fast0.6, SettingIII: estimated pre-read signal=604.2 DN (1.00 frame intervals)
+Fast0.6, SettingIII     10    18     1037.264       3011.0         3010.5
+   Fast1.0: median bright pixels=1979, median bias=2408.8 DN, max accumulated=1658.5 DN, ADC max=4092 DN, available headroom=1683.2 DN
+   Fast1.0: estimated pre-read signal=567.7 DN (1.00 frame intervals)
+Fast1.0                 10    10      541.449       2162.5         2193.6
+   Fast1.0, SettingII: median bright pixels=1892, median bias=2109.5 DN, max accumulated=1982.5 DN, ADC max=4092 DN, available headroom=1982.5 DN
+   Fast1.0, SettingII: estimated pre-read signal=786.0 DN (1.00 frame intervals)
+Fast1.0, SettingII      10    10      749.588       2768.5         2768.5
+   Fast1.0, SettingIII: median bright pixels=1900, median bias=1965.5 DN, max accumulated=2126.5 DN, ADC max=4092 DN, available headroom=2126.5 DN
+   Fast1.0, SettingIII: estimated pre-read signal=686.5 DN (1.00 frame intervals)
+Fast1.0, SettingIII     10    10      654.697       2813.0         2811.3
+slow52               -- failed: Slow5.2: no positive accumulated signal was measured
+slow52_II            -- failed: Slow5.2_II: no positive accumulated signal was measured
+slow52_III           -- failed: Slow5.2_III: no positive accumulated signal was measured

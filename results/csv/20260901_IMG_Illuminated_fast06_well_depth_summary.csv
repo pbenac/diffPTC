@@ -1,0 +1,2 @@
+mode,n_ramps,n_reads,frame_time_s,initial_slope_DN_per_frame,initial_slope_DN_per_s,deviation_threshold,well_depth_deviation_DN,well_depth_deviation_e,frame_deviation,time_deviation_s,slope_cutoff_fraction,min_signal_fraction,consecutive_points,well_depth_slope_cutoff_DN,well_depth_slope_cutoff_e,frame_slope_cutoff,time_slope_cutoff_s
+Default Fast0.6,10,344,0.5825422222222222,20.612456885284576,35.38362731314873,0.05,2606.1124568852847,84425.0130407988,131.35416419441444,76.51934670795683,0.05,0.25,2,3567.8972319642694,115582.03082948252,240.52318338598965,140.11490974563748

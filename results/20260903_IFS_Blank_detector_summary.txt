@@ -1,0 +1,18 @@
+Mode                     RN DN  Reset DN    Bias DN      5% DN     10% DN    Hard DN      Gain       DR5 e-      DR10 e-      RN e-   Reset e-
+Default Fast0.6           0.48      0.82        nan        nan        nan        nan    42.740          nan          nan       20.7       35.1
+Fast0.6, LPF265392        0.51       nan        nan        nan        nan        nan    42.740          nan          nan       21.6        nan
+Fast0.6, LPF15165         0.50      0.88        nan        nan        nan        nan    42.740          nan          nan       21.4       37.7
+Fast0.6, LPF7582          0.51      0.86        nan        nan        nan        nan    42.740          nan          nan       21.8       36.6
+Fast0.6, LPF5055          0.49      0.87        nan        nan        nan        nan    42.740          nan          nan       21.0       37.2
+Fast0.6, LPF3791          0.49      0.86        nan        nan        nan        nan    42.740          nan          nan       21.1       36.7
+Default Fast1.0           0.45      0.88        nan        nan        nan        nan    41.460          nan          nan       18.8       36.6
+Fast1.0, LPF265392        0.44      0.89        nan        nan        nan        nan    41.460          nan          nan       18.1       36.9
+Fast1.0, LPF15165         0.46      0.88        nan        nan        nan        nan    41.460          nan          nan       18.9       36.6
+Fast1.0, LPF7582          0.46      0.88        nan        nan        nan        nan    41.460          nan          nan       19.3       36.6
+Fast1.0, LPF5055          0.46      0.89        nan        nan        nan        nan    41.460          nan          nan       19.3       36.8
+Fast1.0, LPF3791          0.43      0.89        nan        nan        nan        nan    41.460          nan          nan       18.0       36.9
+Default Slow             11.93     23.41        nan        nan        nan        nan     1.730          nan          nan       20.6       40.5
+LPF 196, Slow            30.95     18.69        nan        nan        nan        nan     1.730          nan          nan       53.6       32.3
+LPF 273, Slow            22.19     20.96        nan        nan        nan        nan     1.730          nan          nan       38.4       36.3
+LPF 392, Slow            15.59     23.13        nan        nan        nan        nan     1.730          nan          nan       27.0       40.0
+LPF 632, Slow            10.14     24.10        nan        nan        nan        nan     1.730          nan          nan       17.5       41.7

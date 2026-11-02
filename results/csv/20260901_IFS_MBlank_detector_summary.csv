@@ -1,0 +1,3 @@
+Mode,Read-noise (DN),Reset-noise (DN),Bias level (median) (DN),5% non-linearity threshold (DN),10% non-linearity threshold (DN),Hard saturate threshold (DN),Gain (e-/DN),Dynamic Range 5% (e-),Dynamic Range 10% (e-),Read-noise (e-),Reset-noise (e-)
+Default Fast0.6,,,459.5,884.5,1152.3091357693204,4092.0,242.219950200783,102943.47883533277,167812.1943646923,,
+Default Fast1.0,,,737.5,1080.0,1324.5414791100548,4092.0,154.76651709666197,53007.532105606726,90854.36511313602,,

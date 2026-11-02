@@ -1,0 +1,44 @@
+=== Read noise & reset noise from darks ===
+region x[0:2048] y[0:2048]; channels = 512-col vertical stripes
+quicklook=False; data directory=/data20/CD6/IFS/sep03/
+
+read noise = std(F2-F1)/sqrt2 (within-ramp CDS), channel+row corrected, Sheppard quantization-corrected.
+reset noise = sqrt( Var(A1-B1)/2 - read^2 ) across independent ramps.
+
+mode         gain  ramps |        READ NOISE (e-) | RESET NOISE (e-)
+            e-/DN        |  rawCDS corr(reg) corr(full) |  corr(reg)
+Default Fast0.6  42.740      5 |    47.3      20.7       20.7 |       35.1
+Fast0.6, LPF265392 -- need at least 2 dark ramps; skipped --
+Fast0.6, LPF15165  42.740      5 |    45.5      21.4       21.4 |       37.7
+Fast0.6, LPF7582  42.740      5 |    47.5      21.8       21.8 |       36.6
+Fast0.6, LPF5055  42.740      5 |    41.4      21.0       21.0 |       37.2
+Fast0.6, LPF3791  42.740      5 |    41.7      21.1       21.1 |       36.7
+Default Fast1.0  41.460      5 |    32.1      18.8       18.8 |       36.6
+Fast1.0, LPF265392  41.460      5 |    34.4      18.1       18.1 |       36.9
+Fast1.0, LPF15165  41.460      5 |    35.9      18.9       18.9 |       36.6
+Fast1.0, LPF7582  41.460      5 |    33.6      19.3       19.3 |       36.6
+Fast1.0, LPF5055  41.460      5 |    33.5      19.3       19.3 |       36.8
+Fast1.0, LPF3791  41.460      5 |    36.7      18.0       18.0 |       36.9
+Default Slow   1.730      5 |    49.7      20.6       20.6 |       40.5
+LPF 196, Slow   1.730      5 |    63.3      53.6       53.6 |       32.3
+LPF 273, Slow   1.730      5 |    52.2      38.4       38.4 |       36.3
+LPF 392, Slow   1.730      5 |    46.8      27.0       27.0 |       40.0
+LPF 632, Slow   1.730      5 |    57.0      17.5       17.5 |       41.7
+
+Details (corrected, region):
+  Default Fast0.6: read noise 20.7 e- (= 0.48 DN); raw(uncorrected) 47.3 e-; reset noise 35.1 e-
+  Fast0.6, LPF15165: read noise 21.4 e- (= 0.50 DN); raw(uncorrected) 45.5 e-; reset noise 37.7 e-
+  Fast0.6, LPF7582: read noise 21.8 e- (= 0.51 DN); raw(uncorrected) 47.5 e-; reset noise 36.6 e-
+  Fast0.6, LPF5055: read noise 21.0 e- (= 0.49 DN); raw(uncorrected) 41.4 e-; reset noise 37.2 e-
+  Fast0.6, LPF3791: read noise 21.1 e- (= 0.49 DN); raw(uncorrected) 41.7 e-; reset noise 36.7 e-
+  Default Fast1.0: read noise 18.8 e- (= 0.45 DN); raw(uncorrected) 32.1 e-; reset noise 36.6 e-
+  Fast1.0, LPF265392: read noise 18.1 e- (= 0.44 DN); raw(uncorrected) 34.4 e-; reset noise 36.9 e-
+  Fast1.0, LPF15165: read noise 18.9 e- (= 0.46 DN); raw(uncorrected) 35.9 e-; reset noise 36.6 e-
+  Fast1.0, LPF7582: read noise 19.3 e- (= 0.46 DN); raw(uncorrected) 33.6 e-; reset noise 36.6 e-
+  Fast1.0, LPF5055: read noise 19.3 e- (= 0.46 DN); raw(uncorrected) 33.5 e-; reset noise 36.8 e-
+  Fast1.0, LPF3791: read noise 18.0 e- (= 0.43 DN); raw(uncorrected) 36.7 e-; reset noise 36.9 e-
+  Default Slow: read noise 20.6 e- (= 11.93 DN); raw(uncorrected) 49.7 e-; reset noise 40.5 e-
+  LPF 196, Slow: read noise 53.6 e- (= 30.95 DN); raw(uncorrected) 63.3 e-; reset noise 32.3 e-
+  LPF 273, Slow: read noise 38.4 e- (= 22.19 DN); raw(uncorrected) 52.2 e-; reset noise 36.3 e-
+  LPF 392, Slow: read noise 27.0 e- (= 15.59 DN); raw(uncorrected) 46.8 e-; reset noise 40.0 e-
+  LPF 632, Slow: read noise 17.5 e- (= 10.14 DN); raw(uncorrected) 57.0 e-; reset noise 41.7 e-

@@ -1,0 +1,23 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 20260831_IFS_MBlank
+GUI Live Mode: False
+Quicklook: False
+ROI: x[100:700] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Default Slow: median bias=22541.0 DN, max accumulated=42994.0 DN, ADC max=65535 DN, available headroom=42994.0 DN
+   Default Slow: estimated pre-read signal=2126.1 DN (1.00 frame intervals)
+Default Slow             5    58      405.525      45120.1        45120.1
+   LPF 196, Slow: median bias=19308.0 DN, max accumulated=44135.0 DN, ADC max=65535 DN, available headroom=46227.0 DN
+   LPF 196, Slow: estimated pre-read signal=1671.7 DN (1.00 frame intervals)
+LPF 196, Slow            5    58      318.861      42223.8        45750.0
+   LPF 273, Slow: median bias=18043.0 DN, max accumulated=47168.0 DN, ADC max=65535 DN, available headroom=47492.0 DN
+   LPF 273, Slow: estimated pre-read signal=1879.2 DN (1.00 frame intervals)
+LPF 273, Slow            5    58      358.429      48703.2        48919.0
+   LPF 392, Slow: median bias=17084.0 DN, max accumulated=48451.0 DN, ADC max=65535 DN, available headroom=48451.0 DN
+   LPF 392, Slow: estimated pre-read signal=2062.0 DN (1.00 frame intervals)
+LPF 392, Slow            5    58      393.292      50513.0        50513.0
+   LPF 632, Slow: median bias=16253.0 DN, max accumulated=49282.0 DN, ADC max=65535 DN, available headroom=49282.0 DN
+   LPF 632, Slow: estimated pre-read signal=2191.5 DN (1.00 frame intervals)
+LPF 632, Slow            5    58      417.999      51473.5        51473.5

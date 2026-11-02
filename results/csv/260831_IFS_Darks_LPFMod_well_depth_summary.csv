@@ -1,0 +1,6 @@
+mode,n_ramps,n_reads,frame_time_s,initial_slope_DN_per_frame,initial_slope_DN_per_s,deviation_threshold,well_depth_deviation_DN,well_depth_deviation_e,frame_deviation,time_deviation_s,slope_cutoff_fraction,min_signal_fraction,consecutive_points,well_depth_slope_cutoff_DN,well_depth_slope_cutoff_e,frame_slope_cutoff,time_slope_cutoff_s
+Fast0.6, LPF265392,5,103,0.5825422222222222,9.842364532019703,16.89553848041102,0.1,nan,nan,nan,nan,0.05,0.25,2,nan,nan,nan,nan
+Fast0.6, LPF 15165,5,103,0.5825422222222222,9.871100164203611,16.9448664622941,0.1,nan,nan,nan,nan,0.05,0.25,2,nan,nan,nan,nan
+Fast0.6, LPF 7582,5,103,0.5825422222222222,9.88533114395183,16.969295558083818,0.1,nan,nan,nan,nan,0.05,0.25,2,nan,nan,nan,nan
+Fast0.6, LPF 5055,5,103,0.5825422222222222,9.87821565407772,16.95708101018896,0.1,nan,nan,nan,nan,0.05,0.25,2,nan,nan,nan,nan
+Fast0.6, LPF 3791,5,103,0.5825422222222222,9.872331691297207,16.94698051866052,0.1,nan,nan,nan,nan,0.05,0.25,2,nan,nan,nan,nan

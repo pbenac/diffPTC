@@ -1,0 +1,196 @@
+=== Per-pixel linearity analysis ===
+YAML: datasets/260831_IFS_LightLeak.yaml
+ROI: x[100:700] y[100:700]
+
+=== Fast0.6_300s ===
+Ramp: 2577
+File: /data20/CD6/IFS/aug31/ss260831_02577.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 515; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359996
+5% frame: N=353011 median=132.162 16-84%=[47.000, 284.147]
+10% frame: N=333284 median=271.353 16-84%=[145.543, 396.567]
+Diagnostic pixels:
+  x=467 y=438 5%=6.272 10%=6.855
+  x=279 y=578 5%=25.000 10%=124.627
+  x=245 y=617 5%=55.064 10%=171.725
+  x=201 y=437 5%=147.720 10%=214.022
+  x=318 y=125 5%=107.361 10%=252.149
+  x=166 y=279 5%=169.823 10%=289.427
+  x=685 y=504 5%=53.219 10%=326.546
+  x=632 y=610 5%=139.903 10%=368.417
+  x=620 y=330 5%=210.710 10%=423.256
+  x=699 y=632 5%=187.531 10%=514.000
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_default_fast06_longer_ramp02577_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_default_fast06_longer_ramp02577_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_default_fast06_longer_ramp02577_pixel_linearity.csv
+
+=== Fast0.6_300s ===
+Ramp: 2582
+File: /data20/CD6/IFS/aug31/ss260831_02582.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 515; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359989
+5% frame: N=262316 median=261.177 16-84%=[134.246, 393.572]
+10% frame: N=247231 median=348.655 16-84%=[221.641, 442.948]
+Diagnostic pixels:
+  x=467 y=438 5%=6.314 10%=7.009
+  x=236 y=593 5%=109.667 10%=192.118
+  x=216 y=297 5%=126.466 10%=253.016
+  x=320 y=415 5%=221.086 10%=298.104
+  x=374 y=321 5%=182.446 10%=332.403
+  x=413 y=667 5%=171.477 10%=363.254
+  x=362 y=388 5%=363.786 10%=391.120
+  x=504 y=635 5%=305.481 10%=423.587
+  x=407 y=172 5%=379.234 10%=460.093
+  x=465 y=227 5%=486.449 10%=513.999
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_longer_fast06_rep2_ramp02582_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_longer_fast06_rep2_ramp02582_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_longer_fast06_rep2_ramp02582_pixel_linearity.csv
+
+=== Fast0.6 ===
+Ramp: 2505
+File: /data20/CD6/IFS/aug31/ss260831_02505.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 103; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359987
+5% frame: N=13892 median=79.662 16-84%=[37.425, 96.462]
+10% frame: N=684 median=89.512 16-84%=[11.000, 99.956]
+Diagnostic pixels:
+  x=467 y=438 5%=6.310 10%=6.897
+  x=672 y=596 5%=7.771 10%=9.449
+  x=601 y=610 5%=12.000 10%=12.687
+  x=532 y=531 5%=25.221 10%=55.534
+  x=145 y=544 5%=30.101 10%=84.648
+  x=480 y=424 5%=16.296 10%=92.223
+  x=185 y=535 5%=55.334 10%=96.432
+  x=229 y=535 5%=36.908 10%=98.218
+  x=182 y=545 5%=62.390 10%=100.415
+  x=167 y=544 5%=62.478 10%=101.963
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_ramp02505_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_ramp02505_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_ramp02505_pixel_linearity.csv
+
+=== Fast0.6, LPF265392 ===
+Ramp: 2510
+File: /data20/CD6/IFS/aug31/ss260831_02510.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 103; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359985
+5% frame: N=8414 median=83.487 16-84%=[63.599, 96.367]
+10% frame: N=459 median=80.199 16-84%=[9.141, 98.429]
+Diagnostic pixels:
+  x=467 y=438 5%=6.281 10%=6.970
+  x=672 y=596 5%=7.253 10%=8.584
+  x=675 y=262 5%=11.000 10%=11.000
+  x=510 y=440 5%=8.928 10%=30.077
+  x=235 y=475 5%=54.704 10%=66.808
+  x=155 y=548 5%=37.712 10%=87.114
+  x=206 y=543 5%=43.360 10%=94.333
+  x=173 y=541 5%=53.472 10%=96.497
+  x=174 y=561 5%=50.335 10%=99.566
+  x=174 y=528 5%=61.721 10%=101.765
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_rep2_ramp02510_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_rep2_ramp02510_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_rep2_ramp02510_pixel_linearity.csv
+
+=== Fast0.6, LPF 15165 ===
+Ramp: 2515
+File: /data20/CD6/IFS/aug31/ss260831_02515.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 103; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359981
+5% frame: N=7620 median=87.291 16-84%=[65.573, 98.160]
+10% frame: N=415 median=50.194 16-84%=[9.413, 97.908]
+Diagnostic pixels:
+  x=467 y=438 5%=6.289 10%=7.111
+  x=618 y=615 5%=7.270 10%=8.668
+  x=269 y=131 5%=9.000 10%=10.505
+  x=692 y=627 5%=12.983 10%=15.684
+  x=365 y=363 5%=10.232 10%=36.981
+  x=216 y=388 5%=46.509 10%=65.386
+  x=277 y=507 5%=55.846 10%=87.618
+  x=159 y=550 5%=40.540 10%=94.984
+  x=194 y=533 5%=54.010 10%=99.185
+  x=145 y=544 5%=65.243 10%=101.999
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test2_ramp02515_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test2_ramp02515_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test2_ramp02515_pixel_linearity.csv
+
+=== Fast0.6, LPF 7582 ===
+Ramp: 2520
+File: /data20/CD6/IFS/aug31/ss260831_02520.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 103; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359990
+5% frame: N=19110 median=75.172 16-84%=[27.327, 93.759]
+10% frame: N=1224 median=86.454 16-84%=[13.963, 99.209]
+Diagnostic pixels:
+  x=467 y=438 5%=6.292 10%=7.036
+  x=674 y=546 5%=12.000 10%=12.301
+  x=578 y=237 5%=11.000 10%=27.730
+  x=539 y=686 5%=12.000 10%=55.798
+  x=153 y=552 5%=33.657 10%=82.248
+  x=178 y=531 5%=46.717 10%=89.357
+  x=145 y=540 5%=42.870 10%=94.054
+  x=154 y=556 5%=42.848 10%=97.554
+  x=186 y=526 5%=55.005 10%=99.967
+  x=536 y=545 5%=14.164 10%=102.000
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test3_ramp02520_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test3_ramp02520_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test3_ramp02520_pixel_linearity.csv
+
+=== Fast0.6, LPF 5055 ===
+Ramp: 2525
+File: /data20/CD6/IFS/aug31/ss260831_02525.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 103; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359987
+5% frame: N=7116 median=84.879 16-84%=[61.792, 97.174]
+10% frame: N=361 median=33.823 16-84%=[8.746, 96.077]
+Diagnostic pixels:
+  x=467 y=438 5%=6.314 10%=7.051
+  x=293 y=115 5%=7.011 10%=8.321
+  x=128 y=419 5%=7.423 10%=9.267
+  x=112 y=189 5%=11.000 10%=12.105
+  x=650 y=373 5%=12.943 10%=24.959
+  x=199 y=634 5%=19.737 10%=48.022
+  x=575 y=268 5%=38.149 10%=74.673
+  x=161 y=521 5%=42.461 10%=89.156
+  x=178 y=546 5%=47.084 10%=98.270
+  x=187 y=557 5%=56.207 10%=101.987
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test4_ramp02525_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test4_ramp02525_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test4_ramp02525_pixel_linearity.csv
+
+=== Fast0.6, LPF 3791 ===
+Ramp: 2530
+File: /data20/CD6/IFS/aug31/ss260831_02530.fits
+ROI: x[100:700] y[100:700]
+Ramp reads: 103; ITIME=0.582542 s
+reference_read_index=1; slope frames=3-6
+Valid pixels analyzed: 359989
+5% frame: N=32014 median=20.239 16-84%=[11.103, 89.343]
+10% frame: N=1297 median=63.540 16-84%=[11.086, 97.623]
+Diagnostic pixels:
+  x=695 y=477 5%=6.340 10%=6.757
+  x=426 y=612 5%=11.000 10%=11.000
+  x=596 y=438 5%=12.000 10%=12.000
+  x=568 y=645 5%=13.000 10%=14.647
+  x=501 y=678 5%=18.345 10%=24.427
+  x=117 y=513 5%=16.664 10%=81.729
+  x=231 y=549 5%=33.482 10%=91.326
+  x=361 y=345 5%=10.059 10%=96.106
+  x=166 y=539 5%=55.810 10%=99.419
+  x=173 y=525 5%=58.596 10%=101.997
+Diagnostic plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test5_ramp02530_pixel_linearity_diagnostic.png
+Histogram plot: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test5_ramp02530_pixel_linearity_hist.png
+CSV: /home/pbenac/diffPTC/results/260831_IFS_Darks_LPFMod_fast06300s_fast06_test5_ramp02530_pixel_linearity.csv
+

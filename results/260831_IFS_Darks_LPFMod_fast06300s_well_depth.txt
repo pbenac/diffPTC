@@ -1,0 +1,11 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260831_IFS_Darks_LPFMod_fast06300s
+GUI Live Mode: False
+Quicklook: False
+ROI: x[100:700] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Fast0.6_300s: median bias=451.0 DN, max accumulated=3573.0 DN, ADC max=4092 DN, available headroom=3641.0 DN
+   Fast0.6_300s: estimated pre-read signal=9.7 DN (1.00 frame intervals)
+Fast0.6_300s             5   515       16.720       2980.7         3582.7

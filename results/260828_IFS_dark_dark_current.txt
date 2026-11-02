@@ -1,0 +1,10 @@
+=== Dark current by readout mode (region x[1550:1700] y[550:700]) ===
+quicklook=False; data directory=/data20/CD6/IFS/aug28/
+
+mode        ITIME  ramps t_tot(s)   dark(e-/s)     +/-
+Fast0.6     0.583     10     29.7        12.96    0.52
+Fast1.0     1.049     10     29.4        11.71    0.34
+Slow5.2     5.243     10     26.2        13.02    0.81
+
+Notes:
+  Primary dark current (Fast0.6): 12.96 +/- 0.52 e-/s

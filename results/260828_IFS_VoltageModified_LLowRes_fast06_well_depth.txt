@@ -1,0 +1,28 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260828_IFS_VoltageModified_LLowRes_fast06
+Quicklook: False
+ROI: x[500:1500] y[100:700]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+   Slow5.2: median bright pixels=14001, median bias=36012.8 DN, max accumulated=29522.2 DN, ADC max=65535 DN, available headroom=29522.2 DN
+   Slow5.2: estimated pre-read signal=14254.2 DN (1.00 frame intervals)
+Slow5.2                 10     6     2718.782      43776.5            nan
+   Slow5.2_II: median bright pixels=13785, median bias=37352.2 DN, max accumulated=28182.8 DN, ADC max=65535 DN, available headroom=28182.8 DN
+   Slow5.2_II: estimated pre-read signal=14095.5 DN (1.00 frame intervals)
+Slow5.2_II              10     6     2688.503      42278.2            nan
+   Slow5.2_III: median bright pixels=13649, median bias=37140.5 DN, max accumulated=28394.5 DN, ADC max=65535 DN, available headroom=28394.5 DN
+   Slow5.2_III: estimated pre-read signal=14134.5 DN (1.00 frame intervals)
+Slow5.2_III             10     6     2695.942      42529.0            nan
+   Slow5.2_LPF196: median bright pixels=12193, median bias=33714.5 DN, max accumulated=29752.0 DN, ADC max=65535 DN, available headroom=31820.5 DN
+   Slow5.2_LPF196: estimated pre-read signal=12594.2 DN (1.00 frame intervals)
+Slow5.2_LPF196          10     6     2402.163      42318.7            nan
+   Slow5.2_LPF273: median bright pixels=12588, median bias=32949.2 DN, max accumulated=32291.8 DN, ADC max=65535 DN, available headroom=32585.8 DN
+   Slow5.2_LPF273: estimated pre-read signal=14173.5 DN (1.00 frame intervals)
+Slow5.2_LPF273          10     6     2703.381      46435.2            nan
+   Slow5.2_LPF392: median bright pixels=12704, median bias=32024.0 DN, max accumulated=33511.0 DN, ADC max=65535 DN, available headroom=33511.0 DN
+   Slow5.2_LPF392: estimated pre-read signal=15520.0 DN (1.00 frame intervals)
+Slow5.2_LPF392          10     6     2960.205      49031.0            nan
+   Slow5.2_LPF632: median bright pixels=12745, median bias=31304.8 DN, max accumulated=34230.2 DN, ADC max=65535 DN, available headroom=34230.2 DN
+   Slow5.2_LPF632: estimated pre-read signal=16370.2 DN (1.00 frame intervals)
+Slow5.2_LPF632          10     6     3122.377      50600.5            nan
