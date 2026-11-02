@@ -28,8 +28,8 @@ for SCALES H2RG data. Analyses are YAML-driven; see README.md.
 - `datasets/`: one YAML per dataset
 - `results/`: committed outputs; the reference for regression checks
 - `llm_tools/`: LLM-generated profiling, comparison, and synthetic-test helpers
-- `gui_io.py` is imported by the scripts but is not tracked here; `llm_tools/stubs/gui_io.py`
-  is a stand-in used only for local synthetic tests.
+- `gui_io.py`: GUI Live Mode I/O helpers imported by the analysis scripts; `llm_tools/stubs/gui_io.py`
+  is a stand-in used only if the real module is not importable.
 
 ## Environment notes
 Check Python, numpy, scipy and astropy versions before changing numerics; the server and the

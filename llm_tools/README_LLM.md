@@ -16,7 +16,7 @@ original outputs **bit-for-bit** (byte-identical text/CSV outputs).
 | `run_regression.py` | Run the same YAML through a reference checkout and a candidate checkout, then compare all outputs. Use on the remote server. |
 | `make_synthetic_ramps.py` | Write fake FITS ramps with a known gain/read noise (local testing without real data). |
 | `test_synthetic.py` | End-to-end local self-test of the harness using synthetic ramps. No real data needed. |
-| `stubs/gui_io.py` | Stand-in for the `gui_io` module, which is imported by the scripts but is not tracked in the repo. Used only if the real one is not importable (`--stub-gui-io`). |
+| `stubs/gui_io.py` | Stand-in for the `gui_io` module, which is imported by the scripts and tracked at the repo root as `gui_io.py`. Used only if the real one is not importable (`--stub-gui-io`). |
 
 ## Typical remote workflow
 
