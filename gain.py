@@ -164,17 +164,28 @@ def file_ready(head, date, n, datapath, quicklook=False, gui=False):
         return False
 
 
-def load_region(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False, gui=False):
+def load_region(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False, gui=False,  # LLM-generated: split to add last_read
+                last_read=None):  # LLM-generated: last read the caller needs
+    # LLM-generated docstring
+    """Return (reads 0..last_read of the ROI, total reads in the ramp).
+
+    Array indices match the full cube, and nf is always the full read count. At least
+    reads 0 and 1 are kept: read 1 is the reference, and it is used before last_read
+    is validated. GUI mode still loads every read.
+    """
     if gui:
         cube, _header, _source = gui_io.load_gui_cube(n, roi=(X0, X1, Y0, Y1))
-        return cube
+        return cube, cube.shape[0]  # LLM-generated: also return the read count
 
     fn = fits_path(datapath, head, date, n, quicklook=quicklook)
     h = fits.open(fn, memmap=True, do_not_scale_image_data=True)
     bz = h[0].header.get("BZERO", 0)
-    reg = np.asarray(h[0].data[:, Y0:Y1, X0:X1]).astype(np.float64) + bz
+    data = h[0].data  # LLM-generated
+    nf = data.shape[0]  # LLM-generated: full read count; loads no pixels
+    stop = None if last_read is None else max(int(last_read) + 1, 2)  # LLM-generated: keep reads 0 and 1
+    reg = np.asarray(data[:stop, Y0:Y1, X0:X1]).astype(np.float64) + bz  # LLM-generated: load only reads before stop
     h.close()
-    return reg
+    return reg, nf  # LLM-generated: also return the read count
 
 
 def row_detrend(img):
@@ -301,9 +312,11 @@ def fit_gain(S, V, fixed_xmax=None):
 def gain_diff(head, date, n1, n2, datapath, X0, X1, Y0, Y1, log,
               detrend=False, fixed_xmax=None, quicklook=False, gui=False,
               first_read=None, last_read=None, _quiet=False):
-    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
-    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
-    nf = min(A.shape[0], B.shape[0])
+    A, nf_a = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui,  # LLM-generated
+                          last_read=last_read)  # LLM-generated
+    B, nf_b = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui,  # LLM-generated
+                          last_read=last_read)  # LLM-generated
+    nf = min(nf_a, nf_b)  # LLM-generated: full read counts, not the loaded array sizes
     A1, B1 = A[1], B[1]
     mA1, mB1 = np.median(A1), np.median(B1)
 
@@ -381,9 +394,11 @@ def gain_diff_forceIntercept(head, date, n1, n2, datapath, X0, X1, Y0, Y1,
                              intercept, log, detrend=False, fixed_xmax=None,
                              quicklook=False, gui=False, first_read=None,
                              last_read=None, _quiet=False):
-    A = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
-    B = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui)
-    nf = min(A.shape[0], B.shape[0])
+    A, nf_a = load_region(head, date, n1, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui,  # LLM-generated
+                          last_read=last_read)  # LLM-generated
+    B, nf_b = load_region(head, date, n2, datapath, X0, X1, Y0, Y1, quicklook=quicklook, gui=gui,  # LLM-generated
+                          last_read=last_read)  # LLM-generated
+    nf = min(nf_a, nf_b)  # LLM-generated: full read counts, not the loaded array sizes
     A1, B1 = A[1], B[1]
     mA1, mB1 = np.median(A1), np.median(B1)
 
