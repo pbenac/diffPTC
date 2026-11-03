@@ -119,8 +119,12 @@ def get_roi(config, use_roi):
     )
 
 
-def load_cube(datapath, head, date, filenum, quicklook=False, roi=None):
+def load_cube(datapath, head, date, filenum, quicklook=False, roi=None, gui=False):  # LLM-generated: main() passes gui
     """Load one ramp cube as float64 and apply FITS BZERO manually."""
+    if gui:  # LLM-generated
+        data, _header, source = gui_io.load_gui_cube(filenum, roi=roi)  # LLM-generated
+        return data, source  # LLM-generated
+
     fn = fits_path(datapath, head, date, filenum, quicklook=quicklook)
 
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
