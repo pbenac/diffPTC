@@ -19,7 +19,10 @@ for SCALES H2RG data. Analyses are YAML-driven; see README.md.
    a looser tolerance, describe it and ask; do not enable it.
 5. **The real data lives on a remote server and is never copied here.** Do not try to run
    analyses on real data locally. Write scripts and tests; the owner runs them on the server
-   and reports back.
+   and reports back. Any commands given for the server must start with a manual disk space
+   check (`df -h ~`) and state the estimated output size, worked out from real file sizes.
+   `run_regression.py` runs each script twice, and `ramp_io.py` writes full cubes (about
+   33.5 MB per read as float64), so one run can fill the disk.
 6. **Before calling a change done**, run `python llm_tools/test_synthetic.py` and confirm it
    passes. On the server, the owner runs `llm_tools/run_regression.py` against a real dataset.
 7. **Do not push, force-push, or delete branches** unless explicitly asked.
