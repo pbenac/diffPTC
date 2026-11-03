@@ -240,6 +240,7 @@ def main():
     os.makedirs(plot_dir, exist_ok=True)
 
     logname = os.path.join(plot_dir, f"{setname}_pixel_traces.txt")
+    n_attempted = n_plotted = 0  # LLM-generated
 
     with open(logname, "w") as log:
         P(log, "=== Pixel trace plotting ===")
@@ -271,6 +272,7 @@ def main():
             P(log, f"{name}: ramps={ramps}")
 
             for n in ramps:
+                n_attempted += 1  # LLM-generated
                 try:
                     data, fn = load_cube(
                         datapath, head, date, n,
@@ -309,8 +311,13 @@ def main():
                         f"{data.shape[2]}x{data.shape[1]} pixels loaded, "
                         f"{n_traces} traces plotted -> {base}.png",
                     )
+                    n_plotted += 1  # LLM-generated
                 except Exception as exc:
                     P(log, f"   ramp {gui_io.identifier_label(n)} failed: {exc}")
+
+    if n_attempted and not n_plotted:  # LLM-generated: do not report success when nothing was plotted
+        print(f"ERROR: all {n_attempted} ramps failed; no plots written. See {logname}")  # LLM-generated
+        sys.exit(1)  # LLM-generated
 
     print(f"DONE: plots written to {plot_dir}")
 
