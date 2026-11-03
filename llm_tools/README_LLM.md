@@ -1,8 +1,7 @@
 # llm_tools: LLM-generated regression and profiling helpers
 
 Everything in this folder was written by Claude (an LLM), not by the repo owner.
-It adds new files only; it does not modify any existing diffPTC code.
-Lives on branch `llm/regression-tools`; merge or discard at your discretion.
+Lines Claude wrote in the repo owner's scripts are marked inline with `# LLM-generated`.
 
 Requirement while this folder exists: LLM-modified analysis code must reproduce the
 original outputs **bit-for-bit** (byte-identical text/CSV outputs).
@@ -21,17 +20,37 @@ original outputs **bit-for-bit** (byte-identical text/CSV outputs).
 ## Typical remote workflow
 
 ```bash
-# 1. Two checkouts: reference (main) and candidate (the LLM branch)
-git worktree add ../diffPTC_ref main
-git worktree add ../diffPTC_cand llm/<some-speedup-branch>
+# 0. See the current state before changing anything
+cd ~/diffPTC
+git worktree list && git status --short --branch
 
-# 2. Profile the reference on a real dataset (find what actually costs time)
+# 1. Pin the reference to the commit you are comparing against. Use --detach, never a branch
+#    name: a branch can only be open in one folder at a time.
+git fetch origin
+git worktree add --detach ../diffPTC_ref origin/main
+# If ../diffPTC_ref already exists, move it instead:
+# git -C ../diffPTC_ref checkout --detach origin/main
+
+# 2. Put this folder on the candidate branch
+git switch llm/<topic>
+
+# 3. Profile on a real dataset (find what actually costs time)
 python llm_tools/profile_run.py gain.py datasets/CD5/260622_IFS.yaml --top 25
 
-# 3. Regression-check the candidate against the reference
-python llm_tools/run_regression.py --ref ../diffPTC_ref --cand ../diffPTC_cand \
-    --yaml datasets/CD5/260622_IFS.yaml --scripts gain.py
+# 4. Regression-check the candidate against the reference
+python llm_tools/run_regression.py --ref ../diffPTC_ref --cand . \
+    --yaml datasets/CD5/260622_IFS.yaml --scripts gain.py --workdir ~/regress_check
+grep -c "failed" ~/regress_check/gain/ref/*results.txt
 ```
 
-`run_regression.py` rewrites `dataset.outpath` in a temporary copy of the YAML so your real
-`results/` folder is never touched. It prints PASS/FAIL per output file and per-script wall times.
+`run_regression.py` and `profile_run.py` rewrite `dataset.outpath` in a temporary copy of the YAML
+so your real `results/` folder is never touched. `run_regression.py` prints PASS/FAIL per output
+file and per-script wall times.
+
+Reading the results:
+- PASS needs the `grep` to print `0`. `gain.py` logs fit errors and exits normally, so two runs
+  where every fit failed would still compare as identical.
+- Run order does not affect the PASS/FAIL comparison, but it can affect timings. The reference runs
+  first, so it may pay for uncached disk reads. To compare speed, repeat the run with the order
+  swapped (`--ref . --cand ../diffPTC_ref`). Delete the `--workdir` folder between runs if the
+  outputs may differ.

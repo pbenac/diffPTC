@@ -8,7 +8,7 @@ To compare a differently named candidate script, pair each one with a reference 
 
     python llm_tools/run_regression.py --ref ../diffPTC_ref --cand . \
         --yaml datasets/260901_IMG_Illuminated_Defaults.yaml \
-        --scripts gain.py --cand-scripts gain_fast.py
+        --scripts gain.py --cand-scripts gain_new.py
 
 Each checkout runs `python <script> <yaml-copy>` with its own directory as cwd, so it imports
 its own modules. The YAML copy has dataset.outpath redirected to a scratch folder, so your real
