@@ -136,6 +136,16 @@ def load_cube_roi(dataset, n, X0, X1, Y0, Y1):
         return np.asarray(h[0].data[:, Y0:Y1, X0:X1], dtype=np.float64) + bz
 
 
+# LLM-generated (this function): read one read of the ROI; None if j is past the end of the ramp
+def load_read_roi(dataset, n, j, X0, X1, Y0, Y1):
+    with fits.open(fits_path(dataset, n), memmap=True, do_not_scale_image_data=True) as h:
+        bz = h[0].header.get("BZERO", 0)
+        data = h[0].data
+        if j >= data.shape[0]:
+            return None
+        return np.asarray(data[j, Y0:Y1, X0:X1], dtype=np.float64) + bz
+
+
 def load_full_read(dataset, n, j):
     with fits.open(fits_path(dataset, n), memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
@@ -166,9 +176,9 @@ def bias_level(dataset, mode_cfg, X0, X1, Y0, Y1, cfg):
 
     vals = []
     for n in ramps:
-        cube = load_cube_roi(dataset, n, X0, X1, Y0, Y1)
-        if j < cube.shape[0]:
-            vals.append(trimmed_median(cube[j], low, high))
+        image = load_read_roi(dataset, n, j, X0, X1, Y0, Y1)  # LLM-generated: read j only
+        if image is not None:  # LLM-generated
+            vals.append(trimmed_median(image, low, high))  # LLM-generated
 
     vals = np.asarray(vals, dtype=float)
     vals = vals[np.isfinite(vals)]

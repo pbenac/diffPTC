@@ -119,21 +119,26 @@ def get_roi(config, use_roi):
     )
 
 
-def load_cube(datapath, head, date, filenum, quicklook=False, roi=None, gui=False):  # LLM-generated: main() passes gui
+def load_cube(datapath, head, date, filenum, quicklook=False, roi=None, gui=False,  # LLM-generated: main() passes gui
+              pixel_stride=1):  # LLM-generated: load only the pixels that will be plotted
     """Load one ramp cube as float64 and apply FITS BZERO manually."""
+    stride = int(pixel_stride)  # LLM-generated
+    if stride < 1:  # LLM-generated: same error plot_all_pixel_traces raises
+        raise ValueError("pixel_stride must be >= 1")  # LLM-generated
+
     if gui:  # LLM-generated
         data, _header, source = gui_io.load_gui_cube(filenum, roi=roi)  # LLM-generated
-        return data, source  # LLM-generated
+        return data[:, ::stride, ::stride].copy(), source  # LLM-generated: GUI mode still reads every pixel
 
     fn = fits_path(datapath, head, date, filenum, quicklook=quicklook)
 
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
         if roi is None:
-            data = np.asarray(h[0].data).astype(np.float64) + bz
+            data = np.asarray(h[0].data[:, ::stride, ::stride]).astype(np.float64) + bz  # LLM-generated: apply stride while loading
         else:
             X0, X1, Y0, Y1 = roi
-            data = np.asarray(h[0].data[:, Y0:Y1, X0:X1]).astype(np.float64) + bz
+            data = np.asarray(h[0].data[:, Y0:Y1:stride, X0:X1:stride]).astype(np.float64) + bz  # LLM-generated: apply stride while loading
 
     return data, fn
 
@@ -269,7 +274,7 @@ def main():
                 try:
                     data, fn = load_cube(
                         datapath, head, date, n,
-                        quicklook=quicklook, roi=roi, gui=gui,
+                        quicklook=quicklook, roi=roi, gui=gui, pixel_stride=pixel_stride,  # LLM-generated
                     )
 
                     if subtract_reference_read:
@@ -292,7 +297,7 @@ def main():
                     n_traces = plot_all_pixel_traces(
                         data,
                         base,
-                        pixel_stride=pixel_stride,
+                        pixel_stride=1,  # LLM-generated: load_cube already applied the stride
                         alpha=alpha,
                         title=title,
                         dpi=dpi,

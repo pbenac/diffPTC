@@ -160,6 +160,13 @@ def make_diff(filenum1, filenum2, outfile_name, datapath, head, date, title=None
     fits.writeto(outfile_name + ".fits", diff, overwrite=True)
 
 
+# LLM-generated (this function): read only the ROI, not the full frame
+def load_crop(filename, X0, X1, Y0, Y1):
+    with fits.open(filename, memmap=True, do_not_scale_image_data=True) as h:
+        bz = h[0].header.get("BZERO", 0)
+        return np.asarray(h[0].data[:, Y0:Y1, X0:X1]).astype(np.float64) + bz
+
+
 def make_cropped_diff(filenum1, filenum2, X0, X1, Y0, Y1, outfile_name, datapath, head, date, title=None, quicklook=False, gui=False):
     if gui:
         f1, _h1, file1 = gui_io.load_gui_cube(filenum1, roi=(X0, X1, Y0, Y1))
@@ -167,9 +174,8 @@ def make_cropped_diff(filenum1, filenum2, X0, X1, Y0, Y1, outfile_name, datapath
     else:
         file1 = fits_path(datapath, head, date, filenum1, quicklook=quicklook)
         file2 = fits_path(datapath, head, date, filenum2, quicklook=quicklook)
-        inds = np.s_[:, Y0:Y1, X0:X1]
-        f1 = fits.getdata(file1).astype(float)[inds]
-        f2 = fits.getdata(file2).astype(float)[inds]
+        f1 = load_crop(file1, X0, X1, Y0, Y1)  # LLM-generated
+        f2 = load_crop(file2, X0, X1, Y0, Y1)  # LLM-generated
     diff = f2 - f1
 
     plt.figure()
