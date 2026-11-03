@@ -31,6 +31,8 @@ Conventions:
 - Dynamic range (e-) = (raw threshold - median bias) * gain.
 - Hard saturate uses the slope-cutoff criterion.
 - Gain is taken from the mode config when present; otherwise a PTC fallback is calculated.
+  The fallback matches gain.py (LLM-generated note): it honors analysis.first_read/last_read
+  (per-mode values override the top-level analysis block) and skips corrupt/zero frames.
 
 Optional YAML additions:
 summary:
@@ -144,6 +146,16 @@ def load_read_roi(dataset, n, j, X0, X1, Y0, Y1):
         if j >= data.shape[0]:
             return None
         return np.asarray(data[j, Y0:Y1, X0:X1], dtype=np.float64) + bz
+
+
+# LLM-generated (this function): read reads 0..last_read of the ROI; also return the ramp's read count
+def load_cube_reads(dataset, n, X0, X1, Y0, Y1, last_read=None):
+    with fits.open(fits_path(dataset, n), memmap=True, do_not_scale_image_data=True) as h:
+        bz = h[0].header.get("BZERO", 0)
+        data = h[0].data
+        nf = data.shape[0]
+        stop = None if last_read is None else max(int(last_read) + 1, 2)
+        return np.asarray(data[:stop, Y0:Y1, X0:X1], dtype=np.float64) + bz, nf
 
 
 def load_full_read(dataset, n, j):
@@ -370,7 +382,32 @@ def make_pairs(mode_cfg, ramps):
     raise ValueError(f"Unknown pairing {pairing!r}")
 
 
-def calculate_gain(dataset, mode_cfg, X0, X1, Y0, Y1):
+# LLM-generated (this function): same conversion as gain.py
+def as_optional_int(value):
+    if value is None:
+        return None
+    if isinstance(value, str) and value.strip().lower() in ("", "none", "null"):
+        return None
+    return int(value)
+
+
+# LLM-generated (this function): same read bounds and errors as gain.py
+def selected_read_bounds(nf, first_read=None, last_read=None):
+    first = 2 if first_read is None else int(first_read)
+    last = nf - 1 if last_read is None else int(last_read)
+    if first < 2:
+        raise ValueError(
+            f"first_read={first} is invalid: the PTC reference is read index 1, "
+            "so first_read must be >= 2."
+        )
+    if last < first:
+        raise ValueError(f"last_read={last} must be >= first_read={first}.")
+    if first >= nf:
+        raise ValueError(f"first_read={first} is outside a ramp with {nf} reads.")
+    return first, min(last, nf - 1)
+
+
+def calculate_gain(dataset, mode_cfg, X0, X1, Y0, Y1, analysis_cfg=None):  # LLM-generated: analysis_cfg holds read limits
     ramps = parse_ramps(mode_cfg, "illuminated")
     pairs = make_pairs(mode_cfg, ramps)
     if not pairs:
@@ -379,16 +416,32 @@ def calculate_gain(dataset, mode_cfg, X0, X1, Y0, Y1):
     detrend = truthy(mode_cfg.get("detrend", False))
     fixed_xmax = mode_cfg.get("fixed_xmax")
     fixed_xmax = None if fixed_xmax in (None, "", "None", "null") else float(fixed_xmax)
+    # LLM-generated: per-mode read limits override the top-level analysis block, as in gain.py
+    analysis_cfg = analysis_cfg or {}  # LLM-generated
+    mode_analysis = mode_cfg.get("analysis", {}) or {}  # LLM-generated
+    first_read = as_optional_int(mode_analysis.get("first_read", analysis_cfg.get("first_read")))  # LLM-generated
+    last_read = as_optional_int(mode_analysis.get("last_read", analysis_cfg.get("last_read")))  # LLM-generated
     S, V = [], []
 
     for n1, n2 in pairs:
-        A = load_cube_roi(dataset, n1, X0, X1, Y0, Y1)
-        B = load_cube_roi(dataset, n2, X0, X1, Y0, Y1)
-        nf = min(A.shape[0], B.shape[0])
+        A, nf_a = load_cube_reads(dataset, n1, X0, X1, Y0, Y1, last_read)  # LLM-generated: load only reads needed
+        B, nf_b = load_cube_reads(dataset, n2, X0, X1, Y0, Y1, last_read)  # LLM-generated: load only reads needed
+        nf = min(nf_a, nf_b)  # LLM-generated: full read counts
         if nf < 3:
             continue
+        try:  # LLM-generated
+            read_first, read_last = selected_read_bounds(nf, first_read, last_read)  # LLM-generated
+        except ValueError as exc:  # LLM-generated: report it and leave gain as nan, like gain.py skipping the mode
+            print(f"   {mode_cfg.get('name', 'mode')}: gain fallback failed: {exc}")  # LLM-generated
+            return np.nan  # LLM-generated
         A1, B1 = A[1], B[1]
-        for j in range(2, nf):
+        mA1, mB1 = np.median(A1), np.median(B1)  # LLM-generated
+        nbad = 0  # LLM-generated
+        for j in range(read_first, read_last + 1):  # LLM-generated
+            # LLM-generated: skip corrupt/truncated frames, same test as gain.py
+            if np.median(A[j]) < 0.5 * mA1 or np.median(B[j]) < 0.5 * mB1:  # LLM-generated
+                nbad += 1  # LLM-generated
+                continue  # LLM-generated
             da = A[j] - A1
             db = B[j] - B1
             d = db - da
@@ -400,6 +453,8 @@ def calculate_gain(dataset, mode_cfg, X0, X1, Y0, Y1):
             if np.isfinite(s) and np.isfinite(v):
                 S.append(s)
                 V.append(v)
+        if nbad:  # LLM-generated
+            print(f"   [{n1}/{n2}: skipped {nbad} corrupt/zero frames]")  # LLM-generated
 
     S = np.asarray(S, dtype=float)
     V = np.asarray(V, dtype=float)
@@ -442,7 +497,7 @@ def main():
 
         gain = get_gain(mode_cfg)
         if gain is None:
-            gain = calculate_gain(dataset, mode_cfg, X0, X1, Y0, Y1)
+            gain = calculate_gain(dataset, mode_cfg, X0, X1, Y0, Y1, config.get("analysis", {}))  # LLM-generated
 
         read_dn, reset_dn = noise_values(dataset, mode_cfg, X0, X1, Y0, Y1, scfg)
         bias_dn = bias_level(dataset, mode_cfg, X0, X1, Y0, Y1, scfg)
