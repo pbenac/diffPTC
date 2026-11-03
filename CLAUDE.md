@@ -23,6 +23,10 @@ for SCALES H2RG data. Analyses are YAML-driven; see README.md.
    check (`df -h ~`) and state the estimated output size, worked out from real file sizes.
    `run_regression.py` runs each script twice, and `ramp_io.py` writes full cubes (about
    33.5 MB per read as float64), so one run can fill the disk.
+   Do not give the owner heredocs (`python - <<'EOF'`) to paste; they fail in the owner's
+   terminal. For anything longer than a one-liner, commit a small script under `llm_tools/`.
+   A script that generates a config must check the result and exit with an error if it is
+   wrong, before any large run can use it.
 6. **Before calling a change done**, run `python llm_tools/test_synthetic.py` and confirm it
    passes. On the server, the owner runs `llm_tools/run_regression.py` against a real dataset.
 7. **Do not push, force-push, or delete branches** unless explicitly asked.
@@ -30,8 +34,8 @@ for SCALES H2RG data. Analyses are YAML-driven; see README.md.
 ## Branches and worktrees
 - **Check before acting.** Run `git worktree list && git status --short --branch` before any branch
   or worktree work. Do not assume what is on the server; ask the owner for this output.
-- **Stop on failure.** Chain git steps with `&&` or `set -e`, so a failed step cannot leave later
-  steps running in the wrong folder or on the wrong branch.
+- **Stop on failure.** Chain git steps with `&&` or explicit checks, and do not rely on `set -e`, so
+  a failed step cannot leave later steps running in the wrong folder or on the wrong branch.
 - **Pin comparison worktrees with `--detach`**, never a branch name. A branch can only be open in
   one folder at a time, so a worktree holding `main` blocks `git checkout main` everywhere else.
 - **One working folder.** Do real work in `~/diffPTC`, with at most one extra folder,
