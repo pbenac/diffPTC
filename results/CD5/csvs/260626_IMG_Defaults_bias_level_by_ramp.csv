@@ -1,0 +1,31 @@
+mode_key,mode_name,ramp,read_index,bias_DN,npix,filename
+fast06_default,Fast0.6 ,6193,1,412,40000,/data20/CD5/IMG/jun26/si260626_06193.fits
+fast06_default,Fast0.6 ,6194,1,402,40000,/data20/CD5/IMG/jun26/si260626_06194.fits
+fast06_default,Fast0.6 ,6195,1,413,40000,/data20/CD5/IMG/jun26/si260626_06195.fits
+fast06_default,Fast0.6 ,6196,1,405,40000,/data20/CD5/IMG/jun26/si260626_06196.fits
+fast06_default,Fast0.6 ,6197,1,402,40000,/data20/CD5/IMG/jun26/si260626_06197.fits
+fast06_default,Fast0.6 ,6198,1,401,40000,/data20/CD5/IMG/jun26/si260626_06198.fits
+fast06_default,Fast0.6 ,6199,1,412,40000,/data20/CD5/IMG/jun26/si260626_06199.fits
+fast06_default,Fast0.6 ,6200,1,403,40000,/data20/CD5/IMG/jun26/si260626_06200.fits
+fast06_default,Fast0.6 ,6201,1,396,40000,/data20/CD5/IMG/jun26/si260626_06201.fits
+fast06_default,Fast0.6 ,6202,1,472,40000,/data20/CD5/IMG/jun26/si260626_06202.fits
+fast10_default,Fast1.0 ,6223,1,701,40000,/data20/CD5/IMG/jun26/si260626_06223.fits
+fast10_default,Fast1.0 ,6224,1,601,40000,/data20/CD5/IMG/jun26/si260626_06224.fits
+fast10_default,Fast1.0 ,6225,1,603,40000,/data20/CD5/IMG/jun26/si260626_06225.fits
+fast10_default,Fast1.0 ,6226,1,607,40000,/data20/CD5/IMG/jun26/si260626_06226.fits
+fast10_default,Fast1.0 ,6227,1,599,40000,/data20/CD5/IMG/jun26/si260626_06227.fits
+fast10_default,Fast1.0 ,6228,1,607,40000,/data20/CD5/IMG/jun26/si260626_06228.fits
+fast10_default,Fast1.0 ,6229,1,724,40000,/data20/CD5/IMG/jun26/si260626_06229.fits
+fast10_default,Fast1.0 ,6230,1,600,40000,/data20/CD5/IMG/jun26/si260626_06230.fits
+fast10_default,Fast1.0 ,6231,1,665,40000,/data20/CD5/IMG/jun26/si260626_06231.fits
+fast10_default,Fast1.0 ,6232,1,701,40000,/data20/CD5/IMG/jun26/si260626_06232.fits
+slow52_default,Slow5.2,6163,1,16071,40000,/data20/CD5/IMG/jun26/si260626_06163.fits
+slow52_default,Slow5.2,6164,1,65535,40000,/data20/CD5/IMG/jun26/si260626_06164.fits
+slow52_default,Slow5.2,6165,1,16752.5,40000,/data20/CD5/IMG/jun26/si260626_06165.fits
+slow52_default,Slow5.2,6166,1,24210,40000,/data20/CD5/IMG/jun26/si260626_06166.fits
+slow52_default,Slow5.2,6167,1,17901,40000,/data20/CD5/IMG/jun26/si260626_06167.fits
+slow52_default,Slow5.2,6168,1,18120.5,40000,/data20/CD5/IMG/jun26/si260626_06168.fits
+slow52_default,Slow5.2,6169,1,18256,40000,/data20/CD5/IMG/jun26/si260626_06169.fits
+slow52_default,Slow5.2,6170,1,18354,40000,/data20/CD5/IMG/jun26/si260626_06170.fits
+slow52_default,Slow5.2,6171,1,18528,40000,/data20/CD5/IMG/jun26/si260626_06171.fits
+slow52_default,Slow5.2,6172,1,18615,40000,/data20/CD5/IMG/jun26/si260626_06172.fits

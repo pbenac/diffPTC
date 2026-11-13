@@ -1,0 +1,38 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[50:350] y[1350:1650]
+quicklook=True; data directory=/data20/CD5/IMG/jun26/ql_redux
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Fast0.6 : illuminated ramps=[6193, 6194, 6195, 6196, 6197, 6198, 6199, 6200, 6201, 6202]; pairs=[(6193, 6194), (6194, 6195), (6195, 6196), (6196, 6197), (6197, 6198), (6198, 6199), (6199, 6200), (6200, 6201), (6201, 6202)]
+   [6193/6194: files not ready; skipped]
+   [6194/6195: files not ready; skipped]
+   [6195/6196: files not ready; skipped]
+   [6196/6197: files not ready; skipped]
+   [6197/6198: files not ready; skipped]
+   [6198/6199: files not ready; skipped]
+   [6199/6200: files not ready; skipped]
+   [6200/6201: files not ready; skipped]
+   [6201/6202: files not ready; skipped]
+Fast0.6   -- gain fit failed: No valid illuminated ramp pairs were available.; skipped --
+   Fast1.0 : illuminated ramps=[6223, 6224, 6225, 6226, 6227, 6228, 6229, 6230, 6231, 6232]; pairs=[(6223, 6224), (6224, 6225), (6225, 6226), (6226, 6227), (6227, 6228), (6228, 6229), (6229, 6230), (6230, 6231), (6231, 6232)]
+   [6223/6224: files not ready; skipped]
+   [6224/6225: files not ready; skipped]
+   [6225/6226: files not ready; skipped]
+   [6226/6227: files not ready; skipped]
+   [6227/6228: files not ready; skipped]
+   [6228/6229: files not ready; skipped]
+   [6229/6230: files not ready; skipped]
+   [6230/6231: files not ready; skipped]
+   [6231/6232: files not ready; skipped]
+Fast1.0   -- gain fit failed: No valid illuminated ramp pairs were available.; skipped --
+   Slow5.2 : illuminated ramps=[6163, 6164, 6165, 6166, 6167, 6168, 6169, 6170, 6171, 6172]; pairs=[(6163, 6164), (6164, 6165), (6165, 6166), (6166, 6167), (6167, 6168), (6168, 6169), (6169, 6170), (6170, 6171), (6171, 6172)]
+   [6163/6164: files not ready; skipped]
+   [6164/6165: files not ready; skipped]
+   [6165/6166: files not ready; skipped]
+   [6166/6167: files not ready; skipped]
+   [6167/6168: files not ready; skipped]
+   [6168/6169: files not ready; skipped]
+   [6169/6170: files not ready; skipped]
+   [6170/6171: files not ready; skipped]
+   [6171/6172: files not ready; skipped]
+Slow5.2   -- gain fit failed: No valid illuminated ramp pairs were available.; skipped --

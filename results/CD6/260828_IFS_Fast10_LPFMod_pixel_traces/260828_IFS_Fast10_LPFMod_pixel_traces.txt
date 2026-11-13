@@ -1,0 +1,63 @@
+=== Pixel trace plotting ===
+dataset=260828_IFS_Fast10_LPFMod
+head=IFS; date=260828; quicklook=False
+data directory=/data20/CD6/IFS/aug28/
+section=illuminated; pixel_stride=25; alpha=0.03; dpi=150
+subtract_reference_read=False; reference_read_index=1
+ROI=x[500:1500] y[100:700]
+
+Fast1.0: ramps=[1605, 1606, 1607, 1608, 1609, 1610, 1611, 1612, 1613, 1614]
+   ramp 01605: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01605_pixel_traces.png
+   ramp 01606: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01606_pixel_traces.png
+   ramp 01607: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01607_pixel_traces.png
+   ramp 01608: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01608_pixel_traces.png
+   ramp 01609: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01609_pixel_traces.png
+   ramp 01610: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01610_pixel_traces.png
+   ramp 01611: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01611_pixel_traces.png
+   ramp 01612: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01612_pixel_traces.png
+   ramp 01613: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01613_pixel_traces.png
+   ramp 01614: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_01614_pixel_traces.png
+Fast1.0, LPF 15165: ramps=[1615, 1616, 1617, 1618, 1619, 1620, 1621, 1622, 1623, 1624]
+   ramp 01615: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01615_pixel_traces.png
+   ramp 01616: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01616_pixel_traces.png
+   ramp 01617: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01617_pixel_traces.png
+   ramp 01618: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01618_pixel_traces.png
+   ramp 01619: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01619_pixel_traces.png
+   ramp 01620: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01620_pixel_traces.png
+   ramp 01621: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01621_pixel_traces.png
+   ramp 01622: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01622_pixel_traces.png
+   ramp 01623: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01623_pixel_traces.png
+   ramp 01624: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_15165_01624_pixel_traces.png
+Fast1.0, LPF 7582: ramps=[1625, 1626, 1627, 1628, 1629, 1630, 1631, 1632, 1633, 1634]
+   ramp 01625: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01625_pixel_traces.png
+   ramp 01626: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01626_pixel_traces.png
+   ramp 01627: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01627_pixel_traces.png
+   ramp 01628: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01628_pixel_traces.png
+   ramp 01629: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01629_pixel_traces.png
+   ramp 01630: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01630_pixel_traces.png
+   ramp 01631: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01631_pixel_traces.png
+   ramp 01632: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01632_pixel_traces.png
+   ramp 01633: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01633_pixel_traces.png
+   ramp 01634: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_7582_01634_pixel_traces.png
+Fast1.0, LPF 5055: ramps=[1635, 1636, 1637, 1638, 1639, 1640, 1641, 1642, 1643, 1644]
+   ramp 01635: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01635_pixel_traces.png
+   ramp 01636: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01636_pixel_traces.png
+   ramp 01637: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01637_pixel_traces.png
+   ramp 01638: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01638_pixel_traces.png
+   ramp 01639: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01639_pixel_traces.png
+   ramp 01640: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01640_pixel_traces.png
+   ramp 01641: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01641_pixel_traces.png
+   ramp 01642: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01642_pixel_traces.png
+   ramp 01643: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01643_pixel_traces.png
+   ramp 01644: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_5055_01644_pixel_traces.png
+Fast1.0, LPF 3791: ramps=[1645, 1646, 1647, 1648, 1649, 1650, 1651, 1652, 1653, 1654]
+   ramp 01645: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01645_pixel_traces.png
+   ramp 01646: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01646_pixel_traces.png
+   ramp 01647: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01647_pixel_traces.png
+   ramp 01648: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01648_pixel_traces.png
+   ramp 01649: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01649_pixel_traces.png
+   ramp 01650: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01650_pixel_traces.png
+   ramp 01651: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01651_pixel_traces.png
+   ramp 01652: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01652_pixel_traces.png
+   ramp 01653: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01653_pixel_traces.png
+   ramp 01654: 10 reads, 1000x600 pixels loaded, 960 traces plotted -> /home/pbenac/diffPTC/results/260828_IFS_Fast10_LPFMod_pixel_traces/260828_IFS_Fast10_LPFMod_Fast1.0_LPF_3791_01654_pixel_traces.png

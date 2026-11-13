@@ -1,0 +1,10 @@
+mode_key,mode_name,ramp,read_index,bias_DN,npix,filename
+fast06,Fast0.6,20104,1,531,96250,/data20/CD5/IFS/jun22/ss260622_20104.fits
+fast06,Fast0.6,20135,1,540,96250,/data20/CD5/IFS/jun22/ss260622_20135.fits
+fast06,Fast0.6,20136,1,530,96250,/data20/CD5/IFS/jun22/ss260622_20136.fits
+fast10,Fast1.0,20152,1,799,96250,/data20/CD5/IFS/jun22/ss260622_20152.fits
+fast10,Fast1.0,20153,1,798,96250,/data20/CD5/IFS/jun22/ss260622_20153.fits
+fast10,Fast1.0,20154,1,800,96250,/data20/CD5/IFS/jun22/ss260622_20154.fits
+slow52,Slow5.2,20083,1,29346,96250,/data20/CD5/IFS/jun22/ss260622_20083.fits
+slow52,Slow5.2,20084,1,29449,96250,/data20/CD5/IFS/jun22/ss260622_20084.fits
+slow52,Slow5.2,20085,1,29572,96250,/data20/CD5/IFS/jun22/ss260622_20085.fits

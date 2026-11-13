@@ -1,0 +1,9 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260625_IMG_Defaults
+Quicklook: False
+ROI: x[50:350] y[1350:1650]
+
+mode                 ramps reads  slope(DN/s)   WD dev(DN)  WD cutoff(DN)
+Fast0.6_Default         10   103        1.326          nan           30.2
+Fast1.0_Default          9    58        1.317          nan           40.2
+Slow5.2_Default         10    12       36.267          nan            nan

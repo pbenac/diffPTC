@@ -1,0 +1,10 @@
+=== Well depth / ramp profile analysis ===
+Dataset: 260622_IFS
+Quicklook: False
+ROI: x[150:500] y[1700:1975]
+Well-depth flags require sustained positive rolloff/flattening; no flag => NaN.
+
+mode                 ramps reads  slope(DN/s) WD rolloff(DN)  WD cutoff(DN)
+Fast0.6                  3   515       13.733       2898.1         3552.0
+Fast1.0                  3   287       14.305       1871.4         3293.0
+Slow5.2                  3    58      347.281      25938.3        36086.0

@@ -1,0 +1,16 @@
+=== Bias / starting-level estimate ===
+Dataset: 260622_IMG
+Quicklook: False
+Data path: /data20/CD5/IMG/jun22/
+Ramp section: illuminated
+Read index: 1
+ROI: roi x[200:1000] y[1000:1800]
+Trim: keep pixels between 1 and 99 percentiles
+
+mode                     N          median bias       mean bias          std                    range
+Fast0.6                  3 ramps  median=    464.00 DN  mean=    465.00 DN  std=    1.73 DN  range=[464.00, 467.00] DN
+Fast1.0                  5 ramps  median=    724.00 DN  mean=    728.40 DN  std=   18.66 DN  range=[706.00, 753.00] DN
+Slow5.2                  5 ramps  median=  29966.00 DN  mean=  30614.80 DN  std= 1608.21 DN  range=[29140.00, 32606.00] DN
+
+Wrote per-ramp CSV: /home/pbenac/diffPTC/results/260622_IMG_bias_level_by_ramp.csv
+Wrote summary CSV:  /home/pbenac/diffPTC/results/260622_IMG_bias_level_summary.csv

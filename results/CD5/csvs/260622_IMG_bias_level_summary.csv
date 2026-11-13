@@ -1,0 +1,4 @@
+mode_key,mode_name,n_ramps,read_index,trim_low_percentile,trim_high_percentile,median_bias_DN,mean_bias_DN,std_bias_DN,min_bias_DN,max_bias_DN
+fast06,Fast0.6,3,1,1.0,99.0,464,465,1.7320508,464,467
+fast10,Fast1.0,5,1,1.0,99.0,724,728.4,18.662797,706,753
+slow52,Slow5.2,5,1,1.0,99.0,29966,30614.8,1608.211,29140,32606

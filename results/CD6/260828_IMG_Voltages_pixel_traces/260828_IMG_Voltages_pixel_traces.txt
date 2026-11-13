@@ -1,0 +1,19 @@
+=== Pixel trace plotting ===
+dataset=260828_IMG_Voltages
+head=Im; date=260828; quicklook=False
+data directory=/data20/CD6/IMG/aug28/
+section=illuminated; pixel_stride=3; alpha=0.03; dpi=150
+subtract_reference_read=False; reference_read_index=1
+ROI=x[800:1250] y[900:1350]
+
+Fast0.6: ramps=[1619, 1620, 1621, 1622, 1623, 1624, 1625, 1626, 1627, 1628]
+   ramp 01619: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01619_pixel_traces.png
+   ramp 01620: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01620_pixel_traces.png
+   ramp 01621: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01621_pixel_traces.png
+   ramp 01622: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01622_pixel_traces.png
+   ramp 01623: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01623_pixel_traces.png
+   ramp 01624: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01624_pixel_traces.png
+   ramp 01625: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01625_pixel_traces.png
+   ramp 01626: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01626_pixel_traces.png
+   ramp 01627: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01627_pixel_traces.png
+   ramp 01628: 18 reads, 450x450 pixels loaded, 22500 traces plotted -> /home/pbenac/diffPTC/results/260828_IMG_Voltages_pixel_traces/260828_IMG_Voltages_Fast0.6_01628_pixel_traces.png

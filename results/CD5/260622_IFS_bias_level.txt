@@ -1,0 +1,16 @@
+=== Bias / starting-level estimate ===
+Dataset: 260622_IFS
+Quicklook: False
+Data path: /data20/CD5/IFS/jun22/
+Ramp section: illuminated
+Read index: 1
+ROI: roi x[150:500] y[1700:1975]
+Trim: keep pixels between 1 and 99 percentiles
+
+mode                     N          median bias       mean bias          std                    range
+Fast0.6                  3 ramps  median=    531.00 DN  mean=    533.67 DN  std=    5.51 DN  range=[530.00, 540.00] DN
+Fast1.0                  3 ramps  median=    799.00 DN  mean=    799.00 DN  std=    1.00 DN  range=[798.00, 800.00] DN
+Slow5.2                  3 ramps  median=  29449.00 DN  mean=  29455.67 DN  std=  113.15 DN  range=[29346.00, 29572.00] DN
+
+Wrote per-ramp CSV: /home/pbenac/diffPTC/results/260622_IFS_bias_level_by_ramp.csv
+Wrote summary CSV:  /home/pbenac/diffPTC/results/260622_IFS_bias_level_summary.csv

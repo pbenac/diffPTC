@@ -1,0 +1,90 @@
+basic:
+  gui: false
+dataset:
+  name: 20261112_IFS_20s
+  descr: Generated from 20261112_IFS_log.txt
+  datapath: /data20/CD7/IFS/nov12/
+  outpath: /home/pbenac/diffPTC/results/
+  head: IFS
+  date: '261112'
+  modes:
+    - default_fast0_6
+    - default_fast1_0
+    - default_slow
+
+roi:
+  x_start: 600
+  x_end: 1200
+  y_start: 800
+  y_end: 1400
+dark_roi:
+  x_start: 0
+  x_end: 2048
+  y_start: 0
+  y_end: 2048
+default_fast0_6:
+  name: Default Fast0.6
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 1
+      - 4
+default_fast1_0:
+  name: Default Fast1.0
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 4
+      - 7
+default_slow:
+  name: Default Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 7
+      - 10
+default_fast0_6_2:
+  name: Default Fast0.6
+  frametime: 0.582542
+  master_clockrate: 9MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 10
+      - 13
+default_fast1_0_2:
+  name: Default Fast1.0
+  frametime: 1.048576
+  master_clockrate: 5MHz
+  adc_max: 4092
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 13
+      - 16
+default_slow_2:
+  name: Default Slow
+  frametime: 5.24288
+  master_clockrate: 20MHz
+  adc_max: 65535
+  detrend: false
+  fixed_xmax: null
+  illuminated:
+    ramp_range:
+      - 16
+      - 19

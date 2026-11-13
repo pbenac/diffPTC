@@ -1,0 +1,10 @@
+=== gain by readout mode (two-image difference method) ===
+Region x[100:300] y[1600:1700]
+
+mode         ITIME  pairs  reads   maxDN  gain(e-/DN)    err  RN(e-)
+   Fast0.6: illuminated ramps=[4433, 4434]; pairs=[(4433, 4434)]
+Fast0.6     0.5825      1    101     102       56.669  2.576    66.8
+   Fast1.0: illuminated ramps=[4419, 4420]; pairs=[(4419, 4420)]
+Fast1.0     1.0486      1     56     102       38.912  0.758    31.0
+   Slow5.2: illuminated ramps=[4439, 4440]; pairs=[(4439, 4440)]
+Slow5.2     5.2429      1     10    2560        1.518  0.045    31.0

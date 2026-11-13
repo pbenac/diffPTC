@@ -1,0 +1,17 @@
+=== Read noise & reset noise from darks ===
+region x[1500:1700] y[1500:1700]; channels = 512-col vertical stripes
+quicklook=True; data directory=/data20/CD5/IMG/jun25/ql_redux
+
+read noise = std(F2-F1)/sqrt2 (within-ramp CDS), channel+row corrected, Sheppard quantization-corrected.
+reset noise = sqrt( Var(A1-B1)/2 - read^2 ) across independent ramps.
+
+mode         gain  ramps |        READ NOISE (e-) | RESET NOISE (e-)
+            e-/DN        |  rawCDS corr(reg) corr(full) |  corr(reg)
+Fast0.6_Default  53.210     10 |    38.5      31.0       28.7 |       39.2
+Fast1.0_Default  37.960      9 |    21.0      16.6       17.0 |       31.9
+Slow5.2_Default   1.480     10 |    23.0      21.8       27.5 |       34.6
+
+Details (corrected, region):
+  Fast0.6_Default: read noise 31.0 e- (= 0.58 DN); raw(uncorrected) 38.5 e-; reset noise 39.2 e-
+  Fast1.0_Default: read noise 16.6 e- (= 0.44 DN); raw(uncorrected) 21.0 e-; reset noise 31.9 e-
+  Slow5.2_Default: read noise 21.8 e- (= 14.74 DN); raw(uncorrected) 23.0 e-; reset noise 34.6 e-

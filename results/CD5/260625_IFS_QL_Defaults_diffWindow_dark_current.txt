@@ -1,0 +1,10 @@
+=== Dark current by readout mode (region x[1500:1700] y[1500:1700]) ===
+quicklook=True; data directory=/data20/CD5/IFS/jun25/ql_redux
+
+mode        ITIME  ramps t_tot(s)   dark(e-/s)     +/-
+Fast0.6_Default   0.583     10     59.4         1.40    0.05
+Fast1.0_Default   1.049     10     59.8         1.16    0.04
+Slow5.2_Default -- no dark ramps configured; skipped --
+
+Notes:
+  Primary dark current (Fast0.6_Default): 1.40 +/- 0.05 e-/s
