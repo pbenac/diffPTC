@@ -37,11 +37,13 @@ Optional PTC read selection can be set globally:
     first_read: 2
     last_read: 8
 
-or overridden for an individual mode:
+or overridden for an individual mode, inside that mode's own analysis block
+(LLM-generated fix: first_read/last_read placed directly under the mode are ignored):
 
   fast06:
-    first_read: 2
-    last_read: 6
+    analysis:
+      first_read: 2
+      last_read: 6
 
 Read numbers here are zero-based FITS-cube indices, matching the existing code.
 The reference image remains read index 1.  first_read/last_read only control
