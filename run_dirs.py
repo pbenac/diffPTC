@@ -36,7 +36,7 @@ def _enabled(value):
 def _git(args, cwd):
     try:
         r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True, timeout=10)
-        return r.stdout.strip() if r.returncode == 0 else "unknown"
+        return r.stdout.rstrip() if r.returncode == 0 else "unknown"  # keep status's leading spaces
     except Exception:
         return "unknown"
 
