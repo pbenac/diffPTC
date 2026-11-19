@@ -1,0 +1,9 @@
+=== gain by readout mode, IPC-corrected (two-image difference method) ===
+Region x[100:700] y[100:700]
+quicklook=False; data directory=/data20/CD6/IFS/sep01/
+
+mode         ITIME  pairs  reads   maxDN   g_raw  alpha_x  alpha_y  g_kern  g_csum   g_ipc    err  RN(e-) method
+   Default Fast0.6: illuminated ramps=[2712, 2713, 2714, 2715, 2716, 2717, 2718, 2719, 2720, 2721]; pairs=[(2712, 2713), (2713, 2714), (2714, 2715), (2715, 2716), (2716, 2717), (2717, 2718), (2718, 2719), (2719, 2720), (2720, 2721)]; reads=2:end (inclusive)
+Default Fast0.6   0.5825      9    513    3563 242.220   0.0587   0.0750 134.345 101.771 134.345  3.466   547.6 kernel
+          sum(k^2)=0.5546  C(1,1)/C(0,0) slope ratio=0.0635  raw RN=987.3 e-
+   Default Fast1.0: illuminated ramps=[2772, 2773, 2774, 2775, 2776, 2777, 2778, 2779, 2780, 2781]; pairs=[(2772, 2773), (2773, 2774), (2774, 2775), (2775, 2776), (2776, 2777), (2777, 2778), (2778, 2779), (2779, 2780), (2780, 2781)]; reads=2:end (inclusive)

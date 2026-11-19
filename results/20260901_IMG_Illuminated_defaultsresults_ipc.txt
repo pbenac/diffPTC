@@ -1,0 +1,14 @@
+=== gain by readout mode, IPC-corrected (two-image difference method) ===
+Region x[900:1200] y[900:1200]
+quicklook=False; data directory=/data20/CD6/IMG/sep01/
+
+mode         ITIME  pairs  reads   maxDN   g_raw  alpha_x  alpha_y  g_kern  g_csum   g_ipc    err  RN(e-) method
+   Fast0.6: illuminated ramps=[2807, 2808, 2809, 2810, 2811, 2812, 2813, 2814, 2815, 2816]; pairs=[(2807, 2808), (2808, 2809), (2809, 2810), (2810, 2811), (2811, 2812), (2812, 2813), (2813, 2814), (2814, 2815), (2815, 2816)]; reads=2:40 (inclusive)
+Fast0.6     0.5825      9     39     874  49.711   0.0597   0.0903  25.515  11.754  25.515  0.462    30.8 kernel
+          sum(k^2)=0.5133  C(1,1)/C(0,0) slope ratio=0.1237  raw RN=60.0 e-
+   Fast1.0: illuminated ramps=[2877, 2878, 2879, 2880, 2881, 2882, 2883, 2884, 2885, 2886]; pairs=[(2877, 2878), (2878, 2879), (2879, 2880), (2880, 2881), (2881, 2882), (2882, 2883), (2883, 2884), (2884, 2885), (2885, 2886)]; reads=2:20 (inclusive)
+Fast1.0     1.0486      9     19     797  44.497   0.0180   0.0189  38.228  30.689  38.228  0.367    48.2 kernel
+          sum(k^2)=0.8591  C(1,1)/C(0,0) slope ratio=0.0190  raw RN=56.1 e-
+   Slow: illuminated ramps=[2862, 2863, 2864, 2865, 2866]; pairs=[(2862, 2863), (2863, 2864), (2864, 2865), (2865, 2866)]; reads=2:6 (inclusive)
+Slow        5.2429      4      5   23524   1.981   0.0385   0.0359   1.446   0.804   1.446  0.040    51.4 kernel
+          sum(k^2)=0.7300  C(1,1)/C(0,0) slope ratio=0.0651  raw RN=70.4 e-
