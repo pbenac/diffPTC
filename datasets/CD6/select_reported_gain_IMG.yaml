@@ -1,0 +1,34 @@
+# LLM-generated (Claude). Selection file for gain_select.py, NOT a gain.py dataset YAML.
+#   python gain_select.py datasets/CD6/select_reported_gain_IMG.yaml
+#
+# The IMG gains reported in the Pre Ship doc (Table 1) and the CD6 results sheet,
+# traced to the result files that produced them:
+#   Fast0.6 38.212  results/CD6/260828_IMG_analyze0908results.txt (Aug 28, reads 2:60)
+#   Slow5.2 1.858   same file                                      (Aug 28, reads 2:10)
+#   Fast1.0 38.789  results/CD6/260824_Img_slow52_120sresults.txt  (Aug 24, reads 2:10)
+# 260828_IMG_defaults.yaml now has its analysis blocks commented out (and different
+# last_read values), so the read limits used on Sep 8 are set here explicitly.
+
+name: CD6_IMG_reported
+outpath: results/CD6/selected/
+entries:
+  - dataset: datasets/CD6/260828_IMG_defaults.yaml
+    mode: fast06
+    label: Fast0.6
+    first_read: 2
+    last_read: 60
+    expect_gain: 38.212
+
+  - dataset: datasets/CD6/260824_IMG_120s.yaml
+    mode: fast10_default
+    label: Fast1.0
+    first_read: 2
+    last_read: 10
+    expect_gain: 38.789
+
+  - dataset: datasets/CD6/260828_IMG_defaults.yaml
+    mode: slow52
+    label: Slow5.2
+    first_read: 2
+    last_read: 10
+    expect_gain: 1.858
