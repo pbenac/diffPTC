@@ -42,6 +42,7 @@ def run(code_dir, script, ypath, cwd):
 def config(datapath, outpath, ramps=NUMS):
     c = msr.synthetic_yaml(datapath, outpath, numbers=ramps, head="IMG", date="260118")
     c["dark_roi"] = dict(c["roi"])
+    c["dataset"]["run_subdir"] = False  # flat, to compare with main
     c["dark_analysis"] = {"channel_width": 32}
     c["fast"]["gain"] = 2.0
     c["fast"]["illuminated"]["pairing"] = "adjacent"

@@ -27,6 +27,7 @@ from astropy.io import fits
 import yaml
 import gui_io
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 
 
 def P(log, *args):
@@ -217,6 +218,7 @@ def main():
     head = dataset.get("head", "GUI")
     date = str(dataset.get("date", ""))
     datapath = dataset.get("datapath", "")
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "plot_pix_trace")  # LLM-generated: per-dataset run folder
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]

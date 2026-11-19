@@ -66,6 +66,7 @@ import matplotlib.pyplot as plt
 from astropy.stats import sigma_clip, sigma_clipped_stats
 import yaml
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 
 import gain as G
 import gui_io
@@ -379,6 +380,7 @@ def main():
     date = config["dataset"].get("date", "")
     datapath = config["dataset"].get("datapath", "")
     quicklook = False if gui else bool(config["dataset"].get("quicklook", False))
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "gain_ipc")  # LLM-generated: per-dataset run folder
     outpath = config["dataset"]["outpath"]
     setname = config["dataset"]["name"]
     modes = config["dataset"]["modes"]

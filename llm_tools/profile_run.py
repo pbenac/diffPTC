@@ -43,6 +43,7 @@ def main():
     with open(args.yaml) as f:
         cfg = yaml.safe_load(f)
     cfg["dataset"]["outpath"] = outdir + os.sep
+    cfg["dataset"]["run_subdir"] = False  # write flat into the scratch folder
     ycopy = os.path.join(outdir, os.path.basename(args.yaml))
     with open(ycopy, "w") as f:
         yaml.safe_dump(cfg, f, sort_keys=False)

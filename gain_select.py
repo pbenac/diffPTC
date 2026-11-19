@@ -21,8 +21,11 @@ gain.py on that dataset with the same read limits.
 
 Selection YAML:
 
-  name: CD6_IMG_reported           # prefix for output files
-  outpath: results/CD6/selected/   # relative to the current directory, or absolute
+  name: CD6_IMG_reported           # prefix for output files and the run folder name
+  outpath: results/CD6/selected/   # relative to the current directory, or absolute;
+                                   # outputs go in <outpath>/<name>/ (or <name>_1/, ...
+                                   # if a previous run is there; see run_dirs.py)
+  # run_subdir: false              # write straight into outpath instead
   entries:
     - dataset: datasets/CD6/260828_IMG_defaults.yaml   # path to a gain.py YAML
       mode: fast06                 # the mode KEY in that YAML (not its 'name')
@@ -51,6 +54,7 @@ import matplotlib.pyplot as plt
 
 import gain
 import gui_io
+import run_dirs
 
 
 def resolve_path(path, base_dir):
@@ -188,9 +192,12 @@ def main():
         sel = yaml.safe_load(f)
     base_dir = os.path.dirname(os.path.abspath(sel_path))
     setname = sel["name"]
-    outpath = sel["outpath"]
     entries = sel["entries"]
-    os.makedirs(outpath, exist_ok=True)
+    # Per-selection run folder, as for the other scripts (run_dirs.py).
+    outpath = run_dirs.output_dir(
+        {"dataset": {"outpath": sel["outpath"], "name": setname,
+                     "run_subdir": sel.get("run_subdir", True)}},
+        sel_path, "gain_select")
 
     labels = [str(e.get("label", e["mode"])) for e in entries]
     if len(set(labels)) != len(labels):

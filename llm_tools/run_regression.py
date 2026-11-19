@@ -33,6 +33,7 @@ def run_one(checkout, script, yaml_path, outdir, stub):
     with open(yaml_path) as f:
         cfg = yaml.safe_load(f)
     cfg["dataset"]["outpath"] = outdir + os.sep
+    cfg["dataset"]["run_subdir"] = False  # write flat, as main does, so the two runs line up
     os.makedirs(outdir, exist_ok=True)
     ycopy = os.path.join(outdir, "_config_copy.yaml")
     with open(ycopy, "w") as f:

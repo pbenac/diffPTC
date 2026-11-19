@@ -63,6 +63,7 @@ import warnings
 import numpy as np
 import yaml
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 
@@ -487,6 +488,7 @@ def main():
     X0, X1 = int(roi["x_start"]), int(roi["x_end"])
     Y0, Y1 = int(roi["y_start"]), int(roi["y_end"])
 
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "detector_summary")  # LLM-generated: per-dataset run folder
     outpath = dataset["outpath"]
     setname = dataset["name"]
     os.makedirs(outpath, exist_ok=True)

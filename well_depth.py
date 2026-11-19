@@ -52,6 +52,7 @@ from astropy.io import fits
 import yaml
 import gui_io
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 
 
 def P(log, *args):
@@ -1398,6 +1399,7 @@ def main():
         config = yaml.safe_load(f)
 
     dataset = config["dataset"]
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "well_depth")  # LLM-generated: per-dataset run folder
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]

@@ -122,9 +122,11 @@ def main():
     p = subprocess.run([sys.executable, os.path.join(REPO, "gain_ipc.py"), ypath],
                        capture_output=True, text=True, cwd=REPO)
     print(p.stdout, p.stderr[-800:])
-    files = sorted(os.listdir(out)) if os.path.isdir(out) else []
+    run = os.path.join(out, "synthetic")  # per-dataset run folder (run_dirs.py)
+    files = sorted(os.listdir(run)) if os.path.isdir(run) else []
     expect = {"syntheticresults_ipc.txt", "synthetic_ptc_ipc_Fast.csv",
-              "synthetic_pair_gains_ipc_Fast.csv", "syntheticgain_ipc_compare.png"}
+              "synthetic_pair_gains_ipc_Fast.csv", "syntheticgain_ipc_compare.png",
+              "config_gain_ipc.yaml", "run_info_gain_ipc.txt"}
     t3 = (p.returncode == 0 and "failed" not in p.stdout and set(files) == expect)
     print("outputs:", files)
     ok.append(t3)

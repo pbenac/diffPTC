@@ -66,6 +66,7 @@ import yaml
 import scipy
 import gui_io
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 
 
 def P(log, *a):
@@ -554,6 +555,7 @@ def main():
     date = config["dataset"].get("date", "")
     datapath = config["dataset"].get("datapath", "")
     quicklook = False if gui else bool(config["dataset"].get("quicklook", False))
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "gain")  # LLM-generated: per-dataset run folder
     outpath = config["dataset"]["outpath"]
     setname = config["dataset"]["name"]
     modes = config["dataset"]["modes"]

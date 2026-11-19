@@ -61,6 +61,7 @@ from astropy.io import fits
 import yaml
 import gui_io
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 
 
 def P(log, *args):
@@ -296,6 +297,7 @@ def main():
     dataset = config["dataset"]
     gui = gui_io.is_gui_mode(config)
     setname = dataset["name"]
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "bias_level")  # LLM-generated: per-dataset run folder
     outpath = dataset["outpath"]
     modes = dataset["modes"]
     os.makedirs(outpath, exist_ok=True)

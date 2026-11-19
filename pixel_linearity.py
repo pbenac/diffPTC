@@ -42,6 +42,7 @@ import sys
 import numpy as np
 import yaml
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 
 import matplotlib
 matplotlib.use("Agg")
@@ -399,6 +400,7 @@ def main():
         config = yaml.safe_load(f)
 
     dataset = config["dataset"]
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "pixel_linearity")  # LLM-generated: per-dataset run folder
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]

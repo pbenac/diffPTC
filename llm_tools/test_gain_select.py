@@ -45,6 +45,7 @@ def dataset(tmp, date, flux, numbers, modes):
                              numbers=numbers, head="IMG", date=date)
     cfg["dataset"]["name"] = f"day{date}"
     cfg["dataset"]["modes"] = list(modes)
+    cfg["dataset"]["run_subdir"] = False  # gain.py reference outputs written flat
     del cfg["fast"]
     for key, (name, last) in modes.items():
         cfg[key] = {"name": name, "frametime": 1.0, "detrend": False,
@@ -115,17 +116,17 @@ def main():
         run("gain_select.py", sp, REPO)  # dataset paths resolve via the selection's folder
 
         for label in ("FastA", "FastB", "SlowA"):
-            same = (read(f"{sel_out}/sel_ptc_{label}.csv") == read(ref[label][0]) and
-                    read(f"{sel_out}/sel_pair_gains_{label}.csv") == read(ref[label][1]))
+            same = (read(f"{sel_out}/sel/sel_ptc_{label}.csv") == read(ref[label][0]) and
+                    read(f"{sel_out}/sel/sel_pair_gains_{label}.csv") == read(ref[label][1]))
             print(f"[{'PASS' if same else 'FAIL'}] {label}: CSVs byte-identical to gain.py")
             ok &= same
-            png = os.path.exists(f"{sel_out}/sel_{label}_ptc.png")
+            png = os.path.exists(f"{sel_out}/sel/sel_{label}_ptc.png")
             print(f"[{'PASS' if png else 'FAIL'}] {label}: per-mode PNG written")
             ok &= png
-        combo = os.path.exists(f"{sel_out}/selgain_compare.png")
+        combo = os.path.exists(f"{sel_out}/sel/selgain_compare.png")
         print(f"[{'PASS' if combo else 'FAIL'}] combined figure written")
         ok &= combo
-        summ = open(f"{sel_out}/sel_summary.txt").read()
+        summ = open(f"{sel_out}/sel/sel_summary.txt").read()
         m = summ.count("MATCH") == 3 and "DIFFERENT" not in summ
         print(f"[{'PASS' if m else 'FAIL'}] summary reports MATCH for all 3 expected gains")
         ok &= m
@@ -139,10 +140,10 @@ def main():
         sp2 = os.path.join(tmp, "sel2.yaml")
         yaml.safe_dump(sel2, open(sp2, "w"), sort_keys=False)
         run("gain_select.py", sp2, tmp)
-        same = read(f"{sel_out}/sel2_ptc_FastA_r6.csv") == read(ref["FastA_r6"][0])
+        same = read(f"{sel_out}/sel2/sel2_ptc_FastA_r6.csv") == read(ref["FastA_r6"][0])
         print(f"[{'PASS' if same else 'FAIL'}] last_read override matches gain.py with last_read 6")
         ok &= same
-        summ2 = open(f"{sel_out}/sel2_summary.txt").read()
+        summ2 = open(f"{sel_out}/sel2/sel2_summary.txt").read()
         d = "MATCH" in summ2 and "DIFFERENT" in summ2
         print(f"[{'PASS' if d else 'FAIL'}] wrong expect_gain reported as DIFFERENT")
         ok &= d

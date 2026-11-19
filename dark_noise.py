@@ -19,6 +19,7 @@ from astropy.stats import sigma_clipped_stats
 import yaml
 import gui_io
 import data_paths  # LLM-generated
+import run_dirs  # LLM-generated
 
 
 def P(log, *a):
@@ -230,6 +231,7 @@ def main():
     date = dataset.get("date", "")
     datapath = dataset.get("datapath", "")
     quicklook = False if gui else bool(dataset.get("quicklook", False))
+    config["dataset"]["outpath"] = run_dirs.output_dir(config, sys.argv[1], "dark_noise")  # LLM-generated: per-dataset run folder
     outpath = dataset["outpath"]
     setname = dataset["name"]
     modes = dataset["modes"]
