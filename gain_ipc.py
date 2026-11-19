@@ -65,6 +65,7 @@ import matplotlib.pyplot as plt
 
 from astropy.stats import sigma_clip, sigma_clipped_stats
 import yaml
+import data_paths  # LLM-generated
 
 import gain as G
 import gui_io
@@ -395,7 +396,7 @@ def main():
         if gui:
             P(log, f"GUI Live Mode=True; data root={gui_io.GUI_BASE_PATH}\n")
         else:
-            P(log, f"quicklook={quicklook}; data directory={G.data_directory(datapath, quicklook)}\n")
+            P(log, f"quicklook={quicklook}; data directory={data_paths.describe(datapath, quicklook)}\n")  # LLM-generated
         P(log, f"{'mode':9s} {'ITIME':>8s} {'pairs':>6s} {'reads':>6s} {'maxDN':>7s} "
                f"{'g_raw':>7s} {'alpha_x':>8s} {'alpha_y':>8s} {'g_kern':>7s} {'g_csum':>7s} "
                f"{'g_ipc':>7s} {'err':>6s} {'RN(e-)':>7s} method")

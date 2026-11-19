@@ -18,6 +18,7 @@ from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 import yaml
 import gui_io
+import data_paths  # LLM-generated
 
 
 def P(log, *a):
@@ -43,7 +44,7 @@ def reg_cube(head, date, n, datapath, X0, X1, Y0, Y1, quicklook=False, gui=False
         cube, _header, _source = gui_io.load_gui_cube(n, roi=(X0, X1, Y0, Y1))
         return cube
 
-    fn = os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook=quicklook))
+    fn = data_paths.find(datapath, quicklook, obs_filename(head, date, n, quicklook=quicklook))  # LLM-generated: datapath may be a list
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
         return np.asarray(h[0].data[:, Y0:Y1, X0:X1]).astype(np.float64) + bz
@@ -207,7 +208,7 @@ def main():
         if gui:
             P(log, f"GUI Live Mode=True; data root={gui_io.GUI_BASE_PATH}\n")
         else:
-            P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
+            P(log, f"quicklook={quicklook}; data directory={data_paths.describe(datapath, quicklook)}\n")  # LLM-generated
         P(log, f"{'mode':9s} {'ITIME':>7s} {'ramps':>6s} {'t_tot(s)':>8s} {'dark(e-/s)':>12s} {'+/-':>7s}")
 
         for mode in modes:

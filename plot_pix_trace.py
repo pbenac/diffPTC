@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 import yaml
 import gui_io
+import data_paths  # LLM-generated
 
 
 def P(log, *args):
@@ -59,10 +60,7 @@ def obs_filename(head, date, filenum, quicklook=False):
 
 
 def fits_path(datapath, head, date, filenum, quicklook=False):
-    return os.path.join(
-        data_directory(datapath, quicklook),
-        obs_filename(head, date, filenum, quicklook=quicklook),
-    )
+    return data_paths.find(datapath, quicklook, obs_filename(head, date, filenum, quicklook=quicklook))  # LLM-generated: datapath may be a list
 
 
 def parse_ramps(mode_cfg, section="illuminated", gui=False):
@@ -250,7 +248,7 @@ def main():
             P(log, f"data root={gui_io.GUI_BASE_PATH}")
         else:
             P(log, f"head={head}; date={date}; quicklook={quicklook}")
-            P(log, f"data directory={data_directory(datapath, quicklook)}")
+            P(log, f"data directory={data_paths.describe(datapath, quicklook)}")  # LLM-generated
         P(log, f"section={section}; pixel_stride={pixel_stride}; alpha={alpha}; dpi={dpi}")
         P(log, f"subtract_reference_read={subtract_reference_read}; reference_read_index={reference_read_index}")
         if roi is None:

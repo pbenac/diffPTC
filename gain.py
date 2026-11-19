@@ -65,6 +65,7 @@ from astropy.stats import sigma_clipped_stats
 import yaml
 import scipy
 import gui_io
+import data_paths  # LLM-generated
 
 
 def P(log, *a):
@@ -143,7 +144,7 @@ def obs_filename(head, date, n, quicklook=False):
 
 
 def fits_path(datapath, head, date, n, quicklook=False):
-    return os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook))
+    return data_paths.find(datapath, quicklook, obs_filename(head, date, n, quicklook))  # LLM-generated: datapath may be a list
 
 
 def file_ready(head, date, n, datapath, quicklook=False, gui=False):
@@ -575,7 +576,7 @@ def main():
         if gui:
             P(log, f"GUI Live Mode=True; data root={gui_io.GUI_BASE_PATH}\n")
         else:
-            P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
+            P(log, f"quicklook={quicklook}; data directory={data_paths.describe(datapath, quicklook)}\n")  # LLM-generated
         P(log, f"{'mode':9s} {'ITIME':>8s} {'pairs':>6s} {'reads':>6s} {'maxDN':>7s} "
                f"{'gain(e-/DN)':>12s} {'err':>6s} {'RN(e-)':>7s}")
 

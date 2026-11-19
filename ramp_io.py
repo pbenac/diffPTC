@@ -45,6 +45,7 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 import gui_io
+import data_paths  # LLM-generated
 
 
 def prefix_for_head(head):
@@ -60,7 +61,7 @@ def fits_path(datapath, head, date, filenum, quicklook=False):
     obsnum_string = f"{int(filenum):05d}"
     suffix = "_reads" if quicklook else ""
     filename = prefix_for_head(head) + date + "_" + obsnum_string + suffix + ".fits"
-    return os.path.join(data_directory(datapath, quicklook), filename)
+    return data_paths.find(datapath, quicklook, filename)  # LLM-generated: datapath may be a list
 
 
 def parse_ramps(mode_cfg, section="illuminated", gui=False):
@@ -229,7 +230,7 @@ def main():
         if gui:
             print(f"{name}: GUI timestamps={ramps}; pairs={pairs}; data root={gui_io.GUI_BASE_PATH}")
         else:
-            print(f"{name}: illuminated ramps={ramps}; pairs={pairs}; quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}")
+            print(f"{name}: illuminated ramps={ramps}; pairs={pairs}; quicklook={quicklook}; data directory={data_paths.describe(datapath, quicklook)}")  # LLM-generated
         for n1, n2 in pairs:
             l1 = gui_io.identifier_label(n1) if gui else f"{int(n1):05d}"
             l2 = gui_io.identifier_label(n2) if gui else f"{int(n2):05d}"

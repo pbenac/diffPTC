@@ -62,6 +62,7 @@ import warnings
 
 import numpy as np
 import yaml
+import data_paths  # LLM-generated
 from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 
@@ -91,7 +92,8 @@ def obs_filename(dataset, n):
 
 
 def fits_path(dataset, n):
-    return os.path.join(data_directory(dataset), obs_filename(dataset, n))
+    return data_paths.find(dataset["datapath"], truthy(dataset.get("quicklook", False)),  # LLM-generated: datapath may be a list
+                           obs_filename(dataset, n))  # LLM-generated
 
 
 def parse_ramps(mode_cfg, section="illuminated"):

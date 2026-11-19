@@ -41,6 +41,7 @@ import sys
 
 import numpy as np
 import yaml
+import data_paths  # LLM-generated
 
 import matplotlib
 matplotlib.use("Agg")
@@ -78,10 +79,7 @@ def obs_filename(head, date, filenum, quicklook=False):
 
 
 def fits_path(datapath, head, date, filenum, quicklook=False):
-    return os.path.join(
-        effective_datapath(datapath, quicklook),
-        obs_filename(head, date, filenum, quicklook),
-    )
+    return data_paths.find(datapath, quicklook, obs_filename(head, date, filenum, quicklook))  # LLM-generated: datapath may be a list
 
 
 def parse_ramps(mode_cfg, section="illuminated"):

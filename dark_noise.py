@@ -18,6 +18,7 @@ from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
 import yaml
 import gui_io
+import data_paths  # LLM-generated
 
 
 def P(log, *a):
@@ -43,7 +44,7 @@ def frame(head, date, n, datapath, j, quicklook=False, gui=False):
         image, _header, _fn = gui_io.load_gui_frame(n, j, roi=None)
         return image
 
-    fn = os.path.join(data_directory(datapath, quicklook), obs_filename(head, date, n, quicklook=quicklook))
+    fn = data_paths.find(datapath, quicklook, obs_filename(head, date, n, quicklook=quicklook))  # LLM-generated: datapath may be a list
     with fits.open(fn, memmap=True, do_not_scale_image_data=True) as h:
         bz = h[0].header.get("BZERO", 0)
         return np.asarray(h[0].data[j]).astype(np.float64) + bz
@@ -250,7 +251,7 @@ def main():
         if gui:
             P(log, f"GUI Live Mode=True; data root={gui_io.GUI_BASE_PATH}\n")
         else:
-            P(log, f"quicklook={quicklook}; data directory={data_directory(datapath, quicklook)}\n")
+            P(log, f"quicklook={quicklook}; data directory={data_paths.describe(datapath, quicklook)}\n")  # LLM-generated
         P(log, "read noise = std(F2-F1)/sqrt2 (within-ramp CDS), channel+row corrected, Sheppard quantization-corrected.")
         P(log, "reset noise = sqrt( Var(A1-B1)/2 - read^2 ) across independent ramps.\n")
         P(log, f"{'mode':9s} {'gain':>7s} {'ramps':>6s} | {'READ NOISE (e-)':>22s} | {'RESET NOISE (e-)':>16s}")

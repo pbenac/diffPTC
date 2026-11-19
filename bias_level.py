@@ -60,6 +60,7 @@ warnings.filterwarnings("ignore")
 from astropy.io import fits
 import yaml
 import gui_io
+import data_paths  # LLM-generated
 
 
 def P(log, *args):
@@ -96,7 +97,7 @@ def fits_path(dataset, filenum):
     """Build the full path to one ramp FITS file."""
     quicklook = bool(dataset.get("quicklook", False))
     filename = obs_filename(dataset["head"], dataset["date"], filenum, quicklook=quicklook)
-    return os.path.join(dataset_datapath(dataset), filename)
+    return data_paths.find(dataset["datapath"], quicklook, filename)  # LLM-generated: datapath may be a list
 
 
 def parse_ramps(mode_cfg, section="illuminated", gui=False):
@@ -330,7 +331,7 @@ def main():
             P(log, f"GUI data root: {gui_io.GUI_BASE_PATH}")
         else:
             P(log, f"Quicklook: {bool(dataset.get('quicklook', False))}")
-            P(log, f"Data path: {dataset_datapath(dataset)}")
+            P(log, f"Data path: {data_paths.describe(dataset['datapath'], bool(dataset.get('quicklook', False)))}")  # LLM-generated
         P(log, f"Ramp section: {section}")
         P(log, f"Read index: {read_index}")
         P(log, f"ROI: {roi_key} x[{X0}:{X1}] y[{Y0}:{Y1}]")
